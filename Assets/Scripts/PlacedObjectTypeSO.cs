@@ -5,6 +5,12 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class PlacedObjectTypeSO : ScriptableObject
 {
+    public string nameString;
+    public Transform prefab;
+    // public Transform visual;
+    public int width;
+    public int height;
+    public Sprite[] spriteLifeCycle;
 
     public static Dir GetNextDir(Dir dir)
     {
@@ -25,13 +31,6 @@ public class PlacedObjectTypeSO : ScriptableObject
         Up,
         Right,
     }
-
-    public string nameString;
-    public Transform prefab;
-    public Transform visual;
-    public int width;
-    public int height;
-
 
     public int GetRotationAngle(Dir dir)
     {

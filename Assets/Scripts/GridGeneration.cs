@@ -144,7 +144,7 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
-            if (placedObject != null)
+            if (placedObject != null && placedObject.GetComponent<Crop>().IsFullyGrown)
             {
                 // Demolish
                 placedObject.DestroySelf();
