@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
+  m_Name: Cauliflower
+  m_EditorClassIdentifier: 
+  nameString: Cauliflower
+  prefab: {fileID: 1670519970673385737, guid: bcea8d2541e728e44849476baf93a919, type: 3}
+  cropCoinAmount: 5
+  width: 1
+  height: 1
+  spriteLifeCycle:
+  - {fileID: 810100726, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  - {fileID: -1409242891, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  - {fileID: 1603934031, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  - {fileID: -1042235888, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  - {fileID: -283087126, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  - {fileID: -896995448, guid: d7b13975391c3b341addf56957a094ed, type: 3}

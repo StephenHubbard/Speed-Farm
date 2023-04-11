@@ -23,6 +23,10 @@ public class Crop : MonoBehaviour
         StartCoroutine(GrowCropRoutine());
     }
 
+    public void SellCrop() {
+        EconomyManager.Instance.UpdateCurrentCoinAmount(placedObjectTypeSO.cropCoinAmount);
+    }
+
     private IEnumerator GrowCropRoutine() {
         while (cropStage < placedObjectTypeSO.spriteLifeCycle.Length - 1)
         {

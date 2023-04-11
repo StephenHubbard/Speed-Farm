@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
   m_Name: Parsnip
   m_EditorClassIdentifier: 
-  nameString: Plant Test
+  nameString: Parsnip
   prefab: {fileID: 1670519970673385737, guid: 61663ef11aed8af4ab56e517602d4f32, type: 3}
+  cropCoinAmount: 3
   width: 1
   height: 1
   spriteLifeCycle:

@@ -13,11 +13,6 @@ public class CameraController : MonoBehaviour
         mainCam = Camera.main;
     }
 
-    private void Start()
-    {
-        cinemachineVirtualCamera.m_Lens.OrthographicSize = 6f;
-    }
-
     private void Update()
     {
         HandleMovement();

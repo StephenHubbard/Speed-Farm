@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using UnityEngine.Tilemaps;
 
 public class GridGeneration : Singleton<GridGeneration>
 {
     [SerializeField] int gridWidth = 10;
     [SerializeField] int gridHeight = 10;
     [SerializeField] float cellSize = 10f;
+    [SerializeField] private Tile dirtTile;
+    [SerializeField] private Tile[] grassTiles;
+    [SerializeField] private Tilemap grassTilemap;
 
     public event EventHandler OnSelectedChanged;
     public event EventHandler OnObjectPlaced;
@@ -76,7 +80,6 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             return placedObject == null;
         }
-
     }
 
     private void Update()
@@ -84,9 +87,10 @@ public class GridGeneration : Singleton<GridGeneration>
         if (Input.GetMouseButtonDown(0) && placedObjectTypeSO != null)
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-            grid.GetXY(mousePosition, out int x, out int z);
+            grid.GetXY(mousePosition, out int x, out int y);
 
-            Vector2Int placedObjectOrigin = new Vector2Int(x, z);
+            Vector2Int placedObjectOrigin = new Vector2Int(x, y);
+            Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
             // Test Can Build
             List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, dir);
@@ -100,10 +104,11 @@ public class GridGeneration : Singleton<GridGeneration>
                 }
             }
 
-            if (canBuild)
+
+            if (canBuild && grassTilemap.GetTile(tilePosition) == dirtTile)
             {
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-                Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, z) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
+                Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
 
                 PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, dir, placedObjectTypeSO);
                 placedObject.transform.rotation = Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(dir));
@@ -119,11 +124,9 @@ public class GridGeneration : Singleton<GridGeneration>
             }
             else
             {
-                // Cannot build here
-                // UtilsClass.CreateWorldTextPopup("Cannot Build Here!", mousePosition);
-                Debug.Log("Can't build here");
+                Debug.Log("Can't place crop here");
             }
-        }
+        } 
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -144,9 +147,10 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
-            if (placedObject != null && placedObject.GetComponent<Crop>().IsFullyGrown)
+            Crop crop = placedObject?.GetComponent<Crop>();
+            if (placedObject != null && crop.IsFullyGrown)
             {
-                // Demolish
+                crop.SellCrop();
                 placedObject.DestroySelf();
 
                 List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
@@ -154,8 +158,30 @@ public class GridGeneration : Singleton<GridGeneration>
                 {
                     grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
                 }
+            } else if (!placedObject) {
+                int x = grid.GetGridObject(mousePosition).x;
+                int y = grid.GetGridObject(mousePosition).y;
+                Vector3Int tilePosition = new Vector3Int(x, y, 0);
+
+                foreach (Tile tile in grassTiles)
+                {
+                    if (grassTilemap.GetTile(tilePosition) == tile)
+                    {
+                        grassTilemap.SetTile(tilePosition, dirtTile);
+                        return;
+                    } 
+                }
+
+                if (grassTilemap.GetTile(tilePosition) == dirtTile)
+                {
+                    if ((x + y) % 2 == 0) {
+                        grassTilemap.SetTile(tilePosition, grassTiles[1]);
+                    } else {
+                        grassTilemap.SetTile(tilePosition, grassTiles[0]);
+                    }
+                }
             }
-        }
+        } 
     }
 
     private void DeselectObjectType()
