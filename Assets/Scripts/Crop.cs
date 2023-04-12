@@ -24,7 +24,7 @@ public class Crop : MonoBehaviour
     }
 
     public void SellCrop() {
-        EconomyManager.Instance.UpdateCurrentCoinAmount(placedObjectTypeSO.cropCoinAmount);
+        CardManager.Instance.CropHarvested(placedObjectTypeSO);
     }
 
     private IEnumerator GrowCropRoutine() {
@@ -34,7 +34,7 @@ public class Crop : MonoBehaviour
             cropStage++;
 
             if (cropStage < placedObjectTypeSO.spriteLifeCycle.Length - 1) {
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(1f);
             } else {
                 yield return null;
             }
