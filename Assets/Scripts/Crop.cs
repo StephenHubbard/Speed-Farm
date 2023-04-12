@@ -6,6 +6,8 @@ public class Crop : MonoBehaviour
 {
     public bool IsFullyGrown { get; private set; }
 
+    [SerializeField] private float stageGrowTime = 0.5f;
+
     private int cropStage = 0;
 
     private SpriteRenderer spriteRenderer;
@@ -13,18 +15,24 @@ public class Crop : MonoBehaviour
 
     private void Awake() {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        IsFullyGrown = false;
     }
     
     private void Start() {
-        IsFullyGrown = false;
-
         placedObjectTypeSO = GetComponent<PlacedObject_Done>().PlacedObjectTypeSO;
 
-        StartCoroutine(GrowCropRoutine());
+        if (!IsFullyGrown) {
+            StartCoroutine(GrowCropRoutine());
+        }
     }
 
     public void SellCrop() {
         CardManager.Instance.CropHarvested(placedObjectTypeSO);
+    }
+
+    public void StraightToFullyGrown() {
+        IsFullyGrown = true;
     }
 
     private IEnumerator GrowCropRoutine() {
@@ -34,7 +42,7 @@ public class Crop : MonoBehaviour
             cropStage++;
 
             if (cropStage < placedObjectTypeSO.spriteLifeCycle.Length - 1) {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(stageGrowTime);
             } else {
                 yield return null;
             }

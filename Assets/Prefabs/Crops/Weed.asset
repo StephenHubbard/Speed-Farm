@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
+  m_Name: Weed
+  m_EditorClassIdentifier: 
+  nameString: Weed
+  prefab: {fileID: 1670519970673385737, guid: 1853ebaa42825de46b5bc8dafb47e456, type: 3}
+  cropCoinAmount: 0
+  width: 1
+  height: 1
+  spriteLifeCycle:
+  - {fileID: 291720418, guid: e63c4c90fb20872498758da716d0b73b, type: 3}
+  - {fileID: -1624372159, guid: e63c4c90fb20872498758da716d0b73b, type: 3}
+  - {fileID: -930417264, guid: e63c4c90fb20872498758da716d0b73b, type: 3}
+  - {fileID: -558703287, guid: e63c4c90fb20872498758da716d0b73b, type: 3}

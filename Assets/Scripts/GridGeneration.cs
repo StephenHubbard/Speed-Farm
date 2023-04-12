@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using UnityEngine.Tilemaps;
+using UnityEngine.EventSystems;
 
 public class GridGeneration : Singleton<GridGeneration>
 {
@@ -13,12 +14,12 @@ public class GridGeneration : Singleton<GridGeneration>
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile[] grassTiles;
     [SerializeField] private Tilemap grassTilemap;
+    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList = null;
 
     public event EventHandler OnSelectedChanged;
-    public event EventHandler OnObjectPlaced;
+    // public event EventHandler OnObjectPlaced;
 
     private Grid<GridObject> grid;
-    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList = null;
     private PlacedObjectTypeSO placedObjectTypeSO;
     private PlacedObjectTypeSO.Dir dir;
 
@@ -35,7 +36,7 @@ public class GridGeneration : Singleton<GridGeneration>
         placedObjectTypeSO = placedObjectTypeSOList[0]; RefreshSelectedObjectType();
     }
 
-    public Grid<GridObject> GetGridObject() {
+    public Grid<GridObject> GetGrid() {
         return grid;
     }
 
@@ -84,7 +85,9 @@ public class GridGeneration : Singleton<GridGeneration>
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && placedObjectTypeSO != null)
+        if (EventSystem.current.IsPointerOverGameObject()) { return; }
+
+        if (Input.GetMouseButtonDown(0) && placedObjectTypeSO != null && !InventoryManager.Instance.IsShovelEquipped)
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             grid.GetXY(mousePosition, out int x, out int y);
@@ -118,7 +121,7 @@ public class GridGeneration : Singleton<GridGeneration>
                     grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
                 }
 
-                OnObjectPlaced?.Invoke(this, EventArgs.Empty);
+                // OnObjectPlaced?.Invoke(this, EventArgs.Empty);
 
                 //DeselectObjectType();
             }
@@ -140,25 +143,11 @@ public class GridGeneration : Singleton<GridGeneration>
         if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4]; RefreshSelectedObjectType(); }
         if (Input.GetKeyDown(KeyCode.Alpha6)) { placedObjectTypeSO = placedObjectTypeSOList[5]; RefreshSelectedObjectType(); }
 
-        if (Input.GetKeyDown(KeyCode.Alpha0)) { DeselectObjectType(); }
-
-
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0) && InventoryManager.Instance.IsShovelEquipped)
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
-            Crop crop = placedObject?.GetComponent<Crop>();
-            if (placedObject != null && crop.IsFullyGrown)
-            {
-                crop.SellCrop();
-                placedObject.DestroySelf();
-
-                List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
-                foreach (Vector2Int gridPosition in gridPositionList)
-                {
-                    grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
-                }
-            } else if (!placedObject) {
+            if (!placedObject) {
                 int x = grid.GetGridObject(mousePosition).x;
                 int y = grid.GetGridObject(mousePosition).y;
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
@@ -182,6 +171,24 @@ public class GridGeneration : Singleton<GridGeneration>
                 }
             }
         } 
+
+        if (Input.GetMouseButtonDown(1)) {
+            Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+            PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
+            Crop crop = placedObject?.GetComponent<Crop>();
+
+            if (placedObject != null && crop.IsFullyGrown)
+            {
+                crop.SellCrop();
+                placedObject.DestroySelf();
+
+                List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                }
+            }
+        }
     }
 
     private void DeselectObjectType()
