@@ -21,8 +21,8 @@ public class Card : MonoBehaviour
     private void Start() {
         DetermineCardCrops();
         timeLeft = Random.Range(10f, 30f);
-        cardWorthAmount = Random.Range(100, 500);
-        cardAmountText.text = "$" + cardWorthAmount.ToString();
+        cardWorthAmount = Random.Range(1, 100);
+        cardAmountText.text = cardWorthAmount.ToString("D2");
         slider.maxValue = timeLeft;
     }
 
