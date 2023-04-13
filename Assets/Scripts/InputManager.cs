@@ -12,5 +12,9 @@ public class InputManager : MonoBehaviour
 
             // Debug.Log(x + ", " + y);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Application.Quit();
+        }
     }
 }

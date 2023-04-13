@@ -10,6 +10,7 @@ public class PlacedObjectTypeSO : ScriptableObject
     public int cropCoinAmount;
     public int width;
     public int height;
+    public Sprite harvestedCropSprite;
     public Sprite[] spriteLifeCycle;
 
     public static Dir GetNextDir(Dir dir)

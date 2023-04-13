@@ -17,6 +17,7 @@ MonoBehaviour:
   cropCoinAmount: 5
   width: 1
   height: 1
+  harvestedCropSprite: {fileID: -896995448, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   spriteLifeCycle:
   - {fileID: 810100726, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   - {fileID: -1409242891, guid: d7b13975391c3b341addf56957a094ed, type: 3}

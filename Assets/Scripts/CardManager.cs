@@ -7,9 +7,11 @@ public class CardManager : Singleton<CardManager>
     public Card CurrentCard { get; private set; }
 
     [SerializeField] private Transform cardContainer;
+    [SerializeField] private Transform selectionOutline;
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private float timeBetweenCardSpawn = 3f;
     [SerializeField] private int maxAmountOfCards = 5;
+    [SerializeField] private PlacedObjectTypeSO[] availableCardCrops;
 
     private int currentAmountOfCards;
     private List<Card> allCards = new List<Card>();
@@ -25,6 +27,16 @@ public class CardManager : Singleton<CardManager>
     public void SetCurrentCard(Card currentCard)
     {
         this.CurrentCard = currentCard;
+        StartCoroutine(SetSelectionOutlineRoutine());
+    }
+    
+    private IEnumerator SetSelectionOutlineRoutine() {
+        yield return null;
+        selectionOutline.transform.position = CurrentCard.transform.position;
+    }
+
+    public PlacedObjectTypeSO[] GetAvailableCardCrops() {
+        return availableCardCrops;
     }
 
     public void CropHarvested(PlacedObjectTypeSO placedObjectTypeSO)
@@ -34,13 +46,19 @@ public class CardManager : Singleton<CardManager>
         CurrentCard.CropHarvested(placedObjectTypeSO);
     }
 
+    public void SetCurrentCardNull() {
+        CurrentCard = null;
+    }
+
     public void CardCompletion(Card cardCompleted) {
         allCards.Remove(cardCompleted);
         currentAmountOfCards--;
 
-        if (allCards.Count > 0) {
-            CurrentCard = allCards[0];
-        } else {
+        if (currentAmountOfCards > 0 && CurrentCard == cardCompleted) {
+            SetCurrentCard(allCards[0]);
+        } else if (currentAmountOfCards > 0) {
+            StartCoroutine(SetSelectionOutlineRoutine());
+        } else if (currentAmountOfCards == 0) {
             CurrentCard = null;
         }
 
@@ -50,6 +68,8 @@ public class CardManager : Singleton<CardManager>
             }
             spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
         }
+
+        Destroy(cardCompleted.gameObject);
     }
 
     private void FindStartingCards()
@@ -59,7 +79,7 @@ public class CardManager : Singleton<CardManager>
             allCards.Add(card);
         }
 
-        CurrentCard = allCards[0];
+        SetCurrentCard(allCards[0]);
     }
     
 

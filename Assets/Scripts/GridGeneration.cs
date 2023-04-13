@@ -97,6 +97,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
             // Test Can Build
             List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, dir);
+
             bool canBuild = true;
             foreach (Vector2Int gridPosition in gridPositionList)
             {
@@ -177,7 +178,7 @@ public class GridGeneration : Singleton<GridGeneration>
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
             Crop crop = placedObject?.GetComponent<Crop>();
 
-            if (placedObject != null && crop.IsFullyGrown)
+            if (placedObject != null && crop && crop.IsFullyGrown)
             {
                 crop.SellCrop();
                 placedObject.DestroySelf();

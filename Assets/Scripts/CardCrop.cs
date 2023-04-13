@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class CardCrop : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class CardCrop : MonoBehaviour
     [SerializeField] private PlacedObjectTypeSO placedObjectTypeSO;
 
     private TMP_Text amountToCollectText;
+    private Image image;
 
     private void Awake() {
+        image = GetComponent<Image>();
         amountToCollectText = GetComponentInChildren<TMP_Text>();
     }
 
@@ -20,8 +23,16 @@ public class CardCrop : MonoBehaviour
         amountToCollectText.text = AmountToCollect.ToString();
     }
 
+    public void SetPlacedObjectTypeSO(PlacedObjectTypeSO placedObjectTypeSO) {
+        this.placedObjectTypeSO = placedObjectTypeSO;
+    }
+
     public PlacedObjectTypeSO GetPlacedObjectTypeSO() {
         return placedObjectTypeSO;
+    }
+
+    public void SetImageSprite() {
+        image.sprite = placedObjectTypeSO.harvestedCropSprite;
     }
 
     public void CropCollected() {

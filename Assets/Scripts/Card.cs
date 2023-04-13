@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class Card : MonoBehaviour
 {
     [SerializeField] private TMP_Text cardAmountText;
+    [SerializeField] private Transform cardCropLayoutGroup;
+    [SerializeField] private GameObject cardCropPrefab;
 
     private Slider slider;
     private int cardWorthAmount;
@@ -17,6 +19,7 @@ public class Card : MonoBehaviour
     }
 
     private void Start() {
+        DetermineCardCrops();
         timeLeft = Random.Range(10f, 30f);
         cardWorthAmount = Random.Range(100, 500);
         cardAmountText.text = "$" + cardWorthAmount.ToString();
@@ -45,6 +48,20 @@ public class Card : MonoBehaviour
         CheckCardCompletion();
     }
 
+    private void DetermineCardCrops() {
+        PlacedObjectTypeSO[] availableCardCrops = CardManager.Instance.GetAvailableCardCrops();
+
+        int amountOfCropsOnCard = Random.Range(1, 4);
+
+        for (int i = 0; i < amountOfCropsOnCard; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, availableCardCrops.Length);
+            CardCrop newCardCrop = Instantiate(cardCropPrefab, cardCropLayoutGroup.transform).gameObject.GetComponent<CardCrop>();
+            newCardCrop.SetPlacedObjectTypeSO(availableCardCrops[randomIndex]);
+            newCardCrop.SetImageSprite();
+        }
+    }
+
     private void DetectCardTime()
     {
         timeLeft -= Time.deltaTime;
@@ -53,13 +70,11 @@ public class Card : MonoBehaviour
         if (timeLeft <= 0f)
         {
             CardManager.Instance.CardCompletion(this);
-            Destroy(gameObject);
         }
     }
      
     private void CheckCardCompletion() {
         CardCrop[] cropsOnCard = GetComponentsInChildren<CardCrop>();
-
 
         foreach (CardCrop cardCrop in cropsOnCard)
         {
