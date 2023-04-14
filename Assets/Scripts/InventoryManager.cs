@@ -19,26 +19,38 @@ public class InventoryManager : Singleton<InventoryManager>
     private void Start() {
         placedObjectTypeSO = placedObjectTypeSOList[0]; 
         IsShovelEquipped = false;
-        MoveSelectionOutline(0);
+        MoveSelectionOutline(0, inventorySlots[0].GetComponent<InventorySlot>().GetPlacedObjectTypeSO());
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { MoveSelectionOutline(0); }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { MoveSelectionOutline(1); }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { MoveSelectionOutline(2); }
-        if (Input.GetKeyDown(KeyCode.Alpha4)) { MoveSelectionOutline(3); }
-        if (Input.GetKeyDown(KeyCode.Alpha5)) { MoveSelectionOutline(4); }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) { MoveSelectionOutline(0, inventorySlots[0].GetComponent<InventorySlot>().GetPlacedObjectTypeSO()); }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) { MoveSelectionOutline(1, inventorySlots[1].GetComponent<InventorySlot>().GetPlacedObjectTypeSO()); }
+        if (Input.GetKeyDown(KeyCode.Alpha3)) { MoveSelectionOutline(2, inventorySlots[2].GetComponent<InventorySlot>().GetPlacedObjectTypeSO()); }
+        if (Input.GetKeyDown(KeyCode.Alpha4)) { MoveSelectionOutline(3, inventorySlots[3].GetComponent<InventorySlot>().GetPlacedObjectTypeSO()); }
+        if (Input.GetKeyDown(KeyCode.Alpha5)) { MoveSelectionOutline(4, inventorySlots[4].GetComponent<InventorySlot>().GetPlacedObjectTypeSO()); }
 
         if (Input.GetKeyDown(KeyCode.Tab)) { ToggleShovel(); }
     }
 
-    public void MoveSelectionOutline(int indexNum) {
+    public void DeselectPlacedObjecTypeSO() {
+        placedObjectTypeSO = null;
+    }
+
+    public void MoveSelectionOutline(int indexNum, PlacedObjectTypeSO placedObjectTypeSO) {
         IsShovelEquipped = false;
         previousIndexNum = indexNum;
         selectionOutline.SetParent(inventorySlots[indexNum], false);
-        placedObjectTypeSO = placedObjectTypeSOList[indexNum];
-        GridGeneration.Instance.SetPlacedObjectTypeSO(placedObjectTypeSO);
+
+        if (placedObjectTypeSO) {
+            this.placedObjectTypeSO = placedObjectTypeSO;
+            GridGeneration.Instance.SetPlacedObjectTypeSO(placedObjectTypeSO);
+        }
+
         GridGeneration.Instance.RefreshSelectedObjectType();
+    }
+
+    public void ClickShovelIcon() {
+        IsShovelEquipped = true;
     }
 
     private void ToggleShovel() {
@@ -46,9 +58,8 @@ public class InventoryManager : Singleton<InventoryManager>
             selectionOutline.SetParent(shovelSlot, false);
             IsShovelEquipped = true;
         } else {
-            MoveSelectionOutline(previousIndexNum);
+            MoveSelectionOutline(previousIndexNum, inventorySlots[previousIndexNum].GetComponent<InventorySlot>().GetPlacedObjectTypeSO());
             IsShovelEquipped = false;
         }
-
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class WeedManager : MonoBehaviour
 {
-    
+
     [SerializeField] private PlacedObjectTypeSO weedSO;
     [Range(0, 100)]
     [SerializeField] private int weedChance;
@@ -17,11 +17,14 @@ public class WeedManager : MonoBehaviour
     [Range(0, 100)]
     [SerializeField] private int treeChance;
     [SerializeField] private Tilemap grassTilemap;
-    [SerializeField] private Tile[] grassTiles;
+    [SerializeField] private Tile dirtTile;
+
+    [SerializeField] private List<TileBase> grassTilesList = new List<TileBase>();
 
     private PlacedObjectTypeSO.Dir dir;
 
-    private void Start() {
+    private void Start()
+    {
         SpawnResource(treeSO, treeChance);
         SpawnResource(weedSO, weedChance);
         SpawnResource(rockSO, rockChance);
@@ -33,30 +36,40 @@ public class WeedManager : MonoBehaviour
 
         for (int x = 0; x < grid.GetWidth(); x++)
         {
-            for (int y = 0; y < grid.GetWidth(); y++)
+            for (int y = 0; y < grid.GetHeight(); y++)
             {
                 Vector2Int placedObjectOrigin = new Vector2Int(x, y);
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                bool isGrassTile = false;
+                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, dir);
 
-                foreach (Tile tile in grassTiles)
+                bool allGrassTiles = false;
+
+                foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    if (grassTilemap.GetTile(tilePosition) == tile)
-                    {
-                        isGrassTile = true;
+                    allGrassTiles = false;
+
+                    Vector3Int checkAdjTilePos = new Vector3Int(gridPosition.x, gridPosition.y, 0);
+
+                    TileBase thisTile = grassTilemap.GetTile(checkAdjTilePos);
+
+                    if (grassTilesList.Contains(thisTile)) {
+                        allGrassTiles = true;
+                    } else {
+                        allGrassTiles = false;
+                        break;
                     }
+                   
                 }
 
-                int randomSpawnNum = Random.Range(1, 101);
+                int randomSpawnNum = Random.Range(0, 100);
 
-                if (randomSpawnNum >= spawnModifier || !isGrassTile) { continue; }
-
-                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, dir);
+                if (randomSpawnNum >= spawnModifier || !allGrassTiles) { continue; }
 
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
                 Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
 
-                if (grid.GetGridObject(tilePosition).CanBuild()) {
+                if (grid.GetGridObject(tilePosition).CanBuild())
+                {
                     PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, dir, placedObjectTypeSO);
                     placedObject.transform.rotation = Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(dir));
 
