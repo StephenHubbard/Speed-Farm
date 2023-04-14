@@ -14,13 +14,13 @@ public class GridGeneration : Singleton<GridGeneration>
     [SerializeField] private Tile dirtTile;
     [SerializeField] private Tile[] grassTiles;
     [SerializeField] private Tilemap grassTilemap;
-    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList = null;
+
+    private PlacedObjectTypeSO placedObjectTypeSO;
 
     public event EventHandler OnSelectedChanged;
     // public event EventHandler OnObjectPlaced;
 
     private Grid<GridObject> grid;
-    private PlacedObjectTypeSO placedObjectTypeSO;
     private PlacedObjectTypeSO.Dir dir;
 
     protected override void Awake()
@@ -29,15 +29,19 @@ public class GridGeneration : Singleton<GridGeneration>
 
         grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, new Vector3(0, 0, 0), (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
 
-        placedObjectTypeSO = null;
+        // placedObjectTypeSO = null;
     }
 
     private void Start() {
-        placedObjectTypeSO = placedObjectTypeSOList[0]; RefreshSelectedObjectType();
+        RefreshSelectedObjectType();
     }
 
     public Grid<GridObject> GetGrid() {
         return grid;
+    }
+
+    public void SetPlacedObjectTypeSO(PlacedObjectTypeSO placedObjectTypeSO) {
+        this.placedObjectTypeSO = placedObjectTypeSO;
     }
 
     public class GridObject
@@ -46,6 +50,7 @@ public class GridGeneration : Singleton<GridGeneration>
         public int x;
         public int y;
         public PlacedObject_Done placedObject;
+        public bool ownsLand = false;
 
         public GridObject(Grid<GridObject> grid, int x, int y)
         {
@@ -77,6 +82,10 @@ public class GridGeneration : Singleton<GridGeneration>
             return placedObject;
         }
 
+        public bool DoesOwnLand() {
+            return ownsLand;
+        }
+
         public bool CanBuild()
         {
             return placedObject == null;
@@ -106,6 +115,12 @@ public class GridGeneration : Singleton<GridGeneration>
                     canBuild = false;
                     break;
                 }
+
+                // if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild() || !grid.GetGridObject(gridPosition.x, gridPosition.y).DoesOwnLand())
+                // {
+                //     canBuild = false;
+                //     break;
+                // }
             }
 
 
@@ -137,11 +152,11 @@ public class GridGeneration : Singleton<GridGeneration>
             dir = PlacedObjectTypeSO.GetNextDir(dir);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; RefreshSelectedObjectType(); }
-        if (Input.GetKeyDown(KeyCode.Alpha2)) { placedObjectTypeSO = placedObjectTypeSOList[1]; RefreshSelectedObjectType(); }
-        if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2]; RefreshSelectedObjectType(); }
-        if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3]; RefreshSelectedObjectType(); }
-        if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4]; RefreshSelectedObjectType(); }
+        // if (Input.GetKeyDown(KeyCode.Alpha1)) { placedObjectTypeSO = placedObjectTypeSOList[0]; RefreshSelectedObjectType(); }
+        // if (Input.GetKeyDown(KeyCode.Alpha2)) { placedObjectTypeSO = placedObjectTypeSOList[1]; RefreshSelectedObjectType(); }
+        // if (Input.GetKeyDown(KeyCode.Alpha3)) { placedObjectTypeSO = placedObjectTypeSOList[2]; RefreshSelectedObjectType(); }
+        // if (Input.GetKeyDown(KeyCode.Alpha4)) { placedObjectTypeSO = placedObjectTypeSOList[3]; RefreshSelectedObjectType(); }
+        // if (Input.GetKeyDown(KeyCode.Alpha5)) { placedObjectTypeSO = placedObjectTypeSOList[4]; RefreshSelectedObjectType(); }
 
         if (Input.GetMouseButtonDown(0) && InventoryManager.Instance.IsShovelEquipped)
         {
@@ -191,12 +206,12 @@ public class GridGeneration : Singleton<GridGeneration>
         }
     }
 
-    private void DeselectObjectType()
-    {
-        placedObjectTypeSO = null; RefreshSelectedObjectType();
-    }
+    // private void DeselectObjectType()
+    // {
+    //     placedObjectTypeSO = null; RefreshSelectedObjectType();
+    // }
 
-    private void RefreshSelectedObjectType()
+    public void RefreshSelectedObjectType()
     {
         OnSelectedChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -208,38 +223,38 @@ public class GridGeneration : Singleton<GridGeneration>
         return new Vector2Int(x, z);
     }
 
-    public Vector3 GetMouseWorldSnappedPosition()
-    {
-        Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-        grid.GetXY(mousePosition, out int x, out int y);
+    // public Vector3 GetMouseWorldSnappedPosition()
+    // {
+    //     Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
+    //     grid.GetXY(mousePosition, out int x, out int y);
 
-        if (placedObjectTypeSO != null)
-        {
-            Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-            Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
-            return placedObjectWorldPosition;
-        }
-        else
-        {
-            return mousePosition;
-        }
-    }
+    //     if (placedObjectTypeSO != null)
+    //     {
+    //         Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
+    //         Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
+    //         return placedObjectWorldPosition;
+    //     }
+    //     else
+    //     {
+    //         return mousePosition;
+    //     }
+    // }
 
-    public Quaternion GetPlacedObjectRotation()
-    {
-        if (placedObjectTypeSO != null)
-        {
-            return Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(dir));
-        }
-        else
-        {
-            return Quaternion.identity;
-        }
-    }
+    // public Quaternion GetPlacedObjectRotation()
+    // {
+    //     if (placedObjectTypeSO != null)
+    //     {
+    //         return Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(dir));
+    //     }
+    //     else
+    //     {
+    //         return Quaternion.identity;
+    //     }
+    // }
 
-    public PlacedObjectTypeSO GetPlacedObjectTypeSO()
-    {
-        return placedObjectTypeSO;
-    }
+    // public PlacedObjectTypeSO GetPlacedObjectTypeSO()
+    // {
+    //     return placedObjectTypeSO;
+    // }
 
 }

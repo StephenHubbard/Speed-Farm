@@ -10,10 +10,14 @@ public class InventoryManager : Singleton<InventoryManager>
     [SerializeField] private Transform[] inventorySlots;
     [SerializeField] private Transform shovelSlot;
     [SerializeField] private Transform selectionOutline;
-    
+    [SerializeField] private List<PlacedObjectTypeSO> placedObjectTypeSOList = null;
+
+    private PlacedObjectTypeSO placedObjectTypeSO;
+
     private int previousIndexNum;
 
     private void Start() {
+        placedObjectTypeSO = placedObjectTypeSOList[0]; 
         IsShovelEquipped = false;
         MoveSelectionOutline(0);
     }
@@ -32,6 +36,9 @@ public class InventoryManager : Singleton<InventoryManager>
         IsShovelEquipped = false;
         previousIndexNum = indexNum;
         selectionOutline.SetParent(inventorySlots[indexNum], false);
+        placedObjectTypeSO = placedObjectTypeSOList[indexNum];
+        GridGeneration.Instance.SetPlacedObjectTypeSO(placedObjectTypeSO);
+        GridGeneration.Instance.RefreshSelectedObjectType();
     }
 
     private void ToggleShovel() {
