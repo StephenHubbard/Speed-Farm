@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
 
             var grid = GridGeneration.Instance.GetGrid();
 
-            // Debug.Log(grid.GetGridObject(tilePosition).DoesOwnLand());
+            Debug.Log(grid.GetGridObject(tilePosition).placedObject);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) {

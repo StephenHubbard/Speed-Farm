@@ -98,6 +98,15 @@ public class Grid<TGridObject>
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
     }
 
+    public Vector3Int GetVector3Int(Vector3 worldPosition)
+    {
+        int x, y;
+        GetXY(worldPosition, out x, out y);
+
+        Vector3Int vector3Int = new Vector3Int(x, y, 0);
+        return vector3Int;
+    }
+
     public void SetGridObject(int x, int y, TGridObject value)
     {
         if (x >= 0 && y >= 0 && x < width && y < height)

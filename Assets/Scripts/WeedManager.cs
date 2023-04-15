@@ -28,6 +28,7 @@ public class WeedManager : MonoBehaviour
         SpawnResource(treeSO, treeChance);
         SpawnResource(weedSO, weedChance);
         SpawnResource(rockSO, rockChance);
+        LandManager.Instance.DetermineStartingLandOwnership();
     }
 
     private void SpawnResource(PlacedObjectTypeSO placedObjectTypeSO, int spawnModifier)
