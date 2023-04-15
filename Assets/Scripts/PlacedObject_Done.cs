@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlacedObject_Done : MonoBehaviour
 {
     public PlacedObjectTypeSO PlacedObjectTypeSO { get; private set; }
-    private Vector2Int origin;
+    public Vector2Int Origin { get; private set; }
     private PlacedObjectTypeSO.Dir dir;
 
     public static PlacedObject_Done Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectTypeSO.Dir dir, PlacedObjectTypeSO placedObjectTypeSO)
@@ -21,13 +21,13 @@ public class PlacedObject_Done : MonoBehaviour
     private void Setup(PlacedObjectTypeSO placedObjectTypeSO, Vector2Int origin, PlacedObjectTypeSO.Dir dir)
     {
         this.PlacedObjectTypeSO = placedObjectTypeSO;
-        this.origin = origin;
+        this.Origin = origin;
         this.dir = dir;
     }
 
     public List<Vector2Int> GetGridPositionList()
     {
-        return PlacedObjectTypeSO.GetGridPositionList(origin, dir);
+        return PlacedObjectTypeSO.GetGridPositionList(Origin, dir);
     }
 
     public void DestroySelf()
