@@ -15,7 +15,9 @@ public class InventorySlot : MonoBehaviour
         if (!placedObjectTypeSO) { InventoryManager.Instance.DeselectPlacedObjecTypeSO(); }
 
         InventoryManager.Instance.MoveSelectionOutline(indexNum, placedObjectTypeSO);
+    }
 
+    public void UseInventorySlot() {
         if (item) {
             (item as Item).UseItem();
         }

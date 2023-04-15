@@ -7,5 +7,7 @@ public class BuyLand : MonoBehaviour, Item
     public void UseItem()
     {
         LandManager.Instance.ShowAvailableLandToBuy();
+        LandManager.Instance.BuyLandToggleTrue();
+        GridGeneration.Instance.DeselectObjectType();
     }
 }

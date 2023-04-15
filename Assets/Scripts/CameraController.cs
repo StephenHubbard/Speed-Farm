@@ -6,18 +6,18 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-    
+
     private Camera mainCam;
 
     private void Awake() {
         mainCam = Camera.main;
+
     }
 
     private void Update()
     {
         HandleMovement();
         HandleZoom();
-
     }
 
     private void HandleMovement()

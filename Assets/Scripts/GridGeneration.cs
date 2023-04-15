@@ -82,6 +82,13 @@ public class GridGeneration : Singleton<GridGeneration>
             return placedObject;
         }
 
+        public void BuyLand() {
+            ownsLand = true;
+            LandManager.Instance.HideAvailableLandToBuy();
+            LandManager.Instance.ShowAvailableLandToBuy();
+            LandManager.Instance.BuyLandToggleTrue();
+        }
+
         public bool DoesOwnLand() {
             return ownsLand;
         }
@@ -115,12 +122,6 @@ public class GridGeneration : Singleton<GridGeneration>
                     canBuild = false;
                     break;
                 }
-
-                // if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild() || !grid.GetGridObject(gridPosition.x, gridPosition.y).DoesOwnLand())
-                // {
-                //     canBuild = false;
-                //     break;
-                // }
             }
 
 
@@ -156,7 +157,8 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
-            if (!placedObject) {
+            bool doesOwnLand = grid.GetGridObject(mousePosition).DoesOwnLand();
+            if (!placedObject && doesOwnLand) {
                 int x = grid.GetGridObject(mousePosition).x;
                 int y = grid.GetGridObject(mousePosition).y;
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
@@ -200,14 +202,15 @@ public class GridGeneration : Singleton<GridGeneration>
         }
     }
 
-    // private void DeselectObjectType()
-    // {
-    //     placedObjectTypeSO = null; RefreshSelectedObjectType();
-    // }
+    public void DeselectObjectType()
+    {
+        placedObjectTypeSO = null;
+    }
 
     public void RefreshSelectedObjectType()
     {
         OnSelectedChanged?.Invoke(this, EventArgs.Empty);
+        LandManager.Instance.HideAvailableLandToBuy();
     }
 
 
