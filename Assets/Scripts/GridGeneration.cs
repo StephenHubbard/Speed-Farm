@@ -143,7 +143,6 @@ public class GridGeneration : Singleton<GridGeneration>
                 }
             }
 
-
             if (canBuild && grassTilemap.GetTile(tilePosition) == dirtTile)
             {
                 Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
@@ -160,10 +159,6 @@ public class GridGeneration : Singleton<GridGeneration>
                 // OnObjectPlaced?.Invoke(this, EventArgs.Empty);
 
                 //DeselectObjectType();
-            }
-            else
-            {
-                Debug.Log("Can't place crop here");
             }
         } 
 
