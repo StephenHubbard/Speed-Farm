@@ -50,7 +50,9 @@ public class GridGeneration : Singleton<GridGeneration>
         public int x;
         public int y;
         public PlacedObject_Done placedObject;
+        public GameObject buyLandSprite;
         public bool ownsLand = false;
+        public bool canBuyLand = false;
 
         public GridObject(Grid<GridObject> grid, int x, int y)
         {
@@ -82,6 +84,23 @@ public class GridGeneration : Singleton<GridGeneration>
             return placedObject;
         }
 
+        public void SetBuyLandSprite(GameObject buyLandSprite) {
+            this.buyLandSprite = buyLandSprite;
+            grid.TriggerGridObjectChanged(x, y);
+        }
+
+        public void ClearBuyLandSprite()
+        {
+            buyLandSprite = null;
+            grid.TriggerGridObjectChanged(x, y);
+        }
+
+        public GameObject GetBuyLandSprite()
+        {
+            return buyLandSprite;
+        }
+
+
         public void BuyLand() {
             ownsLand = true;
             LandManager.Instance.HideAvailableLandToBuy();
@@ -89,9 +108,9 @@ public class GridGeneration : Singleton<GridGeneration>
             LandManager.Instance.BuyLandToggleTrue();
         }
 
-        public bool DoesOwnLand() {
-            return ownsLand;
-        }
+        // public bool DoesOwnLand() {
+        //     return ownsLand;
+        // }
 
         public bool CanBuild()
         {
@@ -157,7 +176,7 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             PlacedObject_Done placedObject = grid.GetGridObject(mousePosition).GetPlacedObject();
-            bool doesOwnLand = grid.GetGridObject(mousePosition).DoesOwnLand();
+            bool doesOwnLand = grid.GetGridObject(mousePosition).ownsLand;
             if (!placedObject && doesOwnLand) {
                 int x = grid.GetGridObject(mousePosition).x;
                 int y = grid.GetGridObject(mousePosition).y;

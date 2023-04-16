@@ -14,7 +14,7 @@ public class Fence : MonoBehaviour
     [SerializeField] private Sprite fenceLeftRightUpSprite;
     [SerializeField] private PlacedObjectTypeSO fence_PlacedObjectTypeSO;
 
-    private Vector3Int thisTilePos;
+    private Vector3Int tilePos;
     private SpriteRenderer spriteRenderer;
 
 
@@ -25,22 +25,35 @@ public class Fence : MonoBehaviour
     private void Start() {
         UpdateFenceCoordVector3Int();
         UpdateFenceSprite();
+        CanBuyAdjLand();
+    }
+
+    private void CanBuyAdjLand() {
+        var grid = GridGeneration.Instance.GetGrid();
+
+        grid.GetGridObject(tilePos).canBuyLand = true;
+
+        if (LandManager.Instance.BuyLandToggledOn) {
+            GameObject showLandSprite = grid.GetGridObject(tilePos).GetBuyLandSprite();
+            Color greenColor = LandManager.Instance.GreenColor;
+            showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+        }
     }
 
     public void UpdateFenceCoordVector3Int() {
         PlacedObject_Done placedObject_Done = GetComponent<PlacedObject_Done>();
-        thisTilePos = new Vector3Int(placedObject_Done.Origin.x, placedObject_Done.Origin.y, 0);
+        tilePos = new Vector3Int(placedObject_Done.Origin.x, placedObject_Done.Origin.y, 0);
     }
 
     public void UpdateFenceSprite() {
         var grid = GridGeneration.Instance.GetGrid();
 
-        List<Vector3Int> adjacentTiles = GetAdjacentTiles(thisTilePos);
+        List<Vector3Int> adjacentTiles = GetAdjacentTiles(tilePos);
 
-        PlacedObject_Done dirRight = grid.GetGridObject(adjacentTiles[0]).placedObject;
-        PlacedObject_Done dirLeft = grid.GetGridObject(adjacentTiles[1]).placedObject;
-        PlacedObject_Done dirUp = grid.GetGridObject(adjacentTiles[2]).placedObject;
-        PlacedObject_Done dirDown = grid.GetGridObject(adjacentTiles[3]).placedObject;
+        PlacedObject_Done dirRight = grid.GetGridObject(adjacentTiles[0])?.placedObject;
+        PlacedObject_Done dirLeft = grid.GetGridObject(adjacentTiles[1])?.placedObject;
+        PlacedObject_Done dirUp = grid.GetGridObject(adjacentTiles[2])?.placedObject;
+        PlacedObject_Done dirDown = grid.GetGridObject(adjacentTiles[3])?.placedObject;
 
         spriteRenderer.sprite = fenceBaseSprite;
 
@@ -51,9 +64,6 @@ public class Fence : MonoBehaviour
         if (HasFenceInDirection(dirLeft))
         {
             spriteRenderer.sprite = fenceLeftSprite;
-            Vector3Int twoTilesLeft = new Vector3Int(thisTilePos.x - 2, thisTilePos.y, thisTilePos.z);
-            PlacedObject_Done twoLeftPlacedObject = grid.GetGridObject(twoTilesLeft).placedObject;
-            twoLeftPlacedObject?.GetComponent<Fence>().UpdateFenceSprite();
         }
 
         if (HasFenceInDirection(dirUp))
@@ -102,10 +112,10 @@ public class Fence : MonoBehaviour
         };
 
         // You can decide to include diagonal adjacent tiles by commenting or uncommenting the following lines
-        // adjacentTilePositions.Add(new Vector3Int(tilePosition.x + 1, tilePosition.y + 1, 0)); // up right
-        // adjacentTilePositions.Add(new Vector3Int(tilePosition.x + 1, tilePosition.y - 1, 0)); // down right
-        // adjacentTilePositions.Add(new Vector3Int(tilePosition.x - 1, tilePosition.y + 1, 0)); // up left
-        // adjacentTilePositions.Add(new Vector3Int(tilePosition.x - 1, tilePosition.y - 1, 0)); // down right
+        adjacentTilePositions.Add(new Vector3Int(tilePosition.x + 1, tilePosition.y + 1, 0)); // up right
+        adjacentTilePositions.Add(new Vector3Int(tilePosition.x + 1, tilePosition.y - 1, 0)); // down right
+        adjacentTilePositions.Add(new Vector3Int(tilePosition.x - 1, tilePosition.y + 1, 0)); // up left
+        adjacentTilePositions.Add(new Vector3Int(tilePosition.x - 1, tilePosition.y - 1, 0)); // down right
 
         return adjacentTilePositions;
     }

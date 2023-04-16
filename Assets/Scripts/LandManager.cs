@@ -9,6 +9,8 @@ using UnityEngine.EventSystems;
 public class LandManager : Singleton<LandManager>
 {
     public bool BuyLandToggledOn { get; private set; }
+    public Color GreenColor { get { return greenColor; } }
+    public Color RedColor { get { return redColor; } }
 
     [SerializeField] private Tilemap grassTilemap;
     // [SerializeField] private Tilemap fenceTilemap;
@@ -16,6 +18,8 @@ public class LandManager : Singleton<LandManager>
     // [SerializeField] private RuleTile fenceTile;
     [SerializeField] private PlacedObjectTypeSO fenceSO;
     [SerializeField] private GameObject showAvailableLandToBuyPrefab;
+    [SerializeField] private Color greenColor;
+    [SerializeField] private Color redColor;
 
     private List<GameObject> allShowLandSprites = new List<GameObject>();
 
@@ -45,7 +49,7 @@ public class LandManager : Singleton<LandManager>
             Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
             Vector3Int thisTile = grid.GetVector3Int(mousePosition);
 
-            if (grid.GetGridObject(thisTile).DoesOwnLand()) { return ;}
+            if (grid.GetGridObject(thisTile).ownsLand || !grid.GetGridObject(thisTile).canBuyLand) { return ;}
 
             grid.GetGridObject(mousePosition).BuyLand();
 
@@ -53,7 +57,7 @@ public class LandManager : Singleton<LandManager>
 
             foreach (Vector3Int adjTile in adjacentTiles)
             {
-                if (!grid.GetGridObject(adjTile).DoesOwnLand())
+                if (!grid.GetGridObject(adjTile).ownsLand)
                 {
                     PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
                     PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject?.PlacedObjectTypeSO;
@@ -104,13 +108,28 @@ public class LandManager : Singleton<LandManager>
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
-                if (!grid.GetGridObject(tilePosition).DoesOwnLand()) {
-                   GameObject newShowLandPrefab = Instantiate(showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
-                   allShowLandSprites.Add(newShowLandPrefab);
+                if (!grid.GetGridObject(tilePosition).ownsLand) {
+                   GameObject showLandSpritePrefab = Instantiate(showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
+                   allShowLandSprites.Add(showLandSpritePrefab);
+                   grid.GetGridObject(tilePosition).SetBuyLandSprite(showLandSpritePrefab);
+                }
+
+                if (!grid.GetGridObject(tilePosition).ownsLand)
+                {
+                    if (!grid.GetGridObject(tilePosition).canBuyLand)
+                    {
+                        GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
+                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(redColor.r, redColor.g, redColor.b, redColor.a);
+                    } else {
+                        GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
+                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+                    }
                 }
             }
         }
     }
+
+
 
     public void HideAvailableLandToBuy() {
         if (allShowLandSprites.Count == 0) { return; }

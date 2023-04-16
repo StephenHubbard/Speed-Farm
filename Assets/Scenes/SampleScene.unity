@@ -39264,6 +39264,8 @@ MonoBehaviour:
   dirtTile: {fileID: 11400000, guid: f7a71c14aa90be34cbc6cddc1f106753, type: 2}
   fenceSO: {fileID: 11400000, guid: b161dcfd0485e5d47adc68cd0b8cd124, type: 2}
   showAvailableLandToBuyPrefab: {fileID: 2058504020431990590, guid: 4267997ebbd3c53419fa1f55ef2b455d, type: 3}
+  greenColor: {r: 0.06666667, g: 1, b: 0, a: 0.2}
+  redColor: {r: 1, g: 0, b: 0, a: 0.5372549}
 --- !u!1 &1576084298
 GameObject:
   m_ObjectHideFlags: 0
