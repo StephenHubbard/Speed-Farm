@@ -24,7 +24,7 @@ public class Fence : MonoBehaviour
 
     private void Start() {
         UpdateFenceCoordVector3Int();
-        UpdateFenceSprite();
+        UpdateFenceSprite(true);
         CanBuyAdjLand();
     }
 
@@ -45,7 +45,7 @@ public class Fence : MonoBehaviour
         tilePos = new Vector3Int(placedObject_Done.Origin.x, placedObject_Done.Origin.y, 0);
     }
 
-    public void UpdateFenceSprite() {
+    public void UpdateFenceSprite(bool updateAjdTile) {
         var grid = GridGeneration.Instance.GetGrid();
 
         List<Vector3Int> adjacentTiles = GetAdjacentTiles(tilePos);
@@ -74,22 +74,55 @@ public class Fence : MonoBehaviour
         if (HasFenceInDirection(dirRight) && HasFenceInDirection(dirLeft)) 
         {
             spriteRenderer.sprite = fenceLeftAndRightSprite;
+
+            if (updateAjdTile) { 
+                dirLeft.GetComponent<Fence>().UpdateFenceSprite(false);
+                dirRight.GetComponent<Fence>().UpdateFenceSprite(false);
+            }
         }
 
         if (HasFenceInDirection(dirRight) && HasFenceInDirection(dirUp))
         {
             spriteRenderer.sprite = fenceUpAndRightSprite;
+
+            if (updateAjdTile)
+            {
+                dirUp.GetComponent<Fence>().UpdateFenceSprite(false);
+                dirRight.GetComponent<Fence>().UpdateFenceSprite(false);
+            }
         }
 
         if (HasFenceInDirection(dirLeft) && HasFenceInDirection(dirUp))
         {
             spriteRenderer.sprite = fenceUpAndLeftSprite;
+
+            if (updateAjdTile)
+            {
+                dirLeft.GetComponent<Fence>().UpdateFenceSprite(false);
+                dirUp.GetComponent<Fence>().UpdateFenceSprite(false);
+            }
         }
 
         if (HasFenceInDirection(dirLeft) && HasFenceInDirection(dirUp) && HasFenceInDirection(dirRight))
         {
             spriteRenderer.sprite = fenceLeftRightUpSprite;
+
+            if (updateAjdTile)
+            {
+                dirLeft.GetComponent<Fence>().UpdateFenceSprite(false);
+                dirUp.GetComponent<Fence>().UpdateFenceSprite(false);
+                dirRight.GetComponent<Fence>().UpdateFenceSprite(false);
+            }
         }
+
+        // if (HasFenceInDirection(dirDown) && HasFenceInDirection(dirUp))
+        // {
+        //     if (updateAjdTile)
+        //     {
+        //         dirDown.GetComponent<Fence>().UpdateFenceSprite(false);
+        //         dirUp.GetComponent<Fence>().UpdateFenceSprite(false);
+        //     }
+        // }
     }
 
     private bool HasFenceInDirection(PlacedObject_Done placedObject_Done) {

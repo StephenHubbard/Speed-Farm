@@ -43,41 +43,44 @@ public class LandManager : Singleton<LandManager>
     private void BuyLand() {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
-        if (Input.GetMouseButtonDown(0) && BuyLandToggledOn) {
+        if (Input.GetMouseButtonUp(0) && BuyLandToggledOn) {
             var grid = GridGeneration.Instance.GetGrid();
 
-            Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-            Vector3Int thisTile = grid.GetVector3Int(mousePosition);
+            List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
-            if (grid.GetGridObject(thisTile).ownsLand || !grid.GetGridObject(thisTile).canBuyLand) { return ;}
-
-            grid.GetGridObject(mousePosition).BuyLand();
-
-            List<Vector3Int> adjacentTiles = GetAdjacentTiles(thisTile);
-
-            foreach (Vector3Int adjTile in adjacentTiles)
+            foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (!grid.GetGridObject(adjTile).ownsLand)
+                if (grid.GetGridObject(selectedTile).ownsLand || !grid.GetGridObject(selectedTile).canBuyLand) { return ;}
+
+                grid.GetGridObject(selectedTile).BuyLand();
+
+                List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
+
+                foreach (Vector3Int adjTile in adjacentTiles)
                 {
-                    PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
-                    PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject?.PlacedObjectTypeSO;
-                    List<Vector2Int> gridPositionList = currentPlacedObject?.GetGridPositionList();
-                    currentPlacedObject?.DestroySelf();
+                    if (!grid.GetGridObject(adjTile).ownsLand)
+                    {
+                        PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
+                        PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject?.PlacedObjectTypeSO;
+                        List<Vector2Int> gridPositionList = currentPlacedObject?.GetGridPositionList();
+                        currentPlacedObject?.DestroySelf();
 
-                    if (currentPlacedObject) {
-                        foreach (Vector2Int gridPosition in gridPositionList)
-                        {
-                            grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                        if (currentPlacedObject) {
+                            foreach (Vector2Int gridPosition in gridPositionList)
+                            {
+                                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                            }
                         }
-                    }
 
-                    Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
-                    PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, fenceSO);
-                    grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
+                        Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
+                        PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, fenceSO);
+                        grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
+                    }
                 }
+
+                DetectProperFenceDisplay(selectedTile);
             }
 
-            DetectProperFenceDisplay(thisTile);
         }
     }
 
@@ -224,4 +227,34 @@ public class LandManager : Singleton<LandManager>
 
         return adjacentTilePositions;
     }
+
+    public List<Vector3Int> GetAdjacentTilesDistance(Vector3Int tilePosition, int distance)
+    {
+        List<Vector3Int> adjacentTilePositions = new List<Vector3Int>();
+
+        for (int x = -distance; x <= distance; x++)
+        {
+            for (int y = -distance; y <= distance; y++)
+            {
+                // Skip the center tile and diagonal tiles when distance is 1
+                if (distance == 1 && (x == 0 || y == 0 || Mathf.Abs(x) == Mathf.Abs(y)))
+                {
+                    continue;
+                }
+
+                // Skip the center tile
+                if (x == 0 && y == 0)
+                {
+                    continue;
+                }
+
+                Vector3Int adjacentTilePosition = new Vector3Int(tilePosition.x + x, tilePosition.y + y, tilePosition.z);
+                adjacentTilePositions.Add(adjacentTilePosition);
+            }
+        }
+
+        return adjacentTilePositions;
+    }
+
+   
 }
