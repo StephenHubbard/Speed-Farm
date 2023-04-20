@@ -132,7 +132,6 @@ public class LandManager : Singleton<LandManager>
         }
     }
 
-
     public void HideAvailableLandToBuy() {
         if (allShowLandSprites.Count == 0) { return; }
 

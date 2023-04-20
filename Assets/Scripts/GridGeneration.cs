@@ -168,18 +168,36 @@ public class GridGeneration : Singleton<GridGeneration>
         {
             List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
+            List<Vector3Int> ownedTiles = new List<Vector3Int>();
+
+            foreach (Vector3Int selectedTile in selectedTiles)
+            {
+                if (_grid.GetGridObject(selectedTile).ownsLand) {
+                    ownedTiles.Add(selectedTile);
+                }
+            }
+
+            bool anyTilesAreGrass = false;
+
+            foreach (Vector3Int ownedTile in ownedTiles)
+            {
+                if (_grassTiles.Contains((Tile)_grassTilemap.GetTile(ownedTile)))
+                {
+                    anyTilesAreGrass = true;
+                    break;
+                }
+            }
+
             foreach (Vector3Int selectedTile in selectedTiles)
             {
                 PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).GetPlacedObject();
                 bool doesOwnLand = _grid.GetGridObject(selectedTile).ownsLand;
                 if (!placedObject && doesOwnLand) {
-                    if (_grassTiles.Contains((Tile)_grassTilemap.GetTile(selectedTile))) {
+
+                    if (anyTilesAreGrass) {
                         _grassTilemap.SetTile(selectedTile, _dirtTile);
                         continue;
-                    }
-
-                    if (_grassTilemap.GetTile(selectedTile) == _dirtTile)
-                    {
+                    } else {
                         if ((selectedTile.x + selectedTile.y) % 2 == 0) {
                             _grassTilemap.SetTile(selectedTile, _grassTiles[1]);
                         } else {

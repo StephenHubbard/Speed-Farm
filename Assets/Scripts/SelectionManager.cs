@@ -11,12 +11,17 @@ public class SelectionManager : Singleton<SelectionManager>
     private Vector2 _startTilePos;
     private Vector2 _currentTilePos;
 
+    private bool _cancelSelection = false;
+
     private void Start() {
         DrawVisual();
     }
 
     private void Update() {
+        
+
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+            _cancelSelection = false;
             _boxVisual.gameObject.SetActive(true);
             _selectedTiles.Clear();
 
@@ -26,11 +31,17 @@ public class SelectionManager : Singleton<SelectionManager>
             _startTilePos = new Vector2(x, y);
         }
 
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
+        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !_cancelSelection) {
             DrawVisual();
         }
 
-        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) {
+        if (Input.GetMouseButton(0) && Input.GetMouseButtonDown(1))
+        {
+            _cancelSelection = true;
+            _boxVisual.gameObject.SetActive(false);
+        }
+
+        if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && !_cancelSelection) {
             DrawVisual();
             _boxVisual.gameObject.SetActive(false);
             AssignSelectedTiles();

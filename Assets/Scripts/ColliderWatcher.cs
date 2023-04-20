@@ -4,20 +4,21 @@ using Cinemachine;
 [RequireComponent(typeof(CinemachineCollider))]
 public class ColliderWatcher : MonoBehaviour
 {
-    public bool IsTargetObscured;
-    public bool CameraWasDisplaced;
-    public CinemachineCollider _cache;
-    public CinemachineVirtualCameraBase _middleRig;
+    [field:SerializeField] private bool IsTargetObscured;
+    [field:SerializeField] private bool CameraWasDisplaced;
 
-    void Start()
+    CinemachineCollider _cache;
+    CinemachineVirtualCamera _vcam;
+
+    void Awake()
     {
-        _cache = this.GetComponent<CinemachineCollider>();
-        _middleRig = _cache.VirtualCamera;
+        _cache = GetComponent<CinemachineCollider>();
+        _vcam = GetComponent<CinemachineVirtualCamera>();
     }
-    
+
     void Update()
     {
-        IsTargetObscured = _cache.IsTargetObscured(_middleRig);
-        CameraWasDisplaced = _cache.CameraWasDisplaced(_middleRig);
+        IsTargetObscured = _cache.IsTargetObscured(_vcam);
+        CameraWasDisplaced = _cache.CameraWasDisplaced(_vcam);
     }
 }

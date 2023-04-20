@@ -5,13 +5,10 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera _cinemachineVirtualCamera;
-
-    private Camera mainCam;
+    private CinemachineVirtualCamera _cinemachineVirtualCamera;
 
     private void Awake() {
-        mainCam = Camera.main;
-
+        _cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
     }
 
     private void Update()

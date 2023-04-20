@@ -10,6 +10,7 @@ public class Card : MonoBehaviour
     [SerializeField] private Transform _cardCropLayoutGroup;
     [SerializeField] private GameObject _cardCropPrefab;
 
+    private List<CardCrop> allCardCrops = new List<CardCrop>();
     private Slider _slider;
     private int _cardWorthAmount;
     private float _timeLeft;
@@ -56,9 +57,22 @@ public class Card : MonoBehaviour
         for (int i = 0; i < amountOfCropsOnCard; i++)
         {
             int randomIndex = UnityEngine.Random.Range(0, availableCardCrops.Length);
+            bool cardCropExistsOnCardAlready = false;
+
+            foreach (CardCrop cardCrop in allCardCrops)
+            {
+                if (cardCrop.PlacedObjectTypeSO == availableCardCrops[randomIndex]) {
+                    cardCrop.IncreaseAmountToCollect(Random.Range(1, 4));
+                    cardCropExistsOnCardAlready = true;
+                }
+            }
+
+            if (cardCropExistsOnCardAlready) { continue; }
+
             CardCrop newCardCrop = Instantiate(_cardCropPrefab, _cardCropLayoutGroup.transform).gameObject.GetComponent<CardCrop>();
             newCardCrop.SetPlacedObjectTypeSO(availableCardCrops[randomIndex]);
             newCardCrop.SetImageSprite();
+            allCardCrops.Add(newCardCrop);
         }
     }
 
