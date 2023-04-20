@@ -6,21 +6,21 @@ public class Crop : MonoBehaviour
 {
     public bool IsFullyGrown { get; private set; }
 
-    [SerializeField] private float stageGrowTime = 0.5f;
+    [SerializeField] private float _stageGrowTime = 0.5f;
 
-    private int cropStage = 0;
+    private int _cropStage = 0;
 
-    private SpriteRenderer spriteRenderer;
-    private PlacedObjectTypeSO placedObjectTypeSO;
+    private SpriteRenderer _spriteRenderer;
+    private PlacedObjectTypeSO _placedObjectTypeSO;
 
     private void Awake() {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         IsFullyGrown = false;
     }
     
     private void Start() {
-        placedObjectTypeSO = GetComponent<PlacedObject_Done>().PlacedObjectTypeSO;
+        _placedObjectTypeSO = GetComponent<PlacedObject_Done>().PlacedObjectTypeSO;
 
         if (!IsFullyGrown) {
             StartCoroutine(GrowCropRoutine());
@@ -28,7 +28,7 @@ public class Crop : MonoBehaviour
     }
 
     public void SellCrop() {
-        CardManager.Instance.CropHarvested(placedObjectTypeSO);
+        CardManager.Instance.CropHarvested(_placedObjectTypeSO);
     }
 
     public void StraightToFullyGrown() {
@@ -36,13 +36,13 @@ public class Crop : MonoBehaviour
     }
 
     private IEnumerator GrowCropRoutine() {
-        while (cropStage < placedObjectTypeSO.spriteLifeCycle.Length - 1)
+        while (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length - 1)
         {
-            spriteRenderer.sprite = placedObjectTypeSO.spriteLifeCycle[cropStage];
-            cropStage++;
+            _spriteRenderer.sprite = _placedObjectTypeSO.SpriteLifeCycle[_cropStage];
+            _cropStage++;
 
-            if (cropStage < placedObjectTypeSO.spriteLifeCycle.Length - 1) {
-                yield return new WaitForSeconds(stageGrowTime);
+            if (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length - 1) {
+                yield return new WaitForSeconds(_stageGrowTime);
             } else {
                 yield return null;
             }

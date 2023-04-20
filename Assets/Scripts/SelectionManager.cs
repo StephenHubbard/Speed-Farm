@@ -5,12 +5,11 @@ using CodeMonkey.Utils;
 
 public class SelectionManager : Singleton<SelectionManager>
 {
-    [SerializeField] private Transform boxVisual;
+    [SerializeField] private Transform _boxVisual;
+    [SerializeField] private List<Vector3Int> _selectedTiles = new List<Vector3Int>();
 
-    [SerializeField] private List<Vector3Int> selectedTiles = new List<Vector3Int>();
-
-    Vector2 startTilePos;
-    Vector2 currentTilePos;
+    private Vector2 _startTilePos;
+    private Vector2 _currentTilePos;
 
     private void Start() {
         DrawVisual();
@@ -18,13 +17,13 @@ public class SelectionManager : Singleton<SelectionManager>
 
     private void Update() {
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
-            boxVisual.gameObject.SetActive(true);
-            selectedTiles.Clear();
+            _boxVisual.gameObject.SetActive(true);
+            _selectedTiles.Clear();
 
             int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
             int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;
 
-            startTilePos = new Vector2(x, y);
+            _startTilePos = new Vector2(x, y);
         }
 
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) {
@@ -33,13 +32,28 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) {
             DrawVisual();
-            boxVisual.gameObject.SetActive(false);
+            _boxVisual.gameObject.SetActive(false);
             AssignSelectedTiles();
         }
     }
 
-    public List<Vector3Int> GetSelectedTiles() {
-        return selectedTiles;
+    public List<Vector3Int> GetSelectedTiles()
+    {
+        return _selectedTiles;
+    }
+
+    private void DrawVisual()
+    {
+        int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
+        int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;
+
+        _currentTilePos = new Vector2(x, y);
+
+        Vector2 lowerLeft = new Vector3(Mathf.Min(_startTilePos.x, _currentTilePos.x), Mathf.Min(_startTilePos.y, _currentTilePos.y));
+        Vector2 upperRight = new Vector3(Mathf.Max(_startTilePos.x + 1, _currentTilePos.x + 1), Mathf.Max(_startTilePos.y + 1, _currentTilePos.y + 1));
+
+        _boxVisual.position = lowerLeft;
+        _boxVisual.localScale = upperRight - lowerLeft;
     }
 
     private void AssignSelectedTiles() {
@@ -47,78 +61,67 @@ public class SelectionManager : Singleton<SelectionManager>
 
         List<Vector3Int> selectedXTiles = new List<Vector3Int>();
 
-        selectedTiles.Add(grid.GetVector3Int(startTilePos));
-        selectedXTiles.Add(grid.GetVector3Int(startTilePos));
+        _selectedTiles.Add(grid.GetVector3Int(_startTilePos));
+        selectedXTiles.Add(grid.GetVector3Int(_startTilePos));
 
-        if (currentTilePos.x <= startTilePos.x) {
+        if (_currentTilePos.x <= _startTilePos.x) {
             // dragging left
 
-            int amountOfTilesX = (int)startTilePos.x - (int)currentTilePos.x;
+            int amountOfTilesX = (int)_startTilePos.x - (int)_currentTilePos.x;
 
             for (int i = 1; i <= amountOfTilesX; i++)
             {
-                Vector2 tileToAdd = new Vector2((int)startTilePos.x - i, (int)startTilePos.y);
+                Vector2 tileToAdd = new Vector2((int)_startTilePos.x - i, (int)_startTilePos.y);
 
-                selectedTiles.Add(grid.GetVector3Int(tileToAdd));
+                _selectedTiles.Add(grid.GetVector3Int(tileToAdd));
                 selectedXTiles.Add(grid.GetVector3Int(tileToAdd));
             }
 
         } else {
             // dragging right
 
-            int amountOfTilesX = (int)currentTilePos.x - (int)startTilePos.x;
+            int amountOfTilesX = (int)_currentTilePos.x - (int)_startTilePos.x;
 
             for (int i = 1; i <= amountOfTilesX; i++)
             {
-                Vector2 tileToAdd = new Vector2((int)startTilePos.x + i, (int)startTilePos.y);
+                Vector2 tileToAdd = new Vector2((int)_startTilePos.x + i, (int)_startTilePos.y);
 
-                selectedTiles.Add(grid.GetVector3Int(tileToAdd));
+                _selectedTiles.Add(grid.GetVector3Int(tileToAdd));
                 selectedXTiles.Add(grid.GetVector3Int(tileToAdd));
             }
         }
 
         for (int j = 0; j < selectedXTiles.Count; j++)
         {
-            if (currentTilePos.y < startTilePos.y)
+            if (_currentTilePos.y < _startTilePos.y)
             {
                 // dragging down
 
-                int amountOfTilesY = (int)startTilePos.y - (int)currentTilePos.y;
+                int amountOfTilesY = (int)_startTilePos.y - (int)_currentTilePos.y;
 
                 for (int i = 1; i <= amountOfTilesY; i++)
                 {
                     Vector2 tileToAdd = new Vector2((int)selectedXTiles[j].x, (int)selectedXTiles[j].y - i);
 
-                    selectedTiles.Add(grid.GetVector3Int(tileToAdd));
+                    _selectedTiles.Add(grid.GetVector3Int(tileToAdd));
                 }
 
             } else {
                 // dragging up
 
-                int amountOfTilesY = (int)currentTilePos.y - (int)startTilePos.y;
+                int amountOfTilesY = (int)_currentTilePos.y - (int)_startTilePos.y;
 
                 for (int i = 1; i <= amountOfTilesY; i++)
                 {
                     Vector2 tileToAdd = new Vector2((int)selectedXTiles[j].x, (int)selectedXTiles[j].y + i);
 
-                    selectedTiles.Add(grid.GetVector3Int(tileToAdd));
+                    _selectedTiles.Add(grid.GetVector3Int(tileToAdd));
                 }
             }
         }
 
     }
 
-    private void DrawVisual() {
-        int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
-        int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;
-
-        currentTilePos = new Vector2(x, y);
-
-        Vector2 lowerLeft = new Vector3(Mathf.Min(startTilePos.x, currentTilePos.x), Mathf.Min(startTilePos.y, currentTilePos.y));
-        Vector2 upperRight = new Vector3(Mathf.Max(startTilePos.x + 1, currentTilePos.x + 1), Mathf.Max(startTilePos.y + 1, currentTilePos.y + 1));
-
-        boxVisual.position = lowerLeft;
-        boxVisual.localScale = upperRight - lowerLeft;
-    }
+    
 
 }

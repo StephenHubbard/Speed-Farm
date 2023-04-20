@@ -8,26 +8,24 @@ using UnityEngine.EventSystems;
 
 public class GridGeneration : Singleton<GridGeneration>
 {
-    [SerializeField] int gridWidth = 10;
-    [SerializeField] int gridHeight = 10;
-    [SerializeField] float cellSize = 10f;
-    [SerializeField] private Tile dirtTile;
-    [SerializeField] private List<Tile> grassTiles = new List<Tile>();
-    [SerializeField] private Tilemap grassTilemap;
-
-    private PlacedObjectTypeSO placedObjectTypeSO;
-
     public event EventHandler OnSelectedChanged;
-    // public event EventHandler OnObjectPlaced;
 
-    private Grid<GridObject> grid;
-    private PlacedObjectTypeSO.Dir dir;
+    [SerializeField] private int _gridWidth = 10;
+    [SerializeField] private int _gridHeight = 10;
+    [SerializeField] private float _cellSize = 10f;
+    [SerializeField] private Tile _dirtTile;
+    [SerializeField] private List<Tile> _grassTiles = new List<Tile>();
+    [SerializeField] private Tilemap _grassTilemap;
+
+    private PlacedObjectTypeSO _placedObjectTypeSO;
+    private Grid<GridObject> _grid;
+    private PlacedObjectTypeSO.Dir _dir;
 
     protected override void Awake()
     {
         base.Awake();
 
-        grid = new Grid<GridObject>(gridWidth, gridHeight, cellSize, new Vector3(0, 0, 0), (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
+        _grid = new Grid<GridObject>(_gridWidth, _gridHeight, _cellSize, new Vector3(0, 0, 0), (Grid<GridObject> g, int x, int y) => new GridObject(g, x, y));
 
         // placedObjectTypeSO = null;
     }
@@ -37,11 +35,11 @@ public class GridGeneration : Singleton<GridGeneration>
     }
 
     public Grid<GridObject> GetGrid() {
-        return grid;
+        return _grid;
     }
 
     public void SetPlacedObjectTypeSO(PlacedObjectTypeSO placedObjectTypeSO) {
-        this.placedObjectTypeSO = placedObjectTypeSO;
+        this._placedObjectTypeSO = placedObjectTypeSO;
     }
 
     public class GridObject
@@ -103,14 +101,11 @@ public class GridGeneration : Singleton<GridGeneration>
 
         public void BuyLand() {
             ownsLand = true;
-            LandManager.Instance.HideAvailableLandToBuy();
-            LandManager.Instance.ShowAvailableLandToBuy();
-            LandManager.Instance.BuyLandToggleTrue();
+            Destroy(buyLandSprite);
+            placedObject?.DestroySelf();
+            ClearPlacedObject();
         }
 
-        // public bool DoesOwnLand() {
-        //     return ownsLand;
-        // }
 
         public bool CanBuild()
         {
@@ -122,42 +117,42 @@ public class GridGeneration : Singleton<GridGeneration>
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
-        if (Input.GetMouseButtonUp(0) && placedObjectTypeSO != null && !InventoryManager.Instance.IsShovelEquipped)
+        if (Input.GetMouseButtonUp(0) && _placedObjectTypeSO != null && !InventoryManager.Instance.IsShovelEquipped)
         {
             List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
                 // Vector3 mousePosition = UtilsClass.GetMouseWorldPosition();
-                grid.GetXY(selectedTile, out int x, out int y);
+                _grid.GetXY(selectedTile, out int x, out int y);
 
                 Vector2Int placedObjectOrigin = new Vector2Int(x, y);
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
                 // Test Can Build
-                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, dir);
+                List<Vector2Int> gridPositionList = _placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, _dir);
 
                 bool canBuild = true;
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
-                    if (!grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild())
+                    if (!_grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild())
                     {
                         canBuild = false;
                         break;
                     }
                 }
 
-                if (canBuild && grassTilemap.GetTile(tilePosition) == dirtTile)
+                if (canBuild && _grassTilemap.GetTile(tilePosition) == _dirtTile)
                 {
-                    Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(dir);
-                    Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
+                    Vector2Int rotationOffset = _placedObjectTypeSO.GetRotationOffset(_dir);
+                    Vector3 placedObjectWorldPosition = _grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * _grid.GetCellSize();
 
-                    PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, dir, placedObjectTypeSO);
-                    placedObject.transform.rotation = Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(dir));
+                    PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, _dir, _placedObjectTypeSO);
+                    placedObject.transform.rotation = Quaternion.Euler(0, 0, -_placedObjectTypeSO.GetRotationAngle(_dir));
 
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
-                        grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
+                        _grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
                     }
                 }
             }
@@ -175,20 +170,20 @@ public class GridGeneration : Singleton<GridGeneration>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                PlacedObject_Done placedObject = grid.GetGridObject(selectedTile).GetPlacedObject();
-                bool doesOwnLand = grid.GetGridObject(selectedTile).ownsLand;
+                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).GetPlacedObject();
+                bool doesOwnLand = _grid.GetGridObject(selectedTile).ownsLand;
                 if (!placedObject && doesOwnLand) {
-                    if (grassTiles.Contains((Tile)grassTilemap.GetTile(selectedTile))) {
-                        grassTilemap.SetTile(selectedTile, dirtTile);
+                    if (_grassTiles.Contains((Tile)_grassTilemap.GetTile(selectedTile))) {
+                        _grassTilemap.SetTile(selectedTile, _dirtTile);
                         continue;
                     }
 
-                    if (grassTilemap.GetTile(selectedTile) == dirtTile)
+                    if (_grassTilemap.GetTile(selectedTile) == _dirtTile)
                     {
                         if ((selectedTile.x + selectedTile.y) % 2 == 0) {
-                            grassTilemap.SetTile(selectedTile, grassTiles[1]);
+                            _grassTilemap.SetTile(selectedTile, _grassTiles[1]);
                         } else {
-                            grassTilemap.SetTile(selectedTile, grassTiles[0]);
+                            _grassTilemap.SetTile(selectedTile, _grassTiles[0]);
                         }
                     }
                 }
@@ -200,7 +195,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                PlacedObject_Done placedObject = grid.GetGridObject(selectedTile).GetPlacedObject();
+                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).GetPlacedObject();
                 Crop crop = placedObject?.GetComponent<Crop>();
 
                 if (placedObject != null && crop && crop.IsFullyGrown)
@@ -211,7 +206,7 @@ public class GridGeneration : Singleton<GridGeneration>
                     List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
-                        grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                        _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
                     }
                 }
             }
@@ -221,7 +216,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
     public void DeselectObjectType()
     {
-        placedObjectTypeSO = null;
+        _placedObjectTypeSO = null;
     }
 
     public void RefreshSelectedObjectType()
@@ -233,7 +228,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
     public Vector2Int GetGridPosition(Vector3 worldPosition)
     {
-        grid.GetXY(worldPosition, out int x, out int z);
+        _grid.GetXY(worldPosition, out int x, out int z);
         return new Vector2Int(x, z);
     }
 

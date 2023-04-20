@@ -6,24 +6,24 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
-    [SerializeField] private TMP_Text cardAmountText;
-    [SerializeField] private Transform cardCropLayoutGroup;
-    [SerializeField] private GameObject cardCropPrefab;
+    [SerializeField] private TMP_Text _cardAmountText;
+    [SerializeField] private Transform _cardCropLayoutGroup;
+    [SerializeField] private GameObject _cardCropPrefab;
 
-    private Slider slider;
-    private int cardWorthAmount;
-    private float timeLeft;
+    private Slider _slider;
+    private int _cardWorthAmount;
+    private float _timeLeft;
 
     private void Awake() {
-        slider = GetComponentInChildren<Slider>();
+        _slider = GetComponentInChildren<Slider>();
     }
 
     private void Start() {
         DetermineCardCrops();
-        timeLeft = Random.Range(30f, 60f);
-        cardWorthAmount = Random.Range(1, 100);
-        cardAmountText.text = cardWorthAmount.ToString("D2");
-        slider.maxValue = timeLeft;
+        _timeLeft = Random.Range(30f, 60f);
+        _cardWorthAmount = Random.Range(1, 100);
+        _cardAmountText.text = _cardWorthAmount.ToString("D2");
+        _slider.maxValue = _timeLeft;
     }
 
     private void Update() {
@@ -56,7 +56,7 @@ public class Card : MonoBehaviour
         for (int i = 0; i < amountOfCropsOnCard; i++)
         {
             int randomIndex = UnityEngine.Random.Range(0, availableCardCrops.Length);
-            CardCrop newCardCrop = Instantiate(cardCropPrefab, cardCropLayoutGroup.transform).gameObject.GetComponent<CardCrop>();
+            CardCrop newCardCrop = Instantiate(_cardCropPrefab, _cardCropLayoutGroup.transform).gameObject.GetComponent<CardCrop>();
             newCardCrop.SetPlacedObjectTypeSO(availableCardCrops[randomIndex]);
             newCardCrop.SetImageSprite();
         }
@@ -64,10 +64,10 @@ public class Card : MonoBehaviour
 
     private void DetectCardTime()
     {
-        timeLeft -= Time.deltaTime;
-        slider.value = timeLeft;
+        _timeLeft -= Time.deltaTime;
+        _slider.value = _timeLeft;
 
-        if (timeLeft <= 0f)
+        if (_timeLeft <= 0f)
         {
             CardManager.Instance.CardCompletion(this);
         }
@@ -83,7 +83,7 @@ public class Card : MonoBehaviour
             }
         }
 
-        EconomyManager.Instance.UpdateCurrentCoinAmount(cardWorthAmount);
+        EconomyManager.Instance.UpdateCurrentCoinAmount(_cardWorthAmount);
         CardManager.Instance.CardCompletion(this);
         Destroy(gameObject);
     }

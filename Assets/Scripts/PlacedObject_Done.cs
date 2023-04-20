@@ -6,11 +6,12 @@ public class PlacedObject_Done : MonoBehaviour
 {
     public PlacedObjectTypeSO PlacedObjectTypeSO { get; private set; }
     public Vector2Int Origin { get; private set; }
-    private PlacedObjectTypeSO.Dir dir;
+
+    private PlacedObjectTypeSO.Dir _dir;
 
     public static PlacedObject_Done Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectTypeSO.Dir dir, PlacedObjectTypeSO placedObjectTypeSO)
     {
-        Transform placedObjectTransform = Instantiate(placedObjectTypeSO.prefab, worldPosition, Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0));
+        Transform placedObjectTransform = Instantiate(placedObjectTypeSO.Prefab, worldPosition, Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0));
 
         PlacedObject_Done placedObject = placedObjectTransform.GetComponent<PlacedObject_Done>();
         placedObject.Setup(placedObjectTypeSO, origin, dir);
@@ -22,12 +23,12 @@ public class PlacedObject_Done : MonoBehaviour
     {
         this.PlacedObjectTypeSO = placedObjectTypeSO;
         this.Origin = origin;
-        this.dir = dir;
+        this._dir = dir;
     }
 
     public List<Vector2Int> GetGridPositionList()
     {
-        return PlacedObjectTypeSO.GetGridPositionList(Origin, dir);
+        return PlacedObjectTypeSO.GetGridPositionList(Origin, _dir);
     }
 
     public void DestroySelf()
@@ -37,7 +38,7 @@ public class PlacedObject_Done : MonoBehaviour
 
     public override string ToString()
     {
-        return PlacedObjectTypeSO.nameString;
+        return PlacedObjectTypeSO.NameString;
     }
 
 }

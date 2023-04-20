@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
   m_Name: Tree
   m_EditorClassIdentifier: 
-  nameString: Tree
-  prefab: {fileID: 1670519970673385737, guid: 609e2d0b06fe7b54d885e52aa6f11ec7, type: 3}
-  cropCoinAmount: 0
-  width: 2
-  height: 2
-  harvestedCropSprite: {fileID: 0}
-  spriteLifeCycle: []
+  NameString: Tree
+  Prefab: {fileID: 1670519970673385737, guid: 609e2d0b06fe7b54d885e52aa6f11ec7, type: 3}
+  Width: 2
+  Height: 2
+  HarvestedCropSprite: {fileID: 0}
+  SpriteLifeCycle: []

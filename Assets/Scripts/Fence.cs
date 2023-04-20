@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class Fence : MonoBehaviour
 {
-    [SerializeField] private Sprite fenceBaseSprite;
-    [SerializeField] private Sprite fenceUpSprite;
-    [SerializeField] private Sprite fenceRightSprite;
-    [SerializeField] private Sprite fenceLeftSprite;
-    [SerializeField] private Sprite fenceLeftAndRightSprite;
-    [SerializeField] private Sprite fenceUpAndRightSprite;
-    [SerializeField] private Sprite fenceUpAndLeftSprite;
-    [SerializeField] private Sprite fenceLeftRightUpSprite;
-    [SerializeField] private PlacedObjectTypeSO fence_PlacedObjectTypeSO;
+    [SerializeField] private Sprite _fenceBaseSprite;
+    [SerializeField] private Sprite _fenceUpSprite;
+    [SerializeField] private Sprite _fenceRightSprite;
+    [SerializeField] private Sprite _fenceLeftSprite;
+    [SerializeField] private Sprite _fenceLeftAndRightSprite;
+    [SerializeField] private Sprite _fenceUpAndRightSprite;
+    [SerializeField] private Sprite _fenceUpAndLeftSprite;
+    [SerializeField] private Sprite _fenceLeftRightUpSprite;
+    [SerializeField] private PlacedObjectTypeSO _fence_PlacedObjectTypeSO;
 
-    private Vector3Int tilePos;
-    private SpriteRenderer spriteRenderer;
+    private Vector3Int _tilePos;
+    private SpriteRenderer _spriteRenderer;
 
 
     private void Awake() {
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start() {
@@ -31,10 +31,10 @@ public class Fence : MonoBehaviour
     private void CanBuyAdjLand() {
         var grid = GridGeneration.Instance.GetGrid();
 
-        grid.GetGridObject(tilePos).canBuyLand = true;
+        grid.GetGridObject(_tilePos).canBuyLand = true;
 
         if (LandManager.Instance.BuyLandToggledOn) {
-            GameObject showLandSprite = grid.GetGridObject(tilePos).GetBuyLandSprite();
+            GameObject showLandSprite = grid.GetGridObject(_tilePos).GetBuyLandSprite();
             Color greenColor = LandManager.Instance.GreenColor;
             showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
         }
@@ -42,38 +42,38 @@ public class Fence : MonoBehaviour
 
     public void UpdateFenceCoordVector3Int() {
         PlacedObject_Done placedObject_Done = GetComponent<PlacedObject_Done>();
-        tilePos = new Vector3Int(placedObject_Done.Origin.x, placedObject_Done.Origin.y, 0);
+        _tilePos = new Vector3Int(placedObject_Done.Origin.x, placedObject_Done.Origin.y, 0);
     }
 
     public void UpdateFenceSprite(bool updateAjdTile) {
         var grid = GridGeneration.Instance.GetGrid();
 
-        List<Vector3Int> adjacentTiles = GetAdjacentTiles(tilePos);
+        List<Vector3Int> adjacentTiles = GetAdjacentTiles(_tilePos);
 
         PlacedObject_Done dirRight = grid.GetGridObject(adjacentTiles[0])?.placedObject;
         PlacedObject_Done dirLeft = grid.GetGridObject(adjacentTiles[1])?.placedObject;
         PlacedObject_Done dirUp = grid.GetGridObject(adjacentTiles[2])?.placedObject;
         PlacedObject_Done dirDown = grid.GetGridObject(adjacentTiles[3])?.placedObject;
 
-        spriteRenderer.sprite = fenceBaseSprite;
+        _spriteRenderer.sprite = _fenceBaseSprite;
 
         if (HasFenceInDirection(dirRight)) {
-            spriteRenderer.sprite = fenceRightSprite;
+            _spriteRenderer.sprite = _fenceRightSprite;
         }
 
         if (HasFenceInDirection(dirLeft))
         {
-            spriteRenderer.sprite = fenceLeftSprite;
+            _spriteRenderer.sprite = _fenceLeftSprite;
         }
 
         if (HasFenceInDirection(dirUp))
         {
-            spriteRenderer.sprite = fenceUpSprite;
+            _spriteRenderer.sprite = _fenceUpSprite;
         }
 
         if (HasFenceInDirection(dirRight) && HasFenceInDirection(dirLeft)) 
         {
-            spriteRenderer.sprite = fenceLeftAndRightSprite;
+            _spriteRenderer.sprite = _fenceLeftAndRightSprite;
 
             if (updateAjdTile) { 
                 dirLeft.GetComponent<Fence>().UpdateFenceSprite(false);
@@ -83,7 +83,7 @@ public class Fence : MonoBehaviour
 
         if (HasFenceInDirection(dirRight) && HasFenceInDirection(dirUp))
         {
-            spriteRenderer.sprite = fenceUpAndRightSprite;
+            _spriteRenderer.sprite = _fenceUpAndRightSprite;
 
             if (updateAjdTile)
             {
@@ -94,7 +94,7 @@ public class Fence : MonoBehaviour
 
         if (HasFenceInDirection(dirLeft) && HasFenceInDirection(dirUp))
         {
-            spriteRenderer.sprite = fenceUpAndLeftSprite;
+            _spriteRenderer.sprite = _fenceUpAndLeftSprite;
 
             if (updateAjdTile)
             {
@@ -105,7 +105,7 @@ public class Fence : MonoBehaviour
 
         if (HasFenceInDirection(dirLeft) && HasFenceInDirection(dirUp) && HasFenceInDirection(dirRight))
         {
-            spriteRenderer.sprite = fenceLeftRightUpSprite;
+            _spriteRenderer.sprite = _fenceLeftRightUpSprite;
 
             if (updateAjdTile)
             {
@@ -126,7 +126,7 @@ public class Fence : MonoBehaviour
     }
 
     private bool HasFenceInDirection(PlacedObject_Done placedObject_Done) {
-        if (placedObject_Done && placedObject_Done.PlacedObjectTypeSO == fence_PlacedObjectTypeSO)
+        if (placedObject_Done && placedObject_Done.PlacedObjectTypeSO == _fence_PlacedObjectTypeSO)
         {
             return true;
         } else {

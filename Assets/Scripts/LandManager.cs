@@ -9,17 +9,15 @@ using UnityEngine.EventSystems;
 public class LandManager : Singleton<LandManager>
 {
     public bool BuyLandToggledOn { get; private set; }
-    public Color GreenColor { get { return greenColor; } }
-    public Color RedColor { get { return redColor; } }
+    public Color GreenColor { get { return _greenColor; } }
+    public Color RedColor { get { return _redColor; } }
 
-    [SerializeField] private Tilemap grassTilemap;
-    // [SerializeField] private Tilemap fenceTilemap;
-    [SerializeField] private Tile dirtTile;
-    // [SerializeField] private RuleTile fenceTile;
-    [SerializeField] private PlacedObjectTypeSO fenceSO;
-    [SerializeField] private GameObject showAvailableLandToBuyPrefab;
-    [SerializeField] private Color greenColor;
-    [SerializeField] private Color redColor;
+    [SerializeField] private Tilemap _grassTilemap;
+    [SerializeField] private Tile _dirtTile;
+    [SerializeField] private PlacedObjectTypeSO _fenceSO;
+    [SerializeField] private GameObject _showAvailableLandToBuyPrefab;
+    [SerializeField] private Color _greenColor;
+    [SerializeField] private Color _redColor;
 
     private List<GameObject> allShowLandSprites = new List<GameObject>();
 
@@ -48,58 +46,60 @@ public class LandManager : Singleton<LandManager>
 
             List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
+            bool anyTileCanBeBought = false;
+
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (grid.GetGridObject(selectedTile).ownsLand || !grid.GetGridObject(selectedTile).canBuyLand) { return ;}
+                if (grid.GetGridObject(selectedTile).canBuyLand) {
+                    anyTileCanBeBought = true;
+                    break;
+                }
+            }
+
+            foreach (Vector3Int selectedTile in selectedTiles)
+            {
+                if (!anyTileCanBeBought) { return; }
 
                 grid.GetGridObject(selectedTile).BuyLand();
 
-                List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
-
-                foreach (Vector3Int adjTile in adjacentTiles)
-                {
-                    if (!grid.GetGridObject(adjTile).ownsLand)
-                    {
-                        PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
-                        PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject?.PlacedObjectTypeSO;
-                        List<Vector2Int> gridPositionList = currentPlacedObject?.GetGridPositionList();
-                        currentPlacedObject?.DestroySelf();
-
-                        if (currentPlacedObject) {
-                            foreach (Vector2Int gridPosition in gridPositionList)
-                            {
-                                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
-                            }
-                        }
-
-                        Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
-                        PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, fenceSO);
-                        grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
-                    }
-                }
-
-                DetectProperFenceDisplay(selectedTile);
             }
 
+            StartCoroutine(SpawnFences(grid, selectedTiles));
         }
     }
 
-    private void DetectProperFenceDisplay(Vector3Int vector3Int) {
-        var grid = GridGeneration.Instance.GetGrid();
+    private IEnumerator SpawnFences(Grid<GridGeneration.GridObject> grid, List<Vector3Int> selectedTiles)
+    {
+        yield return new WaitForEndOfFrame();
 
-        PlacedObject_Done currentPlacedObject = grid.GetGridObject(vector3Int).GetPlacedObject();
-
-        currentPlacedObject?.DestroySelf();
-
-        List<Vector2Int> gridPositionList = currentPlacedObject?.GetGridPositionList();
-
-        if (currentPlacedObject) {
-            foreach (Vector2Int gridPosition in gridPositionList)
+        foreach (Vector3Int selectedTile in selectedTiles)
+        {
+            List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
+    
+            foreach (Vector3Int adjTile in adjacentTiles)
             {
-                grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                if (!grid.GetGridObject(adjTile).ownsLand)
+                {
+                    PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
+    
+                    if (currentPlacedObject)
+                    {
+                        PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject.PlacedObjectTypeSO;
+                        List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
+                        currentPlacedObject.DestroySelf();
+
+                        foreach (Vector2Int gridPosition in gridPositionList)
+                        {
+                            grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                        }
+                    }
+
+                    Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
+                    PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, _fenceSO);
+                    grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
+                }
             }
         }
-
     }
 
     public void ShowAvailableLandToBuy() {
@@ -112,7 +112,7 @@ public class LandManager : Singleton<LandManager>
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
                 if (!grid.GetGridObject(tilePosition).ownsLand) {
-                   GameObject showLandSpritePrefab = Instantiate(showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
+                   GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
                    allShowLandSprites.Add(showLandSpritePrefab);
                    grid.GetGridObject(tilePosition).SetBuyLandSprite(showLandSpritePrefab);
                 }
@@ -122,16 +122,15 @@ public class LandManager : Singleton<LandManager>
                     if (!grid.GetGridObject(tilePosition).canBuyLand)
                     {
                         GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
-                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(redColor.r, redColor.g, redColor.b, redColor.a);
+                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_redColor.r, _redColor.g, _redColor.b, _redColor.a);
                     } else {
                         GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
-                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_greenColor.r, _greenColor.g, _greenColor.b, _greenColor.a);
                     }
                 }
             }
         }
     }
-
 
 
     public void HideAvailableLandToBuy() {
@@ -155,14 +154,14 @@ public class LandManager : Singleton<LandManager>
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
-                if (grassTilemap.GetTile(tilePosition) == dirtTile) {
+                if (_grassTilemap.GetTile(tilePosition) == _dirtTile) {
                     grid.GetGridObject(tilePosition).ownsLand = true;
 
                     startingTiles.Add(tilePosition);
 
-                    if (grassTilemap.GetTile(tilePosition) != dirtTile) { 
+                    if (_grassTilemap.GetTile(tilePosition) != _dirtTile) { 
                         Vector2Int placedObjectOrigin = new Vector2Int(tilePosition.x, tilePosition.y);
-                        PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePosition, placedObjectOrigin, PlacedObjectTypeSO.Dir.Down, fenceSO);
+                        PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePosition, placedObjectOrigin, PlacedObjectTypeSO.Dir.Down, _fenceSO);
                         grid.GetGridObject(tilePosition.x, tilePosition.y).SetPlacedObject(placedObject);
                     }
 
@@ -173,7 +172,7 @@ public class LandManager : Singleton<LandManager>
                         PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
                         PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject?.PlacedObjectTypeSO;
 
-                        if (currentPlacedObject && placedObjectTypeSO != fenceSO)
+                        if (currentPlacedObject && placedObjectTypeSO != _fenceSO)
                         {
                             currentPlacedObject.DestroySelf();
 
@@ -185,9 +184,9 @@ public class LandManager : Singleton<LandManager>
                             }
                         }
 
-                        if (grid.GetGridObject(adjTile.x, adjTile.y).CanBuild() && grassTilemap.GetTile(adjTile) != dirtTile) {
+                        if (grid.GetGridObject(adjTile.x, adjTile.y).CanBuild() && _grassTilemap.GetTile(adjTile) != _dirtTile) {
                             Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
-                            PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, fenceSO);
+                            PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, _fenceSO);
                             grid.GetGridObject(adjTile.x, adjTile.y).SetPlacedObject(adjPlacedObj);
                         }
                     }
@@ -195,7 +194,6 @@ public class LandManager : Singleton<LandManager>
             }
         }
 
-        // StartingFenceDisplay(startingTiles);
     }
 
     private void StartingFenceDisplay(List<Vector3Int> startingTiles) {

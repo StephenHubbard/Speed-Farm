@@ -5,7 +5,7 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+    [SerializeField] private CinemachineVirtualCamera _cinemachineVirtualCamera;
 
     private Camera mainCam;
 
@@ -33,13 +33,13 @@ public class CameraController : MonoBehaviour
     private void HandleZoom()
     {
         float zoomIncreaseAmount = 15f;
-        float currentZoom = cinemachineVirtualCamera.m_Lens.OrthographicSize;
+        float currentZoom = _cinemachineVirtualCamera.m_Lens.OrthographicSize;
         float targetZoom = currentZoom;
         targetZoom += GetCameraZoomAmount() * zoomIncreaseAmount;
 
         float zoomSpeed = 5f;
 
-        cinemachineVirtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * zoomSpeed);
+        _cinemachineVirtualCamera.m_Lens.OrthographicSize = Mathf.Lerp(currentZoom, targetZoom, Time.deltaTime * zoomSpeed);
     }
 
     private Vector2 GetCameraMoveVector()

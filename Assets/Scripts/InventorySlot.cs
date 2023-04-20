@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class InventorySlot : MonoBehaviour
 {
-    [SerializeField] private PlacedObjectTypeSO placedObjectTypeSO;
-    [SerializeField] private MonoBehaviour item;
+    [SerializeField] private PlacedObjectTypeSO _placedObjectTypeSO;
+    [SerializeField] private MonoBehaviour _item;
 
     public PlacedObjectTypeSO GetPlacedObjectTypeSO() {
-        return placedObjectTypeSO;
+        return _placedObjectTypeSO;
     }
 
     public void ClickInventorySlot(int indexNum) {
-        if (!placedObjectTypeSO) { InventoryManager.Instance.DeselectPlacedObjecTypeSO(); }
+        if (!_placedObjectTypeSO) { InventoryManager.Instance.DeselectPlacedObjecTypeSO(); }
 
-        InventoryManager.Instance.MoveSelectionOutline(indexNum, placedObjectTypeSO);
+        InventoryManager.Instance.MoveSelectionOutline(indexNum, _placedObjectTypeSO);
     }
 
     public void UseInventorySlot() {
-        if (item) {
-            (item as Item).UseItem();
+        if (_item) {
+            (_item as Item).UseItem();
         }
     }
 }

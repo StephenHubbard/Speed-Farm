@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
   m_Name: Parsnip
   m_EditorClassIdentifier: 
-  nameString: Parsnip
-  prefab: {fileID: 1670519970673385737, guid: 61663ef11aed8af4ab56e517602d4f32, type: 3}
-  cropCoinAmount: 3
-  width: 1
-  height: 1
-  harvestedCropSprite: {fileID: 121087222, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
-  spriteLifeCycle:
+  NameString: Parsnip
+  Prefab: {fileID: 1670519970673385737, guid: 61663ef11aed8af4ab56e517602d4f32, type: 3}
+  Width: 1
+  Height: 1
+  HarvestedCropSprite: {fileID: 121087222, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
+  SpriteLifeCycle:
   - {fileID: 791680330, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
   - {fileID: -1912128914, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
   - {fileID: 1032685859, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
   - {fileID: 2043319411, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
   - {fileID: 891419392, guid: b7d9b398f336fc645b83607c284448f8, type: 3}
-  - {fileID: 121087222, guid: b7d9b398f336fc645b83607c284448f8, type: 3}

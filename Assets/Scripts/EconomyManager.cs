@@ -5,16 +5,16 @@ using TMPro;
 
 public class EconomyManager : Singleton<EconomyManager>
 {
-    [SerializeField] private TMP_Text coinText;
+    [SerializeField] private TMP_Text _coinText;
 
-    private int currentCoinAmount = 0;
+    private int _currentCoinAmount = 0;
 
     public void UpdateCurrentCoinAmount(int amount) {
-        currentCoinAmount += amount;
+        _currentCoinAmount += amount;
         UpdateCoinText();
     }
 
     private void UpdateCoinText() {
-        coinText.text = currentCoinAmount.ToString("D3");
+        _coinText.text = _currentCoinAmount.ToString("D3");
     }
 }

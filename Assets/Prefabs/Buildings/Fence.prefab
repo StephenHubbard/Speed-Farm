@@ -58,15 +58,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a454d14e2d62c44a7047c75b16ccbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fenceBaseSprite: {fileID: 1076194298, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceUpSprite: {fileID: 1288267145, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceRightSprite: {fileID: 443644522, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceLeftSprite: {fileID: -424114374, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceLeftAndRightSprite: {fileID: -783189351, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceUpAndRightSprite: {fileID: 964209875, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceUpAndLeftSprite: {fileID: -1007919602, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fenceLeftRightUpSprite: {fileID: 2133200953, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
-  fence_PlacedObjectTypeSO: {fileID: 11400000, guid: b161dcfd0485e5d47adc68cd0b8cd124, type: 2}
+  _fenceBaseSprite: {fileID: 1076194298, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceUpSprite: {fileID: 1288267145, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceRightSprite: {fileID: 1905723938, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceLeftSprite: {fileID: -424114374, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceLeftAndRightSprite: {fileID: -783189351, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceUpAndRightSprite: {fileID: 964209875, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceUpAndLeftSprite: {fileID: -1007919602, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fenceLeftRightUpSprite: {fileID: 2133200953, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
+  _fence_PlacedObjectTypeSO: {fileID: 11400000, guid: b161dcfd0485e5d47adc68cd0b8cd124, type: 2}
 --- !u!1 &3184339921799698766
 GameObject:
   m_ObjectHideFlags: 0

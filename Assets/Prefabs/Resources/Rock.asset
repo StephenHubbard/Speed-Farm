@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
   m_Name: Rock
   m_EditorClassIdentifier: 
-  nameString: Rock
-  prefab: {fileID: 1670519970673385737, guid: 5b82187803dc4ba499837da3dba88d76, type: 3}
-  cropCoinAmount: 0
-  width: 1
-  height: 1
-  harvestedCropSprite: {fileID: 0}
-  spriteLifeCycle: []
+  NameString: Rock
+  Prefab: {fileID: 1670519970673385737, guid: 5b82187803dc4ba499837da3dba88d76, type: 3}
+  Width: 1
+  Height: 1
+  HarvestedCropSprite: {fileID: 0}
+  SpriteLifeCycle: []

@@ -8,37 +8,37 @@ public class CardCrop : MonoBehaviour
 {
     public int AmountToCollect { get; private set; }
 
-    [SerializeField] private PlacedObjectTypeSO placedObjectTypeSO;
+    [SerializeField] private PlacedObjectTypeSO _placedObjectTypeSO;
 
-    private TMP_Text amountToCollectText;
-    private Image image;
+    private TMP_Text _amountToCollectText;
+    private Image _image;
 
     private void Awake() {
-        image = GetComponent<Image>();
-        amountToCollectText = GetComponentInChildren<TMP_Text>();
+        _image = GetComponent<Image>();
+        _amountToCollectText = GetComponentInChildren<TMP_Text>();
     }
 
     private void Start() {
         AmountToCollect = Random.Range(1, 5);
-        amountToCollectText.text = AmountToCollect.ToString();
+        _amountToCollectText.text = AmountToCollect.ToString();
     }
 
     public void SetPlacedObjectTypeSO(PlacedObjectTypeSO placedObjectTypeSO) {
-        this.placedObjectTypeSO = placedObjectTypeSO;
+        this._placedObjectTypeSO = placedObjectTypeSO;
     }
 
     public PlacedObjectTypeSO GetPlacedObjectTypeSO() {
-        return placedObjectTypeSO;
+        return _placedObjectTypeSO;
     }
 
     public void SetImageSprite() {
-        image.sprite = placedObjectTypeSO.harvestedCropSprite;
+        _image.sprite = _placedObjectTypeSO.HarvestedCropSprite;
     }
 
     public void CropCollected() {
         if (AmountToCollect <= 0) { return; }
         
         AmountToCollect--;
-        amountToCollectText.text = AmountToCollect.ToString();
+        _amountToCollectText.text = AmountToCollect.ToString();
     }
 }

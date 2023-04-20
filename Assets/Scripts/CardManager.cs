@@ -6,22 +6,22 @@ public class CardManager : Singleton<CardManager>
 {
     public Card CurrentCard { get; private set; }
 
-    [SerializeField] private Transform cardContainer;
-    [SerializeField] private Transform selectionOutline;
-    [SerializeField] private GameObject cardPrefab;
-    [SerializeField] private float timeBetweenCardSpawn = 3f;
-    [SerializeField] private int maxAmountOfCards = 5;
-    [SerializeField] private PlacedObjectTypeSO[] availableCardCrops;
+    [SerializeField] private Transform _cardContainer;
+    [SerializeField] private Transform _selectionOutline;
+    [SerializeField] private GameObject _cardPrefab;
+    [SerializeField] private float _timeBetweenCardSpawn = 3f;
+    [SerializeField] private int _maxAmountOfCards = 5;
+    [SerializeField] private PlacedObjectTypeSO[] _availableCardCrops;
 
-    private int currentAmountOfCards;
-    private List<Card> allCards = new List<Card>();
-    private Coroutine spawnCardRoutine;
+    private int _currentAmountOfCards;
+    private List<Card> _allCards = new List<Card>();
+    private Coroutine _spawnCardRoutine;
 
     private void Start()
     {
         FindStartingCards();
-        currentAmountOfCards = cardContainer.childCount;
-        spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
+        _currentAmountOfCards = _cardContainer.childCount;
+        _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
     }
 
     public void SetCurrentCard(Card currentCard)
@@ -32,11 +32,11 @@ public class CardManager : Singleton<CardManager>
     
     private IEnumerator SetSelectionOutlineRoutine() {
         yield return null;
-        selectionOutline.transform.position = CurrentCard.transform.position;
+        _selectionOutline.transform.position = CurrentCard.transform.position;
     }
 
     public PlacedObjectTypeSO[] GetAvailableCardCrops() {
-        return availableCardCrops;
+        return _availableCardCrops;
     }
 
     public void CropHarvested(PlacedObjectTypeSO placedObjectTypeSO)
@@ -51,22 +51,22 @@ public class CardManager : Singleton<CardManager>
     }
 
     public void CardCompletion(Card cardCompleted) {
-        allCards.Remove(cardCompleted);
-        currentAmountOfCards--;
+        _allCards.Remove(cardCompleted);
+        _currentAmountOfCards--;
 
-        if (currentAmountOfCards > 0 && CurrentCard == cardCompleted) {
-            SetCurrentCard(allCards[0]);
-        } else if (currentAmountOfCards > 0) {
+        if (_currentAmountOfCards > 0 && CurrentCard == cardCompleted) {
+            SetCurrentCard(_allCards[0]);
+        } else if (_currentAmountOfCards > 0) {
             StartCoroutine(SetSelectionOutlineRoutine());
-        } else if (currentAmountOfCards == 0) {
+        } else if (_currentAmountOfCards == 0) {
             CurrentCard = null;
         }
 
-        if (currentAmountOfCards < maxAmountOfCards) {
-            if (spawnCardRoutine != null) {
-                StopCoroutine(spawnCardRoutine);
+        if (_currentAmountOfCards < _maxAmountOfCards) {
+            if (_spawnCardRoutine != null) {
+                StopCoroutine(_spawnCardRoutine);
             }
-            spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
+            _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
         }
 
         Destroy(cardCompleted.gameObject);
@@ -74,22 +74,22 @@ public class CardManager : Singleton<CardManager>
 
     private void FindStartingCards()
     {
-        foreach (Card card in cardContainer.GetComponentsInChildren<Card>())
+        foreach (Card card in _cardContainer.GetComponentsInChildren<Card>())
         {
-            allCards.Add(card);
+            _allCards.Add(card);
         }
 
-        SetCurrentCard(allCards[0]);
+        SetCurrentCard(_allCards[0]);
     }
     
 
     private IEnumerator SpawnCardsRoutine() {
-        while (currentAmountOfCards < maxAmountOfCards)
+        while (_currentAmountOfCards < _maxAmountOfCards)
         {
-            yield return new WaitForSeconds(timeBetweenCardSpawn);
-            currentAmountOfCards++;
-            Card newCard = Instantiate(cardPrefab, cardContainer.transform).GetComponent<Card>();
-            allCards.Add(newCard);
+            yield return new WaitForSeconds(_timeBetweenCardSpawn);
+            _currentAmountOfCards++;
+            Card newCard = Instantiate(_cardPrefab, _cardContainer.transform).GetComponent<Card>();
+            _allCards.Add(newCard);
         }
     }
 }

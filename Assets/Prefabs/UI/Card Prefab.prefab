@@ -625,7 +625,7 @@ GameObject:
   - component: {fileID: 7976804903348252755}
   - component: {fileID: 7976804903348252754}
   m_Layer: 5
-  m_Name: Test Card
+  m_Name: Card Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,9 +704,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a981047024fce4bb6169001f8d10dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardAmountText: {fileID: 502157269}
-  cardCropLayoutGroup: {fileID: 7976804903105435625}
-  cardCropPrefab: {fileID: 7431884537140984030, guid: 49809d9468822ce40a908ed1132d2fb4, type: 3}
+  _cardAmountText: {fileID: 502157269}
+  _cardCropLayoutGroup: {fileID: 7976804903105435625}
+  _cardCropPrefab: {fileID: 7431884537140984030, guid: 49809d9468822ce40a908ed1132d2fb4, type: 3}
 --- !u!114 &7976804903348252754
 MonoBehaviour:
   m_ObjectHideFlags: 0

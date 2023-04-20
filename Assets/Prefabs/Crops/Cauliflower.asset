@@ -12,16 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4aa85a409b11a443804caf47909057d, type: 3}
   m_Name: Cauliflower
   m_EditorClassIdentifier: 
-  nameString: Cauliflower
-  prefab: {fileID: 1670519970673385737, guid: bcea8d2541e728e44849476baf93a919, type: 3}
-  cropCoinAmount: 5
-  width: 1
-  height: 1
-  harvestedCropSprite: {fileID: -896995448, guid: d7b13975391c3b341addf56957a094ed, type: 3}
-  spriteLifeCycle:
+  NameString: Cauliflower
+  Prefab: {fileID: 1670519970673385737, guid: bcea8d2541e728e44849476baf93a919, type: 3}
+  Width: 1
+  Height: 1
+  HarvestedCropSprite: {fileID: -896995448, guid: d7b13975391c3b341addf56957a094ed, type: 3}
+  SpriteLifeCycle:
   - {fileID: 810100726, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   - {fileID: -1409242891, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   - {fileID: 1603934031, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   - {fileID: -1042235888, guid: d7b13975391c3b341addf56957a094ed, type: 3}
   - {fileID: -283087126, guid: d7b13975391c3b341addf56957a094ed, type: 3}
-  - {fileID: -896995448, guid: d7b13975391c3b341addf56957a094ed, type: 3}
