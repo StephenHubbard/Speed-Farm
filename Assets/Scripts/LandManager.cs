@@ -11,6 +11,7 @@ public class LandManager : Singleton<LandManager>
     public bool BuyLandToggledOn { get; private set; }
     public Color GreenColor { get { return _greenColor; } }
     public Color RedColor { get { return _redColor; } }
+    public List<GameObject> AllShowLandSprites => allShowLandSprites;
 
     [SerializeField] private Tilemap _grassTilemap;
     [SerializeField] private Tile _dirtTile;
@@ -38,70 +39,6 @@ public class LandManager : Singleton<LandManager>
         BuyLandToggledOn = false;
     }
 
-    // private void BuyLand() {
-    //     if (EventSystem.current.IsPointerOverGameObject()) { return; }
-
-    //     if (Input.GetMouseButtonUp(0) && BuyLandToggledOn) {
-    //         var grid = GridGeneration.Instance.GetGrid();
-
-    //         List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
-
-    //         bool anyTileCanBeBought = false;
-
-    //         foreach (Vector3Int selectedTile in selectedTiles)
-    //         {
-    //             if (grid.GetGridObject(selectedTile).canBuyLand) {
-    //                 anyTileCanBeBought = true;
-    //                 break;
-    //             }
-    //         }
-
-    //         foreach (Vector3Int selectedTile in selectedTiles)
-    //         {
-    //             if (!anyTileCanBeBought) { return; }
-
-    //             grid.GetGridObject(selectedTile).BuyLand();
-
-    //         }
-
-    //         StartCoroutine(SpawnFences(grid, selectedTiles));
-    //     }
-    // }
-
-    // private IEnumerator SpawnFences(Grid<GridGeneration.GridObject> grid, List<Vector3Int> selectedTiles)
-    // {
-    //     yield return new WaitForEndOfFrame();
-
-    //     foreach (Vector3Int selectedTile in selectedTiles)
-    //     {
-    //         List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
-
-    //         foreach (Vector3Int adjTile in adjacentTiles)
-    //         {
-    //             if (!grid.GetGridObject(adjTile).ownsLand)
-    //             {
-    //                 PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
-
-    //                 if (currentPlacedObject)
-    //                 {
-    //                     PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject.PlacedObjectTypeSO;
-    //                     List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
-    //                     currentPlacedObject.DestroySelf();
-
-    //                     foreach (Vector2Int gridPosition in gridPositionList)
-    //                     {
-    //                         grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
-    //                     }
-    //                 }
-
-    //                 Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
-    //                 PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, _fenceSO);
-    //                 grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
-    //             }
-    //         }
-    //     }
-    // }
-
     private void BuyLand()
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
@@ -112,12 +49,15 @@ public class LandManager : Singleton<LandManager>
 
             List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
+            List<Vector3Int> boughtTiles = new List<Vector3Int>();
+
             bool anyTileCanBeBought = false;
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (grid.GetGridObject(selectedTile).canBuyLand)
+                if (grid.GetGridObject(selectedTile).canBuyLand && grid.GetGridObject(selectedTile).y >= 1)
                 {
+                    boughtTiles.Add(selectedTile);
                     anyTileCanBeBought = true;
                     break;
                 }
@@ -127,11 +67,15 @@ public class LandManager : Singleton<LandManager>
             {
                 if (!anyTileCanBeBought) { return; }
 
-                grid.GetGridObject(selectedTile).BuyLand();
+                if (grid.GetGridObject(selectedTile).y >= 1)
+                {
+                    boughtTiles.Add(selectedTile);
+                    grid.GetGridObject(selectedTile).BuyLand();
+                }
 
             }
 
-            SpawnFences(grid, selectedTiles);
+            SpawnFences(grid, boughtTiles);
         }
     }
 
@@ -176,23 +120,28 @@ public class LandManager : Singleton<LandManager>
             {
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
-                if (!grid.GetGridObject(tilePosition).ownsLand) {
-                   GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
-                   allShowLandSprites.Add(showLandSpritePrefab);
-                   grid.GetGridObject(tilePosition).SetBuyLandSprite(showLandSpritePrefab);
+                PlacedObject_Done placedObject = grid.GetGridObject(tilePosition).placedObject;
+                PlacedObjectTypeSO placedObjectTypeSO = placedObject?.PlacedObjectTypeSO;
+
+                if (placedObject && placedObjectTypeSO == _fenceSO) {
+                    GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(x, y), Quaternion.identity);
+                    allShowLandSprites.Add(showLandSpritePrefab);
+                    grid.GetGridObject(tilePosition).SetBuyLandSprite(showLandSpritePrefab);
+                    showLandSpritePrefab.GetComponentInChildren<SpriteRenderer>().color = new Color(_greenColor.r, _greenColor.g, _greenColor.b, _greenColor.a);
                 }
 
-                if (!grid.GetGridObject(tilePosition).ownsLand)
-                {
-                    if (!grid.GetGridObject(tilePosition).canBuyLand)
-                    {
-                        GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
-                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_redColor.r, _redColor.g, _redColor.b, _redColor.a);
-                    } else {
-                        GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
-                        showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_greenColor.r, _greenColor.g, _greenColor.b, _greenColor.a);
-                    }
-                }
+                // if (!grid.GetGridObject(tilePosition).ownsLand)
+                // {
+                //     if (!grid.GetGridObject(tilePosition).canBuyLand)
+                //     {
+                //         GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
+                //         showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_redColor.r, _redColor.g, _redColor.b, _redColor.a);
+                //     } else {
+                //         GameObject showLandSprite = grid.GetGridObject(tilePosition).GetBuyLandSprite();
+                //         showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(_greenColor.r, _greenColor.g, _greenColor.b, _greenColor.a);
+                //     }
+                // }
+
             }
         }
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5245705035820158827}
   - component: {fileID: 1708463898995304524}
   m_Layer: 0
-  m_Name: Corn
+  m_Name: Candy Corn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9add9770465531d42b221aa709853b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageGrowTime: 0.5
+  _stageGrowTime: 0.5
 --- !u!1 &3184339921799698766
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +132,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1896848009, guid: d6bc74f6167c92444bea3c83c5544bbc, type: 3}
+  m_Sprite: {fileID: 1846044612, guid: 493fa5ae539596648959392138197473, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -36,9 +36,9 @@ public class PlacedObject_Done : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public override string ToString()
-    {
-        return PlacedObjectTypeSO.NameString;
-    }
+    // public override string ToString()
+    // {
+    //     return PlacedObjectTypeSO.name;
+    // }
 
 }

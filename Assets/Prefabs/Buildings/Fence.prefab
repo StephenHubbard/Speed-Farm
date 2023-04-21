@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a454d14e2d62c44a7047c75b16ccbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _showAvailableLandToBuyPrefab: {fileID: 2058504020431990590, guid: 4267997ebbd3c53419fa1f55ef2b455d, type: 3}
   _fenceBaseSprite: {fileID: 1076194298, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
   _fenceUpSprite: {fileID: 1288267145, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}
   _fenceRightSprite: {fileID: 1905723938, guid: cb1af2ebc179ee248aef8259d5b96fc3, type: 3}

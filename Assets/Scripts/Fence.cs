@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Fence : MonoBehaviour
 {
+    [SerializeField] private GameObject _showAvailableLandToBuyPrefab;
     [SerializeField] private Sprite _fenceBaseSprite;
     [SerializeField] private Sprite _fenceUpSprite;
     [SerializeField] private Sprite _fenceRightSprite;
@@ -34,9 +35,16 @@ public class Fence : MonoBehaviour
         grid.GetGridObject(_tilePos).canBuyLand = true;
 
         if (LandManager.Instance.BuyLandToggledOn) {
-            GameObject showLandSprite = grid.GetGridObject(_tilePos).GetBuyLandSprite();
-            Color greenColor = LandManager.Instance.GreenColor;
-            showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+            // GameObject showLandSprite = grid.GetGridObject(_tilePos).GetBuyLandSprite();
+            // showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+
+            if (grid.GetGridObject(_tilePos).buyLandSprite == null) {
+                Color greenColor = LandManager.Instance.GreenColor;
+                GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(_tilePos.x, _tilePos.y), Quaternion.identity);
+                LandManager.Instance.AllShowLandSprites.Add(showLandSpritePrefab);
+                grid.GetGridObject(_tilePos).SetBuyLandSprite(showLandSpritePrefab);
+                showLandSpritePrefab.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
+            }
         }
     }
 

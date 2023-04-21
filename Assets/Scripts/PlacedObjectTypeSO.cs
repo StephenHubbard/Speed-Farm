@@ -5,11 +5,11 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class PlacedObjectTypeSO : ScriptableObject
 {
-    public string NameString;
+    // public string NameString;
     public Transform Prefab;
     public int Width;
     public int Height;
-    public Sprite HarvestedCropSprite;
+    // public Sprite HarvestedCropSprite;
     public Sprite[] SpriteLifeCycle;
 
     public static Dir GetNextDir(Dir dir)
