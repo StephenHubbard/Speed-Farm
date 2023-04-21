@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using UnityEngine.EventSystems;
 
 public class SelectionManager : Singleton<SelectionManager>
 {
@@ -18,9 +19,10 @@ public class SelectionManager : Singleton<SelectionManager>
     }
 
     private void Update() {
-        
 
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+            if (EventSystem.current.IsPointerOverGameObject()) { return; }
+            
             if (GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()) == null) { return; }
 
             _cancelSelection = false;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670519970673385737}
   - component: {fileID: 5245705035820158827}
+  - component: {fileID: 8610692935927523121}
   m_Layer: 0
   m_Name: Rock
   m_TagString: Untagged
@@ -45,6 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d26718332d44304c9ca15d5ad00f741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8610692935927523121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670519970673385736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f480d10ecb88c94baff2ee7555da825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allRockSprites:
+  - {fileID: -244648102, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: 2116336349, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: -1975978059, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: -1681565820, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: -2088185493, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: 339420089, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: 1522318985, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: -658306906, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: 828578980, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
+  - {fileID: -250131229, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
 --- !u!1 &3184339921799698766
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +142,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2da469db7061b024990fdb16ae58165c, type: 3}
+  m_Sprite: {fileID: -658306906, guid: 9b47b2f9d8ed3f5449006fc7efb404e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

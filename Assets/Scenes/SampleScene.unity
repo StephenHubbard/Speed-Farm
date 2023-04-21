@@ -320,15 +320,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1468147687}
+  m_Children: []
   m_Father: {fileID: 338970257}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -87.71812, y: 163.24002}
-  m_SizeDelta: {x: 379.8166, y: 789.5911}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &157390900
 MonoBehaviour:
@@ -343,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.36445355, g: 0.55778456, b: 0.6603774, a: 0.69411767}
+  m_Color: {r: 0.6581524, g: 0.85683876, b: 0.9622642, a: 0.42745098}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -85912,8 +85911,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250.9375, y: 0}
-  m_SizeDelta: {x: 501.8752, y: 0}
+  m_AnchoredPosition: {x: 98.89575, y: 286.50842}
+  m_SizeDelta: {x: 197.7917, y: -573.017}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &383219646
 GameObject:
@@ -86996,7 +86995,7 @@ MonoBehaviour:
   _rockSO: {fileID: 11400000, guid: 76eb0372f7586be4b8fdbb311cf3da31, type: 2}
   _rockChance: 59
   _treeSO: {fileID: 11400000, guid: c6aaa6e2ecd847d44b6f1c15cbd3c24a, type: 2}
-  _treeChance: 20
+  _treeChance: 13
   _grassTilemap: {fileID: 177328812}
   _dirtTile: {fileID: 11400000, guid: f7a71c14aa90be34cbc6cddc1f106753, type: 2}
   _grassTilesList:
@@ -87115,8 +87114,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -81.26779, y: 459.97403}
-  m_SizeDelta: {x: 311.7837, y: 112.9363}
+  m_AnchoredPosition: {x: -4.9, y: 202.49403}
+  m_SizeDelta: {x: 172.6703, y: 72.5137}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &858308319
 MonoBehaviour:
@@ -87644,82 +87643,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1368489527}
   m_CullTransparentMesh: 1
---- !u!1 &1468147686
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1468147687}
-  - component: {fileID: 1468147689}
-  - component: {fileID: 1468147688}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1468147687
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1468147686}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 157390899}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1468147688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1468147686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.69411767}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 41ad4414cde1bd34b843b2d2b86d7b8d, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1468147689
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1468147686}
-  m_CullTransparentMesh: 1
 --- !u!1 &1508436979
 GameObject:
   m_ObjectHideFlags: 0
@@ -88014,8 +87937,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19feeeaeffb653d4a83b6367eb08552f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridWidth: 100
-  _gridHeight: 100
+  _gridWidth: 85
+  _gridHeight: 55
   _cellSize: 1
   _dirtTile: {fileID: 11400000, guid: f7a71c14aa90be34cbc6cddc1f106753, type: 2}
   _grassTiles:
@@ -88075,14 +87998,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 20
+    m_Left: 14
     m_Right: 0
-    m_Top: 30
+    m_Top: 20
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 300, y: 100}
+  m_CellSize: {x: 160.2, y: 61}
   m_Spacing: {x: 0, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2

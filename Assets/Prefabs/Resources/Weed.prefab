@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1670519970673385737}
   - component: {fileID: 5245705035820158827}
   - component: {fileID: 1708463898995304524}
+  - component: {fileID: 5333675717151195436}
   m_Layer: 0
   m_Name: Weed
   m_TagString: Untagged
@@ -58,7 +59,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9add9770465531d42b221aa709853b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageGrowTime: 3
+  _stageGrowTime: 0.5
+--- !u!114 &5333675717151195436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670519970673385736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f480d10ecb88c94baff2ee7555da825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allRockSprites:
+  - {fileID: -190123035, guid: c3d5f50aeaab33b40aa4fe2d123c358b, type: 3}
+  - {fileID: 1141797388, guid: c3d5f50aeaab33b40aa4fe2d123c358b, type: 3}
+  - {fileID: 36650765, guid: c3d5f50aeaab33b40aa4fe2d123c358b, type: 3}
+  - {fileID: 1928058930, guid: c3d5f50aeaab33b40aa4fe2d123c358b, type: 3}
 --- !u!1 &3184339921799698766
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +150,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -558703287, guid: e63c4c90fb20872498758da716d0b73b, type: 3}
+  m_Sprite: {fileID: -190123035, guid: c3d5f50aeaab33b40aa4fe2d123c358b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

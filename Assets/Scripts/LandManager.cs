@@ -38,10 +38,76 @@ public class LandManager : Singleton<LandManager>
         BuyLandToggledOn = false;
     }
 
-    private void BuyLand() {
+    // private void BuyLand() {
+    //     if (EventSystem.current.IsPointerOverGameObject()) { return; }
+
+    //     if (Input.GetMouseButtonUp(0) && BuyLandToggledOn) {
+    //         var grid = GridGeneration.Instance.GetGrid();
+
+    //         List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
+
+    //         bool anyTileCanBeBought = false;
+
+    //         foreach (Vector3Int selectedTile in selectedTiles)
+    //         {
+    //             if (grid.GetGridObject(selectedTile).canBuyLand) {
+    //                 anyTileCanBeBought = true;
+    //                 break;
+    //             }
+    //         }
+
+    //         foreach (Vector3Int selectedTile in selectedTiles)
+    //         {
+    //             if (!anyTileCanBeBought) { return; }
+
+    //             grid.GetGridObject(selectedTile).BuyLand();
+
+    //         }
+
+    //         StartCoroutine(SpawnFences(grid, selectedTiles));
+    //     }
+    // }
+
+    // private IEnumerator SpawnFences(Grid<GridGeneration.GridObject> grid, List<Vector3Int> selectedTiles)
+    // {
+    //     yield return new WaitForEndOfFrame();
+
+    //     foreach (Vector3Int selectedTile in selectedTiles)
+    //     {
+    //         List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
+
+    //         foreach (Vector3Int adjTile in adjacentTiles)
+    //         {
+    //             if (!grid.GetGridObject(adjTile).ownsLand)
+    //             {
+    //                 PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
+
+    //                 if (currentPlacedObject)
+    //                 {
+    //                     PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject.PlacedObjectTypeSO;
+    //                     List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
+    //                     currentPlacedObject.DestroySelf();
+
+    //                     foreach (Vector2Int gridPosition in gridPositionList)
+    //                     {
+    //                         grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+    //                     }
+    //                 }
+
+    //                 Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTile.x, adjTile.y);
+    //                 PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTile, adjPlacedObjOrigin, PlacedObjectTypeSO.Dir.Down, _fenceSO);
+    //                 grid.GetGridObject(adjTile).SetPlacedObject(adjPlacedObj);
+    //             }
+    //         }
+    //     }
+    // }
+
+    private void BuyLand()
+    {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
 
-        if (Input.GetMouseButtonUp(0) && BuyLandToggledOn) {
+        if (Input.GetMouseButtonUp(0) && BuyLandToggledOn)
+        {
             var grid = GridGeneration.Instance.GetGrid();
 
             List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
@@ -50,7 +116,8 @@ public class LandManager : Singleton<LandManager>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (grid.GetGridObject(selectedTile).canBuyLand) {
+                if (grid.GetGridObject(selectedTile).canBuyLand)
+                {
                     anyTileCanBeBought = true;
                     break;
                 }
@@ -64,24 +131,22 @@ public class LandManager : Singleton<LandManager>
 
             }
 
-            StartCoroutine(SpawnFences(grid, selectedTiles));
+            SpawnFences(grid, selectedTiles);
         }
     }
 
-    private IEnumerator SpawnFences(Grid<GridGeneration.GridObject> grid, List<Vector3Int> selectedTiles)
+    private void SpawnFences(Grid<GridGeneration.GridObject> grid, List<Vector3Int> selectedTiles)
     {
-        yield return new WaitForEndOfFrame();
-
         foreach (Vector3Int selectedTile in selectedTiles)
         {
             List<Vector3Int> adjacentTiles = GetAdjacentTiles(selectedTile);
-    
+
             foreach (Vector3Int adjTile in adjacentTiles)
             {
                 if (!grid.GetGridObject(adjTile).ownsLand)
                 {
                     PlacedObject_Done currentPlacedObject = grid.GetGridObject(adjTile).GetPlacedObject();
-    
+
                     if (currentPlacedObject)
                     {
                         PlacedObjectTypeSO placedObjectTypeSO = currentPlacedObject.PlacedObjectTypeSO;
