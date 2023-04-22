@@ -55,7 +55,6 @@ public class WeedManager : MonoBehaviour
                 {
                     if (!_grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()) {
                         canBuild = false;
-                        Debug.Log(gridPositionList.Count);
                         break;
                     }
                 }

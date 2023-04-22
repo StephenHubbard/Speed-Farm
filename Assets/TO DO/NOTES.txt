@@ -1,0 +1,2 @@
+Some kind of rent payment that ticks down gold based on how much land you own
+Could have an npc tax collect roaming around the town and whenever he gets to farm you pay tax

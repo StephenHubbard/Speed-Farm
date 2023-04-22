@@ -1,27 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CardManager : Singleton<CardManager>
 {
     public Card CurrentCard { get; private set; }
 
+    [SerializeField] private TMP_Text _cardToBuyAmountText;
     [SerializeField] private Transform _cardContainer;
     [SerializeField] private Transform _selectionOutline;
     [SerializeField] private GameObject _cardPrefab;
     [SerializeField] private float _timeBetweenCardSpawn = 3f;
+    [SerializeField] private float _timeBetweenDecreaseCardAmount = 3f;
     [SerializeField] private int _maxAmountOfCards = 5;
     [SerializeField] private PlacedObjectTypeSO[] _availableCardCrops;
 
+    private int _currentBuyCardAmount = 5;
     private int _currentAmountOfCards;
     private List<Card> _allCards = new List<Card>();
     private Coroutine _spawnCardRoutine;
+
+    private Coroutine decreaseCardAmountRoutine;
+
+    protected override void Awake() {
+        base.Awake();
+
+    }
 
     private void Start()
     {
         FindStartingCards();
         _currentAmountOfCards = _cardContainer.childCount;
-        _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
+
+        UpdateCardToBuyAmountText();
+        decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
     }
 
     public void SetCurrentCard(Card currentCard)
@@ -29,10 +42,31 @@ public class CardManager : Singleton<CardManager>
         this.CurrentCard = currentCard;
         StartCoroutine(SetSelectionOutlineRoutine());
     }
-    
-    private IEnumerator SetSelectionOutlineRoutine() {
-        yield return null;
-        _selectionOutline.transform.position = CurrentCard.transform.position;
+
+    public void BuyCardButton() {
+        if (_currentAmountOfCards >= _maxAmountOfCards || EconomyManager.Instance.CurrentCoinAmount < _currentBuyCardAmount) { return; }
+
+        _selectionOutline.gameObject.SetActive(true);
+        EconomyManager.Instance.UpdateCurrentCoinAmount(-_currentBuyCardAmount);
+        Card newCard = Instantiate(_cardPrefab, _cardContainer.transform).GetComponent<Card>();
+        _currentAmountOfCards = _cardContainer.childCount;
+        _allCards.Add(newCard);
+        _currentBuyCardAmount = Mathf.RoundToInt(_currentBuyCardAmount * 1.5f);
+        UpdateCardToBuyAmountText();
+
+        if (CurrentCard == null)
+        {
+            SetCurrentCard(_allCards[0]);
+        }
+
+        if (decreaseCardAmountRoutine != null) { StopCoroutine(decreaseCardAmountRoutine); }
+
+        decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
+
+    }
+
+    private void UpdateCardToBuyAmountText() {
+        _cardToBuyAmountText.text = _currentBuyCardAmount.ToString();
     }
 
     public PlacedObjectTypeSO[] GetAvailableCardCrops() {
@@ -57,8 +91,10 @@ public class CardManager : Singleton<CardManager>
         if (_currentAmountOfCards > 0 && CurrentCard == cardCompleted) {
             SetCurrentCard(_allCards[0]);
         } else if (_currentAmountOfCards > 0) {
+
             StartCoroutine(SetSelectionOutlineRoutine());
         } else if (_currentAmountOfCards == 0) {
+            _selectionOutline.gameObject.SetActive(false);
             CurrentCard = null;
         }
 
@@ -66,10 +102,26 @@ public class CardManager : Singleton<CardManager>
             if (_spawnCardRoutine != null) {
                 StopCoroutine(_spawnCardRoutine);
             }
-            _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
+            // _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
         }
 
         Destroy(cardCompleted.gameObject);
+    }
+
+    private IEnumerator DecreaseCardCostAmountRoutine() {
+        while (_currentBuyCardAmount > 5)
+        {
+            yield return new WaitForSeconds(_timeBetweenDecreaseCardAmount);
+            _currentBuyCardAmount--;
+            UpdateCardToBuyAmountText();
+        }
+    }
+
+    private IEnumerator SetSelectionOutlineRoutine()
+    {
+        yield return null;
+        _selectionOutline.transform.position = CurrentCard.transform.position;
+
     }
 
     private void FindStartingCards()

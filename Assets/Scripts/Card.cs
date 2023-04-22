@@ -22,7 +22,7 @@ public class Card : MonoBehaviour
     private void Start() {
         DetermineCardCrops();
         _timeLeft = Random.Range(30f, 60f);
-        _cardWorthAmount = Random.Range(1, 100);
+        _cardWorthAmount = Random.Range(1, 10);
         _cardAmountText.text = _cardWorthAmount.ToString("D2");
         _slider.maxValue = _timeLeft;
     }
