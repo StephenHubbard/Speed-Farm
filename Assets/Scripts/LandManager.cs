@@ -74,40 +74,67 @@ public class LandManager : Singleton<LandManager>
                     foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
                     {
                         _grid.GetGridObject(adjacentTilePosition).CanBuyLandTrue();
-
-                        SpawnFence(adjacentTilePosition);
                     }
-
-                    SpawnFence(selectedTile);
                 }
             }
+
+            SpawnFences(selectedTiles);
         }
     }
 
-    private void SpawnFence(Vector3Int adjTilePosition) {
-        PlacedObject_Done currentPlacedObject = _grid.GetGridObject(adjTilePosition).PlacedObject;
+    private void SpawnFences(List<Vector3Int> selectedTiles) {
 
-        if (currentPlacedObject)
+        List<Vector3Int> tilesToSpawnFence = new List<Vector3Int>();
+
+        foreach (Vector3Int selectedTile in selectedTiles)
         {
-            currentPlacedObject.DestroySelf();
+            List<Vector3Int> adjacentTilePositions = GetAdjacentTiles(selectedTile);
 
-            List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
-
-            foreach (Vector2Int gridPosition in gridPositionList)
+            foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
             {
-                _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                if (!tilesToSpawnFence.Contains(adjacentTilePosition) && !_grid.GetGridObject(adjacentTilePosition).OwnsLand && _grid.GetGridObject(adjacentTilePosition).y >= 1) {
+                    tilesToSpawnFence.Add(adjacentTilePosition);
+                }
+            }
+
+            PlacedObject_Done currentPlacedObject = _grid.GetGridObject(selectedTile).PlacedObject;
+
+            if (currentPlacedObject && _grid.GetGridObject(selectedTile).y >= 1)
+            {
+                currentPlacedObject.DestroySelf();
+
+                List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
+
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                }
             }
         }
 
-        if (_grid.GetGridObject(adjTilePosition).PlacedObject == null && !_grid.GetGridObject(adjTilePosition).OwnsLand)
+        foreach (Vector3Int tileToSpawnFence in tilesToSpawnFence)
         {
+            PlacedObject_Done currentPlacedObject = _grid.GetGridObject(tileToSpawnFence).PlacedObject;
 
-            Vector2Int adjPlacedObjOrigin = new Vector2Int(adjTilePosition.x, adjTilePosition.y);
+            if (currentPlacedObject)
+            {
+                currentPlacedObject.DestroySelf();
 
-            PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(adjTilePosition, adjPlacedObjOrigin, _fenceSO);
+                List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
 
-            _grid.GetGridObject(adjTilePosition).SetPlacedObject(adjPlacedObj);
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
+                }
+            }
+
+            Vector2Int adjPlacedObjOrigin = new Vector2Int(tileToSpawnFence.x, tileToSpawnFence.y);
+
+            PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(tileToSpawnFence, adjPlacedObjOrigin, _fenceSO);
+
+            _grid.GetGridObject(tileToSpawnFence).SetPlacedObject(adjPlacedObj);
         }
+
     }
 
     public void ShowAvailableLandToBuy() {
@@ -165,11 +192,10 @@ public class LandManager : Singleton<LandManager>
             foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
             {
                 _grid.GetGridObject(adjacentTilePosition).CanBuyLandTrue();
-
-                SpawnFence(adjacentTilePosition);
             }
         }
 
+        SpawnFences(startingTiles);
     }
 
     private void SpawnFencesBottomRow() {

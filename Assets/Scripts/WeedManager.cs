@@ -20,10 +20,12 @@ public class WeedManager : MonoBehaviour
     [SerializeField] private Tile _dirtTile;
     [SerializeField] private List<TileBase> _grassTilesList = new List<TileBase>();
 
-    private PlacedObjectTypeSO.Dir _dir;
+    private Grid<GridGeneration.GridObject> _grid;
 
     private void Start()
     {
+        _grid = GridGeneration.Instance.GetGrid();
+
         SpawnResource(_treeSO, _treeChance);
         SpawnResource(_weedSO, _weedChance);
         SpawnResource(_rockSO, _rockChance);
@@ -31,11 +33,9 @@ public class WeedManager : MonoBehaviour
 
     private void SpawnResource(PlacedObjectTypeSO placedObjectTypeSO, int spawnModifier)
     {
-        var grid = GridGeneration.Instance.GetGrid();
-
-        for (int x = 0; x < grid.GetWidth(); x++)
+        for (int x = 0; x < _grid.GetWidth(); x++)
         {
-            for (int y = 0; y < grid.GetHeight(); y++)
+            for (int y = 0; y < _grid.GetHeight(); y++)
             {
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
 
@@ -47,15 +47,26 @@ public class WeedManager : MonoBehaviour
 
                 if (randomSpawnNum >= spawnModifier || !_grassTilesList.Contains(thisTile)) { continue; }
 
-                if (grid.GetGridObject(tilePos).CanBuild())
+                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
+
+                bool canBuild = true;
+
+                foreach (Vector2Int gridPosition in gridPositionList)
+                {
+                    if (!_grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()) {
+                        canBuild = false;
+                        Debug.Log(gridPositionList.Count);
+                        break;
+                    }
+                }
+                
+                if (canBuild)
                 {
                     PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePos, placedObjectOrigin, placedObjectTypeSO);
 
-                    List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
-
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
-                        grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
+                        _grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
                     }
                 }
             }

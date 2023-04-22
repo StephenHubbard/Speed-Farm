@@ -7,8 +7,6 @@ public class PlacedObject_Done : MonoBehaviour
     public PlacedObjectTypeSO PlacedObjectTypeSO { get; private set; }
     public Vector2Int Origin { get; private set; }
 
-    private PlacedObjectTypeSO.Dir _dir;
-
     public static PlacedObject_Done Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectTypeSO placedObjectTypeSO)
     {
         Transform placedObjectTransform = Instantiate(placedObjectTypeSO.Prefab, worldPosition, Quaternion.identity);
@@ -32,10 +30,4 @@ public class PlacedObject_Done : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-    // public override string ToString()
-    // {
-    //     return PlacedObjectTypeSO.name;
-    // }
-
 }

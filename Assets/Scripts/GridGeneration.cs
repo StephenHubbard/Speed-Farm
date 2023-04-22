@@ -19,7 +19,6 @@ public class GridGeneration : Singleton<GridGeneration>
 
     private PlacedObjectTypeSO _placedObjectTypeSO;
     private Grid<GridObject> _grid;
-    private PlacedObjectTypeSO.Dir _dir; 
 
     protected override void Awake()
     {
@@ -66,11 +65,6 @@ public class GridGeneration : Singleton<GridGeneration>
             this.y = y;
             placedObject = null;
         }
-
-        // public override string ToString()
-        // {
-        //     return x + ", " + y + "\n" + placedObject;
-        // }
 
         public void CanBuyLandTrue()
         {

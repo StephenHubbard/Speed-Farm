@@ -86995,7 +86995,7 @@ MonoBehaviour:
   _rockSO: {fileID: 11400000, guid: 76eb0372f7586be4b8fdbb311cf3da31, type: 2}
   _rockChance: 59
   _treeSO: {fileID: 11400000, guid: c6aaa6e2ecd847d44b6f1c15cbd3c24a, type: 2}
-  _treeChance: 16
+  _treeChance: 13
   _grassTilemap: {fileID: 177328812}
   _dirtTile: {fileID: 11400000, guid: f7a71c14aa90be34cbc6cddc1f106753, type: 2}
   _grassTilesList:
