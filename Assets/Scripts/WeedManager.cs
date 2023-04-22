@@ -27,7 +27,6 @@ public class WeedManager : MonoBehaviour
         SpawnResource(_treeSO, _treeChance);
         SpawnResource(_weedSO, _weedChance);
         SpawnResource(_rockSO, _rockChance);
-        LandManager.Instance.DetermineStartingLandOwnership();
     }
 
     private void SpawnResource(PlacedObjectTypeSO placedObjectTypeSO, int spawnModifier)
@@ -38,43 +37,21 @@ public class WeedManager : MonoBehaviour
         {
             for (int y = 0; y < grid.GetHeight(); y++)
             {
-                Vector2Int placedObjectOrigin = new Vector2Int(x, y);
-                Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, _dir);
+                Vector3Int tilePos = new Vector3Int(x, y, 0);
 
-                bool allGrassTiles = false;
+                Vector2Int placedObjectOrigin = new Vector2Int(tilePos.x, tilePos.y);
 
-                foreach (Vector2Int gridPosition in gridPositionList)
-                {
-                    allGrassTiles = false;
-
-                    Vector3Int checkAdjTilePos = new Vector3Int(gridPosition.x, gridPosition.y, 0);
-
-                    TileBase thisTile = _grassTilemap.GetTile(checkAdjTilePos);
-
-                    if (_grassTilesList.Contains(thisTile)) {
-                        allGrassTiles = true;
-                    } else {
-                        allGrassTiles = false;
-                        break;
-                    }
-                   
-                }
+                TileBase thisTile = _grassTilemap.GetTile(tilePos);
 
                 int randomSpawnNum = Random.Range(0, 100);
 
-                if (randomSpawnNum >= spawnModifier || !allGrassTiles) { continue; }
+                if (randomSpawnNum >= spawnModifier || !_grassTilesList.Contains(thisTile)) { continue; }
 
-                Vector2Int rotationOffset = placedObjectTypeSO.GetRotationOffset(_dir);
-                Vector3 placedObjectWorldPosition = grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * grid.GetCellSize();
-
-                if (grid.GetGridObject(tilePosition).CanBuild())
+                if (grid.GetGridObject(tilePos).CanBuild())
                 {
-                    PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, _dir, placedObjectTypeSO);
-                    placedObject.transform.rotation = Quaternion.Euler(0, 0, -placedObjectTypeSO.GetRotationAngle(_dir));
+                    PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePos, placedObjectOrigin, placedObjectTypeSO);
 
-                    Crop crop = placedObject.GetComponent<Crop>();
-                    crop?.StraightToFullyGrown();
+                    List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
 
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {

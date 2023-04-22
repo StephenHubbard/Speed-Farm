@@ -56,33 +56,18 @@ public class PlacedObjectTypeSO : ScriptableObject
         }
     }
 
-    public List<Vector2Int> GetGridPositionList(Vector2Int offset, Dir dir)
+    public List<Vector2Int> GetGridPositionList(Vector2Int offset)
     {
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        switch (dir)
+       
+        for (int x = 0; x < Width; x++)
         {
-            default:
-            case Dir.Down:
-            case Dir.Up:
-                for (int x = 0; x < Width; x++)
-                {
-                    for (int y = 0; y < Height; y++)
-                    {
-                        gridPositionList.Add(offset + new Vector2Int(x, y));
-                    }
-                }
-                break;
-            case Dir.Left:
-            case Dir.Right:
-                for (int x = 0; x < Height; x++)
-                {
-                    for (int y = 0; y < Width; y++)
-                    {
-                        gridPositionList.Add(offset + new Vector2Int(x, y));
-                    }
-                }
-                break;
+            for (int y = 0; y < Height; y++)
+            {
+                gridPositionList.Add(offset + new Vector2Int(x, y));
+            }
         }
+           
         return gridPositionList;
     }
 

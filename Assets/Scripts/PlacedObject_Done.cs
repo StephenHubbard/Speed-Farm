@@ -9,26 +9,23 @@ public class PlacedObject_Done : MonoBehaviour
 
     private PlacedObjectTypeSO.Dir _dir;
 
-    public static PlacedObject_Done Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectTypeSO.Dir dir, PlacedObjectTypeSO placedObjectTypeSO)
+    public static PlacedObject_Done Create(Vector3 worldPosition, Vector2Int origin, PlacedObjectTypeSO placedObjectTypeSO)
     {
-        Transform placedObjectTransform = Instantiate(placedObjectTypeSO.Prefab, worldPosition, Quaternion.Euler(0, placedObjectTypeSO.GetRotationAngle(dir), 0));
-
+        Transform placedObjectTransform = Instantiate(placedObjectTypeSO.Prefab, worldPosition, Quaternion.identity);
         PlacedObject_Done placedObject = placedObjectTransform.GetComponent<PlacedObject_Done>();
-        placedObject.Setup(placedObjectTypeSO, origin, dir);
-
+        placedObject.Setup(placedObjectTypeSO, origin);
         return placedObject;
     }
 
-    private void Setup(PlacedObjectTypeSO placedObjectTypeSO, Vector2Int origin, PlacedObjectTypeSO.Dir dir)
+    private void Setup(PlacedObjectTypeSO placedObjectTypeSO, Vector2Int origin)
     {
         this.PlacedObjectTypeSO = placedObjectTypeSO;
         this.Origin = origin;
-        this._dir = dir;
     }
 
     public List<Vector2Int> GetGridPositionList()
     {
-        return PlacedObjectTypeSO.GetGridPositionList(Origin, _dir);
+        return PlacedObjectTypeSO.GetGridPositionList(Origin);
     }
 
     public void DestroySelf()

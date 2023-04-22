@@ -36,6 +36,7 @@ public class SelectionManager : Singleton<SelectionManager>
         }
 
         if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !_cancelSelection) {
+
             DrawVisual();
         }
 
@@ -48,6 +49,7 @@ public class SelectionManager : Singleton<SelectionManager>
         }
 
         if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && !_cancelSelection) {
+
             DrawVisual();
             _boxVisual.gameObject.SetActive(false);
             AssignSelectedTiles();
@@ -62,7 +64,6 @@ public class SelectionManager : Singleton<SelectionManager>
     private void DrawVisual()
     {
         if (GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()) == null) { return; }
-
 
         int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
         int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;

@@ -19,7 +19,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
     private PlacedObjectTypeSO _placedObjectTypeSO;
     private Grid<GridObject> _grid;
-    private PlacedObjectTypeSO.Dir _dir;
+    private PlacedObjectTypeSO.Dir _dir; 
 
     protected override void Awake()
     {
@@ -38,19 +38,26 @@ public class GridGeneration : Singleton<GridGeneration>
         return _grid;
     }
 
+    
+
     public void SetPlacedObjectTypeSO(PlacedObjectTypeSO placedObjectTypeSO) {
         this._placedObjectTypeSO = placedObjectTypeSO;
     }
 
     public class GridObject
     {
+        public PlacedObject_Done PlacedObject => placedObject;
+        public GameObject BuyLandSprite => buyLandSprite;
+        public bool OwnsLand => ownsLand;
+        public bool CanBuyLand => canBuyLand;
+        public int x { get; private set; }
+        public int y { get; private set; }
+
         private Grid<GridObject> grid;
-        public int x;
-        public int y;
-        public PlacedObject_Done placedObject;
-        public GameObject buyLandSprite;
-        public bool ownsLand = false;
-        public bool canBuyLand = false;
+        private PlacedObject_Done placedObject;
+        private GameObject buyLandSprite;
+        private bool ownsLand = false;
+        private bool canBuyLand = false;
 
         public GridObject(Grid<GridObject> grid, int x, int y)
         {
@@ -60,37 +67,33 @@ public class GridGeneration : Singleton<GridGeneration>
             placedObject = null;
         }
 
-        public override string ToString()
+        // public override string ToString()
+        // {
+        //     return x + ", " + y + "\n" + placedObject;
+        // }
+
+        public void CanBuyLandTrue()
         {
-            return x + ", " + y + "\n" + placedObject;
+            canBuyLand = true;
         }
 
         public void SetPlacedObject(PlacedObject_Done placedObject)
         {
             this.placedObject = placedObject;
-            grid.TriggerGridObjectChanged(x, y);
         }
 
         public void ClearPlacedObject()
         {
             placedObject = null;
-            grid.TriggerGridObjectChanged(x, y);
-        }
-
-        public PlacedObject_Done GetPlacedObject()
-        {
-            return placedObject;
         }
 
         public void SetBuyLandSprite(GameObject buyLandSprite) {
             this.buyLandSprite = buyLandSprite;
-            grid.TriggerGridObjectChanged(x, y);
         }
 
         public void ClearBuyLandSprite()
         {
             buyLandSprite = null;
-            grid.TriggerGridObjectChanged(x, y);
         }
 
         public GameObject GetBuyLandSprite()
@@ -98,18 +101,17 @@ public class GridGeneration : Singleton<GridGeneration>
             return buyLandSprite;
         }
 
-
         public void BuyLand() {
             ownsLand = true;
-            Destroy(buyLandSprite);
-            placedObject?.DestroySelf();
-            ClearPlacedObject();
-        }
 
+            if (buyLandSprite != null) {
+                Destroy(buyLandSprite);
+            }
+        }
 
         public bool CanBuild()
         {
-            return placedObject == null;
+            return PlacedObject == null;
         }
     }
 
@@ -130,7 +132,7 @@ public class GridGeneration : Singleton<GridGeneration>
                 Vector3Int tilePosition = new Vector3Int(x, y, 0);
 
                 // Test Can Build
-                List<Vector2Int> gridPositionList = _placedObjectTypeSO.GetGridPositionList(placedObjectOrigin, _dir);
+                List<Vector2Int> gridPositionList = _placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
 
                 bool canBuild = true;
                 foreach (Vector2Int gridPosition in gridPositionList)
@@ -144,11 +146,9 @@ public class GridGeneration : Singleton<GridGeneration>
 
                 if (canBuild && _grassTilemap.GetTile(tilePosition) == _dirtTile)
                 {
-                    Vector2Int rotationOffset = _placedObjectTypeSO.GetRotationOffset(_dir);
-                    Vector3 placedObjectWorldPosition = _grid.GetWorldPosition(x, y) + new Vector3(rotationOffset.x, rotationOffset.y) * _grid.GetCellSize();
+                    Vector3 placedObjectWorldPosition = _grid.GetWorldPosition(x, y) * _grid.GetCellSize();
 
-                    PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, _dir, _placedObjectTypeSO);
-                    placedObject.transform.rotation = Quaternion.Euler(0, 0, -_placedObjectTypeSO.GetRotationAngle(_dir));
+                    PlacedObject_Done placedObject = PlacedObject_Done.Create(placedObjectWorldPosition, placedObjectOrigin, _placedObjectTypeSO);
 
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
@@ -172,7 +172,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (_grid.GetGridObject(selectedTile).ownsLand) {
+                if (_grid.GetGridObject(selectedTile).OwnsLand) {
                     ownedTiles.Add(selectedTile);
                 }
             }
@@ -190,8 +190,8 @@ public class GridGeneration : Singleton<GridGeneration>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).GetPlacedObject();
-                bool doesOwnLand = _grid.GetGridObject(selectedTile).ownsLand;
+                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).PlacedObject;
+                bool doesOwnLand = _grid.GetGridObject(selectedTile).OwnsLand;
                 if (!placedObject && doesOwnLand) {
 
                     if (anyTilesAreGrass) {
@@ -213,19 +213,22 @@ public class GridGeneration : Singleton<GridGeneration>
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).GetPlacedObject();
+                PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).PlacedObject;
                 Crop crop = placedObject?.GetComponent<Crop>();
 
                 if (placedObject != null && crop && crop.IsFullyGrown)
                 {
                     crop.SellCrop();
+
                     placedObject.DestroySelf();
 
                     List<Vector2Int> gridPositionList = placedObject.GetGridPositionList();
+                    
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
                         _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
                     }
+
                 }
             }
 

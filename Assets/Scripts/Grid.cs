@@ -1,15 +1,3 @@
-/* 
-    ------------------- Code Monkey -------------------
-
-    Thank you for downloading this package
-    I hope you find it useful in your projects
-    If you have any questions let me know
-    Cheers!
-
-               unitycodemonkey.com
-    --------------------------------------------------
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,12 +6,12 @@ using CodeMonkey.Utils;
 
 public class Grid<TGridObject>
 {
-    public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
-    public class OnGridObjectChangedEventArgs : EventArgs
-    {
-        public int x;
-        public int y;
-    }
+    // public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
+    // public class OnGridObjectChangedEventArgs : EventArgs
+    // {
+    //     public int x;
+    //     public int y;
+    // }
 
     private int _width;
     private int _height;
@@ -48,10 +36,10 @@ public class Grid<TGridObject>
             }
         }
 
-        bool showDebug = false;
+        bool showDebug = true;
         if (showDebug)
         {
-            TextMesh[,] debugTextArray = new TextMesh[width, height];
+            // TextMesh[,] debugTextArray = new TextMesh[width, height];
 
             for (int x = 0; x < _gridArray.GetLength(0); x++)
             {
@@ -65,10 +53,10 @@ public class Grid<TGridObject>
             Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), Color.white, 100f);
             Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
 
-            OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
-            {
-                // debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
-            };
+            // OnGridObjectChanged += (object sender, OnGridObjectChangedEventArgs eventArgs) =>
+            // {
+            //     debugTextArray[eventArgs.x, eventArgs.y].text = gridArray[eventArgs.x, eventArgs.y]?.ToString();
+            // };
         }
     }
 
@@ -116,26 +104,26 @@ public class Grid<TGridObject>
         return vector3Int;
     }
 
-    public void SetGridObject(int x, int y, TGridObject value)
-    {
-        if (x >= 0 && y >= 0 && x < _width && y < _height)
-        {
-            _gridArray[x, y] = value;
-            if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
-        }
-    }
+    // public void SetGridObject(int x, int y, TGridObject value)
+    // {
+    //     if (x >= 0 && y >= 0 && x < _width && y < _height)
+    //     {
+    //         _gridArray[x, y] = value;
+    //         if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
+    //     }
+    // }
 
-    public void TriggerGridObjectChanged(int x, int y)
-    {
-        if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
-    }
+    // public void TriggerGridObjectChanged(int x, int y)
+    // {
+    //     if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y });
+    // }
 
-    public void SetGridObject(Vector3 worldPosition, TGridObject value)
-    {
-        int x, y;
-        GetXY(worldPosition, out x, out y);
-        SetGridObject(x, y, value);
-    }
+    // public void SetGridObject(Vector3 worldPosition, TGridObject value)
+    // {
+    //     int x, y;
+    //     GetXY(worldPosition, out x, out y);
+    //     SetGridObject(x, y, value);
+    // }
 
     public TGridObject GetGridObject(int x, int y)
     {

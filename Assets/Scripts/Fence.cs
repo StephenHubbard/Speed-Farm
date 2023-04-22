@@ -18,27 +18,27 @@ public class Fence : MonoBehaviour
     private Vector3Int _tilePos;
     private SpriteRenderer _spriteRenderer;
 
-
     private void Awake() {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start() {
         UpdateFenceCoordVector3Int();
-        UpdateFenceSprite(true);
+        StartCoroutine(FencePositionRoutine());
         CanBuyAdjLand();
+    }
+
+    private IEnumerator FencePositionRoutine() {
+        yield return new WaitForEndOfFrame();
+
+        UpdateFenceSprite(true);
     }
 
     private void CanBuyAdjLand() {
         var grid = GridGeneration.Instance.GetGrid();
 
-        grid.GetGridObject(_tilePos).canBuyLand = true;
-
         if (LandManager.Instance.BuyLandToggledOn) {
-            // GameObject showLandSprite = grid.GetGridObject(_tilePos).GetBuyLandSprite();
-            // showLandSprite.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
-
-            if (grid.GetGridObject(_tilePos).buyLandSprite == null) {
+            if (grid.GetGridObject(_tilePos).BuyLandSprite == null && grid.GetGridObject(_tilePos).y > 0) {
                 Color greenColor = LandManager.Instance.GreenColor;
                 GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(_tilePos.x, _tilePos.y), Quaternion.identity);
                 LandManager.Instance.AllShowLandSprites.Add(showLandSpritePrefab);
@@ -58,10 +58,10 @@ public class Fence : MonoBehaviour
 
         List<Vector3Int> adjacentTiles = GetAdjacentTiles(_tilePos);
 
-        PlacedObject_Done dirRight = grid.GetGridObject(adjacentTiles[0])?.placedObject;
-        PlacedObject_Done dirLeft = grid.GetGridObject(adjacentTiles[1])?.placedObject;
-        PlacedObject_Done dirUp = grid.GetGridObject(adjacentTiles[2])?.placedObject;
-        PlacedObject_Done dirDown = grid.GetGridObject(adjacentTiles[3])?.placedObject;
+        PlacedObject_Done dirRight = grid.GetGridObject(adjacentTiles[0])?.PlacedObject;
+        PlacedObject_Done dirLeft = grid.GetGridObject(adjacentTiles[1])?.PlacedObject;
+        PlacedObject_Done dirUp = grid.GetGridObject(adjacentTiles[2])?.PlacedObject;
+        PlacedObject_Done dirDown = grid.GetGridObject(adjacentTiles[3])?.PlacedObject;
 
         _spriteRenderer.sprite = _fenceBaseSprite;
 
@@ -123,14 +123,9 @@ public class Fence : MonoBehaviour
             }
         }
 
-        // if (HasFenceInDirection(dirDown) && HasFenceInDirection(dirUp))
-        // {
-        //     if (updateAjdTile)
-        //     {
-        //         dirDown.GetComponent<Fence>().UpdateFenceSprite(false);
-        //         dirUp.GetComponent<Fence>().UpdateFenceSprite(false);
-        //     }
-        // }
+        if (grid.GetGridObject(_tilePos).y == 0) {
+            _spriteRenderer.sprite = _fenceLeftAndRightSprite;
+        }
     }
 
     private bool HasFenceInDirection(PlacedObject_Done placedObject_Done) {
