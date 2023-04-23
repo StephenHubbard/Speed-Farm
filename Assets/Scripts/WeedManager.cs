@@ -27,8 +27,8 @@ public class WeedManager : MonoBehaviour
         _grid = GridGeneration.Instance.GetGrid();
 
         SpawnResource(_treeSO, _treeChance);
-        SpawnResource(_weedSO, _weedChance);
         SpawnResource(_rockSO, _rockChance);
+        SpawnResource(_weedSO, _weedChance);
     }
 
     private void SpawnResource(PlacedObjectTypeSO placedObjectTypeSO, int spawnModifier)
@@ -43,31 +43,33 @@ public class WeedManager : MonoBehaviour
 
                 TileBase thisTile = _grassTilemap.GetTile(tilePos);
 
-                int randomSpawnNum = Random.Range(0, 100);
+                int randomSpawnNum = Random.Range(0, 101);
 
-                if (randomSpawnNum >= spawnModifier || !_grassTilesList.Contains(thisTile)) { continue; }
+                if (randomSpawnNum <= spawnModifier && _grassTilesList.Contains(thisTile)) { 
 
-                List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
+                    List<Vector2Int> gridPositionList = placedObjectTypeSO.GetGridPositionList(placedObjectOrigin);
 
-                bool canBuild = true;
-
-                foreach (Vector2Int gridPosition in gridPositionList)
-                {
-                    if (!_grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()) {
-                        canBuild = false;
-                        break;
-                    }
-                }
-                
-                if (canBuild)
-                {
-                    PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePos, placedObjectOrigin, placedObjectTypeSO);
+                    bool canBuild = true;
 
                     foreach (Vector2Int gridPosition in gridPositionList)
                     {
-                        _grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
+                        if (!_grid.GetGridObject(gridPosition.x, gridPosition.y).CanBuild()) {
+                            canBuild = false;
+                            break;
+                        }
+                    }
+                    
+                    if (canBuild)
+                    {
+                        PlacedObject_Done placedObject = PlacedObject_Done.Create(tilePos, placedObjectOrigin, placedObjectTypeSO);
+
+                        foreach (Vector2Int gridPosition in gridPositionList)
+                        {
+                            _grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
+                        }
                     }
                 }
+
             }
         }
     }

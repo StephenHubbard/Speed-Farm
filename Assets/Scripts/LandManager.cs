@@ -12,6 +12,7 @@ public class LandManager : Singleton<LandManager>
     public Color GreenColor { get { return _greenColor; } }
     public Color RedColor { get { return _redColor; } }
     public List<GameObject> AllShowLandSprites => _allShowLandSprites;
+    public int AmountOfPlotsOwned => _amountOfPlotsOwned;
 
     [SerializeField] private Tilemap _grassTilemap;
     [SerializeField] private Tile _dirtTile;
@@ -21,8 +22,9 @@ public class LandManager : Singleton<LandManager>
     [SerializeField] private Color _redColor;
 
     private List<GameObject> _allShowLandSprites = new List<GameObject>();
-
     private Grid<GridGeneration.GridObject> _grid;
+
+    private int _amountOfPlotsOwned = 0;
 
     private void Start() {
         _grid = GridGeneration.Instance.GetGrid();
@@ -46,6 +48,10 @@ public class LandManager : Singleton<LandManager>
         BuyLandToggledOn = false;
     }
 
+    public void IncreasePlotAmount() {
+        _amountOfPlotsOwned++;
+    }
+
     private void BuyLand()
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
@@ -64,11 +70,12 @@ public class LandManager : Singleton<LandManager>
                 }
             }
 
-            if (anyTileCanBeBought) {
+            if (anyTileCanBeBought && EconomyManager.Instance.BuyLandPlots(selectedTiles.Count)) {
+
                 foreach (Vector3Int selectedTile in selectedTiles)
                 {
                     _grid.GetGridObject(selectedTile).BuyLand();
-
+                    
                     List<Vector3Int> adjacentTilePositions = GetAdjacentTiles(selectedTile);
 
                     foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
@@ -76,6 +83,8 @@ public class LandManager : Singleton<LandManager>
                         _grid.GetGridObject(adjacentTilePosition).CanBuyLandTrue();
                     }
                 }
+            } else { 
+                return;
             }
 
             SpawnFences(selectedTiles);

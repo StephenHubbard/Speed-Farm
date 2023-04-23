@@ -97,7 +97,7 @@ public class GridGeneration : Singleton<GridGeneration>
 
         public void BuyLand() {
             ownsLand = true;
-
+            LandManager.Instance.IncreasePlotAmount();
             if (buyLandSprite != null) {
                 Destroy(buyLandSprite);
             }
