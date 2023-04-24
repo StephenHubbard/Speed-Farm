@@ -20,14 +20,15 @@ public class SelectionManager : Singleton<SelectionManager>
 
     private void Update() {
 
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(0)) {
+            ClearSelection();
+
             if (EventSystem.current.IsPointerOverGameObject()) { return; }
             
             if (GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()) == null) { return; }
 
             _cancelSelection = false;
             _boxVisual.gameObject.SetActive(true);
-            _selectedTiles.Clear();
 
             int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
             int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;
@@ -35,8 +36,7 @@ public class SelectionManager : Singleton<SelectionManager>
             _startTilePos = new Vector2(x, y);
         }
 
-        if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !_cancelSelection) {
-
+        if (Input.GetMouseButton(0) && !_cancelSelection) {
             DrawVisual();
         }
 
@@ -48,13 +48,23 @@ public class SelectionManager : Singleton<SelectionManager>
             _boxVisual.gameObject.SetActive(false);
         }
 
-        if ((Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && !_cancelSelection) {
-
+        if (Input.GetMouseButtonUp(0) && !_cancelSelection) {
             DrawVisual();
             _boxVisual.gameObject.SetActive(false);
             AssignSelectedTiles();
+
+            if (!EventSystem.current.IsPointerOverGameObject()) { 
+                InventoryManager.Instance.UseCurrentEquippedItem();
+            }
         }
     }
+
+    private void ClearSelection() {
+        _selectedTiles.Clear();
+        _startTilePos = new Vector2();
+        _currentTilePos = new Vector2();
+    }
+   
 
     public List<Vector3Int> GetSelectedTiles()
     {

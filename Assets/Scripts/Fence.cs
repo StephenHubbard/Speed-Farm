@@ -37,14 +37,12 @@ public class Fence : MonoBehaviour
     private void CanBuyAdjLand() {
         var grid = GridGeneration.Instance.GetGrid();
 
-        if (LandManager.Instance.BuyLandToggledOn) {
-            if (grid.GetGridObject(_tilePos).BuyLandSprite == null && grid.GetGridObject(_tilePos).y > 0) {
-                Color greenColor = LandManager.Instance.GreenColor;
-                GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(_tilePos.x, _tilePos.y), Quaternion.identity);
-                LandManager.Instance.AllShowLandSprites.Add(showLandSpritePrefab);
-                grid.GetGridObject(_tilePos).SetBuyLandSprite(showLandSpritePrefab);
-                showLandSpritePrefab.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
-            }
+        if (grid.GetGridObject(_tilePos).BuyLandSprite == null && grid.GetGridObject(_tilePos).y > 0) {
+            Color greenColor = LandManager.Instance.GreenColor;
+            GameObject showLandSpritePrefab = Instantiate(_showAvailableLandToBuyPrefab, new Vector2(_tilePos.x, _tilePos.y), Quaternion.identity);
+            LandManager.Instance.AllShowLandSprites.Add(showLandSpritePrefab);
+            grid.GetGridObject(_tilePos).SetBuyLandSprite(showLandSpritePrefab);
+            showLandSpritePrefab.GetComponentInChildren<SpriteRenderer>().color = new Color(greenColor.r, greenColor.g, greenColor.b, greenColor.a);
         }
     }
 

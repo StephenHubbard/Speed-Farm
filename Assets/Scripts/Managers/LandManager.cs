@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 
 public class LandManager : Singleton<LandManager>
 {
-    public bool BuyLandToggledOn { get; private set; }
     public Color GreenColor { get { return _greenColor; } }
     public Color RedColor { get { return _redColor; } }
     public List<GameObject> AllShowLandSprites => _allShowLandSprites;
@@ -29,66 +28,50 @@ public class LandManager : Singleton<LandManager>
     private void Start() {
         _grid = GridGeneration.Instance.GetGrid();
 
-        BuyLandToggleFalse();
 
         DetermineStartingLandOwnership();
         SpawnFencesBottomRow();
     }
 
-    private void Update() {
-        BuyLand();
-    }
-
-    public void BuyLandToggleTrue() {
-        BuyLandToggledOn = true;
-    }
-
-    public void BuyLandToggleFalse()
-    {
-        BuyLandToggledOn = false;
-    }
 
     public void IncreasePlotAmount() {
         _amountOfPlotsOwned++;
     }
 
-    private void BuyLand()
+    public void BuyLand()
     {
         if (EventSystem.current.IsPointerOverGameObject()) { return; }
+    
+        List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
 
-        if (Input.GetMouseButtonUp(0) && BuyLandToggledOn)
+        bool anyTileCanBeBought = false;
+
+        foreach (Vector3Int selectedTile in selectedTiles)
         {
-            List<Vector3Int> selectedTiles = SelectionManager.Instance.GetSelectedTiles();
+            if (_grid.GetGridObject(selectedTile).CanBuyLand)
+            {
+                anyTileCanBeBought = true;
+            }
+        }
 
-            bool anyTileCanBeBought = false;
+        if (anyTileCanBeBought && EconomyManager.Instance.BuyLandPlots(selectedTiles.Count)) {
 
             foreach (Vector3Int selectedTile in selectedTiles)
             {
-                if (_grid.GetGridObject(selectedTile).CanBuyLand)
+                _grid.GetGridObject(selectedTile).BuyLand();
+                
+                List<Vector3Int> adjacentTilePositions = GetAdjacentTiles(selectedTile);
+
+                foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
                 {
-                    anyTileCanBeBought = true;
+                    _grid.GetGridObject(adjacentTilePosition).CanBuyLandTrue();
                 }
             }
-
-            if (anyTileCanBeBought && EconomyManager.Instance.BuyLandPlots(selectedTiles.Count)) {
-
-                foreach (Vector3Int selectedTile in selectedTiles)
-                {
-                    _grid.GetGridObject(selectedTile).BuyLand();
-                    
-                    List<Vector3Int> adjacentTilePositions = GetAdjacentTiles(selectedTile);
-
-                    foreach (Vector3Int adjacentTilePosition in adjacentTilePositions)
-                    {
-                        _grid.GetGridObject(adjacentTilePosition).CanBuyLandTrue();
-                    }
-                }
-            } else { 
-                return;
-            }
-
-            SpawnFences(selectedTiles);
+        } else { 
+            return;
         }
+
+        SpawnFences(selectedTiles);
     }
 
     private void SpawnFences(List<Vector3Int> selectedTiles) {
@@ -167,8 +150,6 @@ public class LandManager : Singleton<LandManager>
     }
 
     public void HideAvailableLandToBuy() {
-        BuyLandToggleFalse();
-
         if (_allShowLandSprites.Count == 0) { return; }
 
         foreach (GameObject showLandSprite in _allShowLandSprites)

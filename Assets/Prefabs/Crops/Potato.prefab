@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5245705035820158827}
   - component: {fileID: 1708463898995304524}
   m_Layer: 0
-  m_Name: Candy Corn
+  m_Name: Potato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132,7 +132,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1846044612, guid: 493fa5ae539596648959392138197473, type: 3}
+  m_Sprite: {fileID: 422313536, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
