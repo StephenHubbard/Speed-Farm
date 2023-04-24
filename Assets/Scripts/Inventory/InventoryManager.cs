@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
+    public int CurrentIndexNum => _currentIndexNum;
+
     [SerializeField] private Transform _inventoryContainer;
     [SerializeField] private Transform[] _inventorySlots;
     [SerializeField] private Transform _shovelSlot;
@@ -66,7 +68,7 @@ public class InventoryManager : Singleton<InventoryManager>
         _previousIndexNum = tempIndexNum;
     }
 
-    private void ToggleBackpack() {
+    public void ToggleBackpack() {
         _backpackContainer.SetActive(!_backpackContainer.activeInHierarchy);
     }
 }

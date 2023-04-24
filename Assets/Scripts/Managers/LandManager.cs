@@ -28,7 +28,6 @@ public class LandManager : Singleton<LandManager>
     private void Start() {
         _grid = GridGeneration.Instance.GetGrid();
 
-
         DetermineStartingLandOwnership();
         SpawnFencesBottomRow();
     }
@@ -243,34 +242,4 @@ public class LandManager : Singleton<LandManager>
 
         return adjacentTilePositions;
     }
-
-    // public List<Vector3Int> GetAdjacentTilesDistance(Vector3Int tilePosition, int distance)
-    // {
-    //     List<Vector3Int> adjacentTilePositions = new List<Vector3Int>();
-
-    //     for (int x = -distance; x <= distance; x++)
-    //     {
-    //         for (int y = -distance; y <= distance; y++)
-    //         {
-    //             // Skip the center tile and diagonal tiles when distance is 1
-    //             if (distance == 1 && (x == 0 || y == 0 || Mathf.Abs(x) == Mathf.Abs(y)))
-    //             {
-    //                 continue;
-    //             }
-
-    //             // Skip the center tile
-    //             if (x == 0 && y == 0)
-    //             {
-    //                 continue;
-    //             }
-
-    //             Vector3Int adjacentTilePosition = new Vector3Int(tilePosition.x + x, tilePosition.y + y, tilePosition.z);
-    //             adjacentTilePositions.Add(adjacentTilePosition);
-    //         }
-    //     }
-
-    //     return adjacentTilePositions;
-    // }
-
-   
 }

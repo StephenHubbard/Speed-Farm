@@ -12,7 +12,10 @@ public class InventorySlot : MonoBehaviour
 
     public void FindSlottedItem(IItem item) {
         _item = item;
-        Debug.Log(_item);
+    }
+
+    public void FindSlottedItem() {
+        _item = GetComponentInChildren<IItem>();
     }
 
     public void SlottedItemNull() {

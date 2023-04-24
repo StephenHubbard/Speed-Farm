@@ -66,7 +66,7 @@ public class CardManager : Singleton<CardManager>
     }
 
     private void UpdateCardToBuyAmountText() {
-        _cardToBuyAmountText.text = _currentBuyCardAmount.ToString();
+        _cardToBuyAmountText.text = _currentBuyCardAmount.ToString("D2");
     }
 
     public PlacedObjectTypeSO[] GetAvailableCardCrops() {

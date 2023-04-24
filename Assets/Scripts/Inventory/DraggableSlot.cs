@@ -5,17 +5,29 @@ using UnityEngine.EventSystems;
 
 public class DraggableSlot : MonoBehaviour, IDropHandler
 {
-    private InventorySlot _inventorySlot;
-
     public void OnDrop(PointerEventData eventData)
     {
-        if (transform.childCount == 0) {
-            GameObject dropped = eventData.pointerDrag;
-            DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
-            draggableItem.ParentAfterDrag = transform;
-            IItem item = draggableItem.GetComponent<IItem>();
-            _inventorySlot = GetComponentInParent<InventorySlot>();
-            _inventorySlot?.FindSlottedItem(item);
+        GameObject dropped = eventData.pointerDrag;
+        DraggableItem draggableItem = dropped.GetComponent<DraggableItem>();
+        
+        if (transform.childCount > 0) {
+            Transform itemToSwap = transform.GetChild(0);
+            itemToSwap.SetParent(draggableItem.PreviousParent, false);
+            InventorySlot inventorySlot = itemToSwap.GetComponentInParent<InventorySlot>();
+            inventorySlot?.FindSlottedItem();
+            StartCoroutine(CheckIfActiveSlotRoutine(inventorySlot));
+        } else {
+            InventorySlot inventorySlot = GetComponent<InventorySlot>();
+            StartCoroutine(CheckIfActiveSlotRoutine(inventorySlot));
         }
+
+        draggableItem.ParentAfterDrag = transform;
+        InventoryManager.Instance.CurrentEquippedItemNull();
+    }
+
+    // Wait for next frame for transform parenting race condition
+    private IEnumerator CheckIfActiveSlotRoutine(InventorySlot inventorySlot) {
+        yield return null;
+        InventoryManager.Instance.MoveSelectionOutline(InventoryManager.Instance.CurrentIndexNum); 
     }
 }

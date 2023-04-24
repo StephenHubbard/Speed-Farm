@@ -42,6 +42,6 @@ public class EconomyManager : Singleton<EconomyManager>
 
     private void UpdateText() {
         _coinText.text = _currentCoinAmount.ToString("D3");
-        _amountToBuyLandPlotText.text = _currentAmountToBuyLandPlot.ToString();
+        _amountToBuyLandPlotText.text = _currentAmountToBuyLandPlot.ToString("D2");
     }
 }

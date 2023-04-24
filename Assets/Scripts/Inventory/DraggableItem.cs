@@ -7,8 +7,10 @@ using UnityEngine.UI;
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Transform ParentAfterDrag { get => _parentAfterDrag; set => _parentAfterDrag = value; }
+    public Transform PreviousParent { get => _parentAfterDrag; set => _parentAfterDrag = value; }
 
     private Transform _parentAfterDrag;
+    private Transform _previousParent;
 
     private Image _image;
     private InventorySlot _inventorySlot;
@@ -19,12 +21,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _previousParent = transform.parent; 
+        _inventorySlot = GetComponentInParent<InventorySlot>();
+        _inventorySlot?.SlottedItemNull();
         _parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
         _image.raycastTarget = false;
-        _inventorySlot = GetComponentInParent<InventorySlot>();
-        _inventorySlot?.SlottedItemNull();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -37,6 +40,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.SetParent(_parentAfterDrag);
         transform.position = transform.parent.position;
         _image.raycastTarget = true;
-        InventoryManager.Instance.CurrentEquippedItemNull();
+
+        IItem item = GetComponent<IItem>();
+        _inventorySlot = GetComponentInParent<InventorySlot>();
+        _inventorySlot?.FindSlottedItem(item);
     }
 }

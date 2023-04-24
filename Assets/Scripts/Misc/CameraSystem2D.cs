@@ -29,7 +29,6 @@ public class CameraSystem2D : MonoBehaviour
         _mapMinX = _cameraConfiner2D.bounds.center.x - _cameraConfiner2D.bounds.size.x / 2;
         _mapMaxX = _cameraConfiner2D.bounds.center.x + _cameraConfiner2D.bounds.size.x / 2;
 
-        // idk what this -2f is but it aligns perfecly 
         _mapMinY = _cameraConfiner2D.bounds.center.y - _cameraConfiner2D.bounds.size.y / 2;
         _mapMaxY = _cameraConfiner2D.bounds.center.y + _cameraConfiner2D.bounds.size.y / 2;
     }
