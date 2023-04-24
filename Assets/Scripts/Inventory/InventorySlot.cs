@@ -10,15 +10,25 @@ public class InventorySlot : MonoBehaviour
         _item = GetComponentInChildren<IItem>();
     }
 
-    public void ClickInventorySlot(int indexNum) {
+    public void FindSlottedItem(IItem item) {
+        _item = item;
+        Debug.Log(_item);
+    }
 
+    public void SlottedItemNull() {
+        _item = null;
+    }
+
+    public void ClickInventorySlot(int indexNum) {
         InventoryManager.Instance.MoveSelectionOutline(indexNum);
     }
 
     public void EquipItem() {
-        if (_item == null) { return; }
-
-        _item.EquipItem();
+        if (_item != null) { 
+            _item.EquipItem();
+        } else {
+            InventoryManager.Instance.CurrentEquippedItemNull();
+        }
 
     }
 }

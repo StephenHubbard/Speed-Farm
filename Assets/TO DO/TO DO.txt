@@ -1,3 +1,5 @@
 BUGS: 
 
 couple drag selection bugs.  ui and starting off grid. 
+
+crops are destroyed on buyying land if selected

@@ -34,6 +34,8 @@ public class InventoryManager : Singleton<InventoryManager>
     }
 
     public void UseCurrentEquippedItem() {
+        if (_currentEquippedItem == null) { return; }
+        
         _currentEquippedItem.UseItem();
     }
 
@@ -46,12 +48,16 @@ public class InventoryManager : Singleton<InventoryManager>
 
         _currentIndexNum = indexNum;
 
-        _selectionOutline.SetParent(_inventorySlots[_currentIndexNum], false);
+        _selectionOutline.transform.position = _inventorySlots[_currentIndexNum].transform.position;
         _inventorySlots[_currentIndexNum].GetComponent<InventorySlot>().EquipItem();
     }
 
     public void SetActiveEquippedItem(MonoBehaviour item) {
         _currentEquippedItem = (item as IItem);
+    }
+
+    public void CurrentEquippedItemNull() {
+        _currentEquippedItem = null;
     }
 
     private void TogglePrevious() {
