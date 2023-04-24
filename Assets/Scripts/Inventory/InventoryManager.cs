@@ -8,6 +8,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     [SerializeField] private Transform _inventoryContainer;
     [SerializeField] private Transform[] _inventorySlots;
+    [SerializeField] private Transform[] _backpackSlots;
     [SerializeField] private Transform _shovelSlot;
     [SerializeField] private Transform _selectionOutline;
     [SerializeField] private GameObject _backpackContainer;
@@ -69,6 +70,33 @@ public class InventoryManager : Singleton<InventoryManager>
     }
 
     public void ToggleBackpack() {
-        _backpackContainer.SetActive(!_backpackContainer.activeInHierarchy);
+        if (_backpackContainer.activeInHierarchy) {
+            CloseWindow[] allCloseWindows = FindObjectsOfType<CloseWindow>();
+
+            foreach (CloseWindow closeWindow in allCloseWindows)
+            {
+                closeWindow.WindowClose();
+            }
+        } else {
+            _backpackContainer.SetActive(true);
+        }
+    }
+
+    public void OpenBackPack() {
+        _backpackContainer.SetActive(true);
+    }
+
+    public void AddItemToBackpack(GameObject itemToAdd) {
+        foreach (Transform backpackSlot in _backpackSlots)
+        {
+            if (backpackSlot.childCount == 0) {
+                DraggableItem newItem = Instantiate(itemToAdd, backpackSlot.transform).GetComponent<DraggableItem>();
+                newItem.CurrentAmount = 1;
+                newItem.UpdateAmountLeftText();
+                return;
+            } 
+        }
+
+        Debug.Log("no available slots");
     }
 }

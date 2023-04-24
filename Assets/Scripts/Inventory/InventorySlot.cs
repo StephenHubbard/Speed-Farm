@@ -32,6 +32,5 @@ public class InventorySlot : MonoBehaviour
         } else {
             InventoryManager.Instance.CurrentEquippedItemNull();
         }
-
     }
 }

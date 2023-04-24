@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Building : MonoBehaviour
 {
     [SerializeField] private GameObject _buildingOutline;
+    [SerializeField] private GameObject _shopContainerToOpen;
 
     private SpriteRenderer _spriteRenderer;
+    private IIBuilding _building;
 
     private void Awake() {
+        _building = GetComponent<IIBuilding>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -17,8 +21,10 @@ public class Building : MonoBehaviour
     }
 
     private void OnMouseOver() {
-        if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("clicked building");
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            _shopContainerToOpen.SetActive(!_shopContainerToOpen.activeInHierarchy);
+            _building.OpenBuilding();
+            InventoryManager.Instance.OpenBackPack();
         }
     }
 

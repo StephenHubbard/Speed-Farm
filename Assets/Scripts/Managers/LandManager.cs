@@ -89,8 +89,9 @@ public class LandManager : Singleton<LandManager>
             }
 
             PlacedObject_Done currentPlacedObject = _grid.GetGridObject(selectedTile).PlacedObject;
+            Crop crop = currentPlacedObject?.GetComponent<Crop>();
 
-            if (currentPlacedObject && _grid.GetGridObject(selectedTile).y >= 1)
+            if (currentPlacedObject && !crop && _grid.GetGridObject(selectedTile).y >= 1)
             {
                 currentPlacedObject.DestroySelf();
 

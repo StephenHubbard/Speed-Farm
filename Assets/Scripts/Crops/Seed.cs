@@ -5,22 +5,19 @@ using TMPro;
 
 public class Seed : MonoBehaviour, IItem
 {
-    [SerializeField] private PlacedObjectTypeSO _placedObjectTypeSO;
-    [SerializeField] private int _startingAmountOfSeeds = 3;
+    public PlacedObjectTypeSO PlacedObjectTypeSO => _placedObjectTypeSO;
 
-    private TMP_Text _amountLeftText;
-    private int _currentAmountOfSeeds = 0;
+    [SerializeField] private PlacedObjectTypeSO _placedObjectTypeSO;
+   
     private Grid<GridGeneration.GridObject> _grid;
+    private DraggableItem _draggableItem;
 
     private void Awake() {
-        _amountLeftText = GetComponentInChildren<TMP_Text>();
+        _draggableItem = GetComponent<DraggableItem>();
     }
 
     private void Start() {
         _grid = GridGeneration.Instance.GetGrid();
-
-        _currentAmountOfSeeds = _startingAmountOfSeeds;
-        UpdateAmountLeftText();
     }
 
     public void EquipItem()
@@ -83,23 +80,15 @@ public class Seed : MonoBehaviour, IItem
                 _grid.GetGridObject(gridPosition.x, gridPosition.y).SetPlacedObject(placedObject);
             }
 
-            _currentAmountOfSeeds--;
+            _draggableItem.UseItem();
         }
-
-        UpdateAmountLeftText();
     }
 
     private bool EnoughSeeds(int amountOfPlotsSelected) {
-        if (amountOfPlotsSelected <= _currentAmountOfSeeds) {
+        if (amountOfPlotsSelected <= _draggableItem.CurrentAmount) {
             return false;
         } else {
             return true;
         }
     }
-
-    private void UpdateAmountLeftText() {
-        _amountLeftText.text = _currentAmountOfSeeds.ToString();
-    }
-
-    
 }

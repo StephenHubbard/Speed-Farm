@@ -14,4 +14,6 @@ public class BuyLand : MonoBehaviour, IItem
     {
         LandManager.Instance.BuyLand();
     }
+
+   
 }

@@ -1,8 +1,1 @@
-
 couple drag selection bugs.  ui and starting off grid. 
-
-crops are destroyed on buyying land if selected
-
-open seed building
-
-'x' button close windows

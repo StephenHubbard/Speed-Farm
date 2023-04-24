@@ -107,11 +107,6 @@ public class GridGeneration : Singleton<GridGeneration>
         }
     }
 
-    private void Update()
-    {
-        
-    }
-
     public void RefreshSelectedObjectType()
     {
         OnSelectedChanged?.Invoke(this, EventArgs.Empty);
