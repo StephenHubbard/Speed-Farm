@@ -50,9 +50,9 @@ public class Shovel : MonoBehaviour, IItem
         {
             PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).PlacedObject;
             bool doesOwnLand = _grid.GetGridObject(selectedTile).OwnsLand;
+            
             if (!placedObject && doesOwnLand)
             {
-
                 if (anyTilesAreGrass)
                 {
                     _grassTilemap.SetTile(selectedTile, _dirtTile);

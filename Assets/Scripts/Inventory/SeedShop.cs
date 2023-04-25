@@ -5,7 +5,7 @@ using UnityEngine;
 public class SeedShop : MonoBehaviour, IIBuilding
 {
     [SerializeField] private int _amountOfDifferentSeedsToSpawn = 2;
-    [SerializeField] private List<SeedTypeSO> _seedsForSale = new List<SeedTypeSO>();
+    [SerializeField] private List<ItemSO> _seedsForSale = new List<ItemSO>();
     [SerializeField] private Transform _shopSlotsContainer;
     [SerializeField] private List<ShopSlot> _shopSlots = new List<ShopSlot>();
 
@@ -33,7 +33,7 @@ public class SeedShop : MonoBehaviour, IIBuilding
             foreach (Transform shopSlot in _shopSlotsContainer)
             {
                 if (shopSlot.childCount == 0) {
-                    DraggableItem newItem = Instantiate(_seedsForSale[i].SeedInventoryPrefab, shopSlot.transform).GetComponent<DraggableItem>();
+                    DraggableItem newItem = Instantiate(_seedsForSale[i].IventoryPrefab, shopSlot.transform).GetComponent<DraggableItem>();
                     newItem.CurrentAmount = (Random.Range(1, 6));
                     newItem.UpdateAmountLeftText();
                     break;

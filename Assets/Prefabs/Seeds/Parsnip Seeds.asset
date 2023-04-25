@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
   m_Name: Parsnip Seeds
   m_EditorClassIdentifier: 
-  SeedInventoryPrefab: {fileID: 964910990228595825, guid: 390519e28fc58c64da0cc69967bdb603, type: 3}
-  PlacedObjectTypeSO: {fileID: 11400000, guid: 89d34116029a0bf41aa1bad08ee1f74f, type: 2}
-  StartingSeedCost: 2
+  IventoryPrefab: {fileID: 964910990228595825, guid: 390519e28fc58c64da0cc69967bdb603, type: 3}
+  ItemCost: 1

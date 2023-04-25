@@ -88,14 +88,13 @@ public class LandManager : Singleton<LandManager>
                 }
             }
 
-            PlacedObject_Done currentPlacedObject = _grid.GetGridObject(selectedTile).PlacedObject;
-            Crop crop = currentPlacedObject?.GetComponent<Crop>();
+            PlacedObject_Done fencePlacedObj = _grid.GetGridObject(selectedTile).PlacedObject;
 
-            if (currentPlacedObject && !crop && _grid.GetGridObject(selectedTile).y >= 1)
-            {
-                currentPlacedObject.DestroySelf();
+            if (fencePlacedObj && fencePlacedObj.PlacedObjectTypeSO == _fenceSO) {
 
-                List<Vector2Int> gridPositionList = currentPlacedObject.GetGridPositionList();
+                fencePlacedObj.DestroySelf();
+
+                List<Vector2Int> gridPositionList = fencePlacedObj.GetGridPositionList();
 
                 foreach (Vector2Int gridPosition in gridPositionList)
                 {
@@ -108,7 +107,9 @@ public class LandManager : Singleton<LandManager>
         {
             PlacedObject_Done currentPlacedObject = _grid.GetGridObject(tileToSpawnFence).PlacedObject;
 
-            if (currentPlacedObject)
+            Crop crop = currentPlacedObject?.GetComponent<Crop>();
+
+            if (currentPlacedObject && !crop && _grid.GetGridObject(tileToSpawnFence).y >= 1)
             {
                 currentPlacedObject.DestroySelf();
 
@@ -119,7 +120,7 @@ public class LandManager : Singleton<LandManager>
                     _grid.GetGridObject(gridPosition.x, gridPosition.y).ClearPlacedObject();
                 }
             }
-
+            
             Vector2Int adjPlacedObjOrigin = new Vector2Int(tileToSpawnFence.x, tileToSpawnFence.y);
 
             PlacedObject_Done adjPlacedObj = PlacedObject_Done.Create(tileToSpawnFence, adjPlacedObjOrigin, _fenceSO);

@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
   m_Name: Cauliflower Seeds
   m_EditorClassIdentifier: 
-  SeedInventoryPrefab: {fileID: 2774101734773323391, guid: 4812d6001ccc183459d0c33d1e080a2a, type: 3}
-  PlacedObjectTypeSO: {fileID: 11400000, guid: 9dda7b91ba1f1c4439412db8649bd21c, type: 2}
-  SeedCost: 3
+  IventoryPrefab: {fileID: 2774101734773323391, guid: 4812d6001ccc183459d0c33d1e080a2a, type: 3}
+  ItemCost: 3

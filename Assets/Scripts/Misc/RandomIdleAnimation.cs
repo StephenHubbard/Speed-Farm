@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class RandomIdleAnimation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Animator myAnimator;
+
+    private void Awake()
     {
-        
+        myAnimator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        if (!myAnimator) { return; }
+
+        AnimatorStateInfo state = myAnimator.GetCurrentAnimatorStateInfo(0);
+        myAnimator.Play(state.fullPathHash, -1, Random.Range(0f, 1f));
     }
 }

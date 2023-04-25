@@ -10,7 +10,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Transform ParentAfterDrag { get => _parentAfterDrag; set => _parentAfterDrag = value; }
     public Transform PreviousParent { get => _parentAfterDrag; set => _parentAfterDrag = value; }
     public int CurrentAmount { get => _currentAmount; set => _currentAmount = value; }
+    public ItemSO ItemSO => _itemSO;
 
+    [SerializeField] private ItemSO _itemSO;
     [SerializeField] private int _startingAmount;
 
     private int _currentAmount = 0;
@@ -107,23 +109,19 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
 
     private void BuyItem() {
-        SeedTypeSO seedTypeSO = GetComponent<Seed>().PlacedObjectTypeSO.SeedTypeSO;
+        if (EconomyManager.Instance.CurrentCoinAmount <= _itemSO.ItemCost) { return; }
 
-        if (EconomyManager.Instance.CurrentCoinAmount <= seedTypeSO.SeedCost) { return; }
+        EconomyManager.Instance.UpdateCurrentCoinAmount(-_itemSO.ItemCost);
 
-        EconomyManager.Instance.UpdateCurrentCoinAmount(-seedTypeSO.SeedCost);
+       if (GetComponent<DraggableItem>()) {
+            DraggableItem[] allItems = FindObjectsOfType<DraggableItem>(); 
 
-       if (GetComponent<Seed>()) {
-            PlacedObjectTypeSO placedObjectTypeSO = GetComponent<Seed>().PlacedObjectTypeSO;
-
-            Seed[] allSeeds = FindObjectsOfType<Seed>(); 
-
-            foreach (Seed seed in allSeeds)
+            foreach (DraggableItem item in allItems)
             {
-                PlacedObjectTypeSO potentialSeedMatchPlacedObjectTypeSO = seed.PlacedObjectTypeSO;
+                ItemSO potentialItemSO = item.ItemSO;
 
-                if (seed != this.GetComponent<Seed>() && potentialSeedMatchPlacedObjectTypeSO == placedObjectTypeSO) {
-                    seed.GetComponent<DraggableItem>().UpdateAmountLeft(1);
+                if (potentialItemSO == _itemSO && item != this) {
+                    item.GetComponent<DraggableItem>().UpdateAmountLeft(1);
                     UpdateAmountLeft(-1);
                     return;
                 }
