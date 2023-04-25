@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Seed : MonoBehaviour, IItem
+public class Placeable : MonoBehaviour, IItem
 {
     public PlacedObjectTypeSO PlacedObjectTypeSO => _placedObjectTypeSO;
 
@@ -57,9 +57,9 @@ public class Seed : MonoBehaviour, IItem
             }
         }
 
-        if (EnoughSeeds(validDirtTiles.Count))
+        if (EnoughInInventory(validDirtTiles.Count))
         {
-            Debug.Log("Not enough seeds!");
+            Debug.Log("Not enough in inventory!");
             return;
         }
 
@@ -84,7 +84,7 @@ public class Seed : MonoBehaviour, IItem
         }
     }
 
-    private bool EnoughSeeds(int amountOfPlotsSelected) {
+    private bool EnoughInInventory(int amountOfPlotsSelected) {
         if (amountOfPlotsSelected <= _draggableItem.CurrentAmount) {
             return false;
         } else {

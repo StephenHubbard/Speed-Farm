@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Potato
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: eff45693763b639409d7c92546e9ba9e, type: 3}
+  ItemSO: {fileID: 11400000, guid: e7af1551ef2076f4e8974af43c4bab6f, type: 2}
   Width: 1
   Height: 1
   SpriteLifeCycle:

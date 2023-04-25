@@ -22,6 +22,14 @@ public class Building : MonoBehaviour
 
     private void OnMouseOver() {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+
+            CloseWindow[] allCloseWindows = FindObjectsOfType<CloseWindow>();
+
+            foreach (CloseWindow closeWindow in allCloseWindows)
+            {
+                closeWindow.WindowClose();
+            }
+
             _shopContainerToOpen.SetActive(!_shopContainerToOpen.activeInHierarchy);
             _building.OpenBuilding();
             InventoryManager.Instance.OpenBackPack();

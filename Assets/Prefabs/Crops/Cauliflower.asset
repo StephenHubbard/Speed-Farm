@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cauliflower
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: bcea8d2541e728e44849476baf93a919, type: 3}
-  SeedTypeSO: {fileID: 11400000, guid: cb3e605995ce90b47ae0c224600b4a41, type: 2}
+  ItemSO: {fileID: 11400000, guid: cb3e605995ce90b47ae0c224600b4a41, type: 2}
   Width: 1
   Height: 1
   SpriteLifeCycle:

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Beet
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: bee8ec1c33df17a47b02c38634f9146b, type: 3}
+  ItemSO: {fileID: 11400000, guid: 55e5fcb7010d0b243bc8c6ce3072f5ca, type: 2}
   Width: 1
   Height: 1
   SpriteLifeCycle:

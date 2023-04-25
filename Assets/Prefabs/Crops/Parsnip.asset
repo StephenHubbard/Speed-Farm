@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Parsnip
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: 61663ef11aed8af4ab56e517602d4f32, type: 3}
-  SeedTypeSO: {fileID: 11400000, guid: 4cd492c443ffd3f4bb38456aac784824, type: 2}
+  ItemSO: {fileID: 11400000, guid: 4cd492c443ffd3f4bb38456aac784824, type: 2}
   Width: 1
   Height: 1
   SpriteLifeCycle:

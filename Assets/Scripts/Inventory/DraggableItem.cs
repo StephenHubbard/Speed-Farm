@@ -12,22 +12,21 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int CurrentAmount { get => _currentAmount; set => _currentAmount = value; }
     public ItemSO ItemSO => _itemSO;
 
-    [SerializeField] private ItemSO _itemSO;
     [SerializeField] private int _startingAmount;
 
     private int _currentAmount = 0;
-
     private Transform _parentAfterDrag;
     private Transform _previousParent;
-
     private Image _image;
     private TMP_Text _amountLeftText;
+    private ItemSO _itemSO;
 
 
     private void Awake() {
         _image = GetComponent<Image>();
         _amountLeftText = GetComponentInChildren<TMP_Text>();
         _currentAmount = _startingAmount;
+        _itemSO = GetComponent<Placeable>().PlacedObjectTypeSO.ItemSO;
     }
 
     private void Start() {
@@ -36,6 +35,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     
     public void UpdateAmountLeft(int amount) {
         _currentAmount += amount;
+
         UpdateAmountLeftText();
 
         if (_currentAmount <= 0) {

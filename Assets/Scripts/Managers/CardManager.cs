@@ -19,22 +19,19 @@ public class CardManager : Singleton<CardManager>
     private int _currentBuyCardAmount = 5;
     private int _currentAmountOfCards;
     private List<Card> _allCards = new List<Card>();
-    private Coroutine _spawnCardRoutine;
 
-    private Coroutine decreaseCardAmountRoutine;
+    private Coroutine _decreaseCardAmountRoutine;
 
     protected override void Awake() {
         base.Awake();
-
     }
 
     private void Start()
     {
         FindStartingCards();
         _currentAmountOfCards = _cardContainer.childCount;
-
         UpdateCardToBuyAmountText();
-        decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
+        _decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
     }
 
     public void SetCurrentCard(Card currentCard)
@@ -59,9 +56,9 @@ public class CardManager : Singleton<CardManager>
             SetCurrentCard(_allCards[0]);
         }
 
-        if (decreaseCardAmountRoutine != null) { StopCoroutine(decreaseCardAmountRoutine); }
+        if (_decreaseCardAmountRoutine != null) { StopCoroutine(_decreaseCardAmountRoutine); }
 
-        decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
+        _decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
 
     }
 
@@ -96,13 +93,6 @@ public class CardManager : Singleton<CardManager>
         } else if (_currentAmountOfCards == 0) {
             _selectionOutline.gameObject.SetActive(false);
             CurrentCard = null;
-        }
-
-        if (_currentAmountOfCards < _maxAmountOfCards) {
-            if (_spawnCardRoutine != null) {
-                StopCoroutine(_spawnCardRoutine);
-            }
-            // _spawnCardRoutine = StartCoroutine(SpawnCardsRoutine());
         }
 
         Destroy(cardCompleted.gameObject);

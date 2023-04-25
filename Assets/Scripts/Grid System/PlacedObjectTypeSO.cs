@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlacedObjectTypeSO : ScriptableObject
 {
     public Transform Prefab;
-    public ItemSO SeedTypeSO;
+    public ItemSO ItemSO;
     public int Width;
     public int Height;
     public Sprite[] SpriteLifeCycle;
