@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
+  m_Name: Beet
+  m_EditorClassIdentifier: 
+  IventoryPrefab: {fileID: 964910990228595825, guid: a27f3190c3bf8a04dabdefc3f284dd71, type: 3}
+  resourceSprite: {fileID: 21300000, guid: 0e83345bedd724b4db7c523ab9963ab2, type: 3}
+  ItemCost: 2

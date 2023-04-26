@@ -3,31 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
+    private Camera cam;
+
+    private void Awake() {
+        cam = Camera.main;
+    }
+
     private void Update() {
-        if (Input.GetMouseButtonDown(1)) {
-            // int x = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).x;
-            // int y = GridGeneration.Instance.GetGrid().GetGridObject(UtilsClass.GetMouseWorldPosition()).y;
+        // RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-            // Vector3Int tilePosition = new Vector3Int(x, y, 0);
+        // if (hit.collider != null)
+        // {
+        //     Debug.Log(hit.collider.gameObject.name);
+        // }
 
-            // Debug.Log(x);
-            // Debug.Log(y);
+        ExitApplication();
+    }
 
-            var grid = GridGeneration.Instance.GetGrid();
-
-            // Debug.Log(grid.GetGridObject(tilePosition).PlacedObject);
-            // Debug.Log(grid.GetGridObject(tilePosition).OwnsLand);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+    private void ExitApplication() {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             Application.Quit();
         }
-
-        // if (Input.GetKeyDown(KeyCode.R)) {
-        //     SceneManager.LoadScene(0);
-        // }
     }
 }

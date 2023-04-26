@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Sprinkler ItemSO
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 964910990228595825, guid: 02c7a29470ec162468bd5367a1b59030, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 20
+  ItemSellAmount: 3
+  thisItemType: 1

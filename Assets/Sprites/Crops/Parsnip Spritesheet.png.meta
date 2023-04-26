@@ -224,8 +224,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: df5704a3a4828e74cb7e8fb293756dfd
-      internalID: 121087222
+      spriteID: cdbd59bc01995b84ba528ce0a265a266
+      internalID: -1475362863
       vertices: []
       indices: 
       edges: []
@@ -246,7 +246,7 @@ TextureImporter:
       Parsnip Spritesheet_2: 1032685859
       Parsnip Spritesheet_3: 2043319411
       Parsnip Spritesheet_1: -1912128914
-      Parsnip Spritesheet_5: 121087222
+      Parsnip Spritesheet_5: -1475362863
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

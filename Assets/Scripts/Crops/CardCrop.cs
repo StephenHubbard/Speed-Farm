@@ -41,7 +41,7 @@ public class CardCrop : MonoBehaviour
     }
 
     public void SetImageSprite() {
-        _image.sprite = _placedObjectTypeSO.SpriteLifeCycle[_placedObjectTypeSO.SpriteLifeCycle.Length - 1];
+        _image.sprite = _placedObjectTypeSO.HarvestedSprite;
     }
 
     public void CropCollected() {

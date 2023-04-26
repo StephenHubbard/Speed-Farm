@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Garlic
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: f35c563378a2b854a8b4c70e84913112, type: 3}
-  ItemSO: {fileID: 11400000, guid: 57da55b94c101514b98b1272b4493a55, type: 2}
+  ItemSO: {fileID: 11400000, guid: 32bf0cb01ffe138479f6c7a53c7f576d, type: 2}
   Width: 1
   Height: 1
+  HarvestedSprite: {fileID: 21300000, guid: 424438c5d4a599d4b9181bf2f52a9393, type: 3}
   SpriteLifeCycle:
   - {fileID: 929503274, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}
   - {fileID: 392037041, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}
   - {fileID: -1211555213, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}
   - {fileID: -889550166, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}
   - {fileID: -1893036972, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}
-  - {fileID: 982018873, guid: 86a0965ba6dac10448c3e48abdfd54be, type: 3}

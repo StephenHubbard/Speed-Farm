@@ -22,10 +22,13 @@ public class ItemShop : MonoBehaviour, IIBuilding
         }
     }
 
+    private void Start() {
+        _refreshItemsCoroutine = StartCoroutine(RefreshItemsRoutine());
+    }
+
     public void OpenBuilding()
     {
         if (_refreshItemsCoroutine != null) { StopCoroutine(_refreshItemsCoroutine); }
-
         _refreshItemsCoroutine = StartCoroutine(RefreshItemsRoutine());
 
         AddItemsToShop(_amountOfItemsToRefreshShop);
@@ -34,7 +37,6 @@ public class ItemShop : MonoBehaviour, IIBuilding
             _hasBeenOpened = true;
             AddItemsToShop(_amountOfStartingItems);
         }
-
     }
 
     private void AddItemsToShop(int amountOfItemsToAdd) {

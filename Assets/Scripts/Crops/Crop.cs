@@ -5,6 +5,7 @@ using UnityEngine;
 public class Crop : MonoBehaviour
 {
     public bool IsFullyGrown { get; private set; }
+    public PlacedObjectTypeSO PlacedObjectTypeSO => _placedObjectTypeSO;
 
     [SerializeField] private float _stageGrowTime = 0.5f;
 
@@ -27,21 +28,21 @@ public class Crop : MonoBehaviour
         }
     }
 
-    public void SellCrop() {
-        CardManager.Instance.CropHarvested(_placedObjectTypeSO);
-    }
+    // public void SellCrop() {
+    //     CardManager.Instance.CropHarvested(_placedObjectTypeSO);
+    // }
 
     public void StraightToFullyGrown() {
         IsFullyGrown = true;
     }
 
     private IEnumerator GrowCropRoutine() {
-        while (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length - 1)
+        while (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length)
         {
             _spriteRenderer.sprite = _placedObjectTypeSO.SpriteLifeCycle[_cropStage];
             _cropStage++;
 
-            if (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length - 1) {
+            if (_cropStage < _placedObjectTypeSO.SpriteLifeCycle.Length) {
                 yield return new WaitForSeconds(_stageGrowTime);
             } else {
                 yield return null;

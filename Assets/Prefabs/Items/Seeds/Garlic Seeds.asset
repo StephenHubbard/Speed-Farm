@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Garlic Seeds
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 7495144529066526655, guid: b6724e4c6bea53541840ccb82a18c2e9, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 1
+  ItemSellAmount: 3
+  thisItemType: 2

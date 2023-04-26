@@ -16,6 +16,9 @@ public class WeedManager : MonoBehaviour
     [SerializeField] private PlacedObjectTypeSO _treeSO;
     [Range(0, 100)]
     [SerializeField] private int _treeChance;
+    [SerializeField] private PlacedObjectTypeSO _boulderSO;
+    [Range(0, 100)]
+    [SerializeField] private int _boulderChance;
     [SerializeField] private Tilemap _grassTilemap;
     [SerializeField] private Tile _dirtTile;
     [SerializeField] private List<TileBase> _grassTilesList = new List<TileBase>();
@@ -27,6 +30,7 @@ public class WeedManager : MonoBehaviour
         _grid = GridGeneration.Instance.GetGrid();
 
         SpawnResource(_treeSO, _treeChance);
+        SpawnResource(_boulderSO, _boulderChance);
         SpawnResource(_rockSO, _rockChance);
         SpawnResource(_weedSO, _weedChance);
     }

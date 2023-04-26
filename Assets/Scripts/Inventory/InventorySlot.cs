@@ -10,8 +10,12 @@ public class InventorySlot : MonoBehaviour
         _item = GetComponentInChildren<IItem>();
     }
 
-    public void FindSlottedItem(IItem item) {
-        _item = item;
+    public void FindSlottedItem(DraggableItem draggableItem) {
+        IItem item = draggableItem.GetComponent<IItem>();
+
+        if (item != null) {
+            _item = item;
+        }
     }
 
     public void FindSlottedItem() {

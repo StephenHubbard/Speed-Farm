@@ -11,5 +11,7 @@ public class Taxman : MonoBehaviour, INPC
         int amountOfTaxesOwed = LandManager.Instance.AmountOfPlotsOwned * taxPerPlotRate;
 
         EconomyManager.Instance.UpdateCurrentCoinAmount(-amountOfTaxesOwed);
+
+        EventLogManager.Instance.NewEventLog("You paid a total of " + amountOfTaxesOwed.ToString() + " in taxes.");
     }
 }

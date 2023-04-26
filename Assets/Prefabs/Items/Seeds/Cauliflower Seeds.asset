@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Cauliflower Seeds
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 2774101734773323391, guid: 4812d6001ccc183459d0c33d1e080a2a, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 3
+  ItemSellAmount: 3
+  thisItemType: 2

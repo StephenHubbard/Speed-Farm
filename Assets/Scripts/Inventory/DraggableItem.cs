@@ -13,20 +13,19 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public ItemSO ItemSO => _itemSO;
 
     [SerializeField] private int _startingAmount;
+    [SerializeField] private ItemSO _itemSO;
 
     private int _currentAmount = 0;
     private Transform _parentAfterDrag;
     private Transform _previousParent;
     private Image _image;
     private TMP_Text _amountLeftText;
-    private ItemSO _itemSO;
 
 
     private void Awake() {
         _image = GetComponent<Image>();
         _amountLeftText = GetComponentInChildren<TMP_Text>();
         _currentAmount = _startingAmount;
-        _itemSO = GetComponent<Placeable>().PlacedObjectTypeSO.ItemSO;
     }
 
     private void Start() {
@@ -39,6 +38,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         UpdateAmountLeftText();
 
         if (_currentAmount <= 0) {
+            InventoryManager.Instance.CurrentEquippedItemNull();
             Destroy(this.gameObject);
         }
     }
@@ -50,6 +50,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _previousParent = transform.parent;
         InventorySlot inventorySlot = GetComponentInParent<InventorySlot>();
         inventorySlot?.SlottedItemNull();
+        CrateSlot crateSlot = GetComponentInParent<CrateSlot>();
+        crateSlot?.ItemRemoved(_itemSO, _currentAmount);
         _parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
@@ -76,9 +78,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.position = transform.parent.position;
         _image.raycastTarget = true;
 
-        IItem item = GetComponent<IItem>();
         InventorySlot inventorySlot = GetComponentInParent<InventorySlot>();
-        inventorySlot?.FindSlottedItem(item);
+        inventorySlot?.FindSlottedItem(this);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -99,6 +100,35 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
             if (shopSlot) {
                 BuyItem();
+                return;
+            }
+
+            InventorySlot thisInventorySlot = GetComponentInParent<InventorySlot>();
+
+            if (!thisInventorySlot && !shopSlot) {
+                Transform[] allInventorySlots = InventoryManager.Instance.InventorySlots;
+
+                foreach (Transform inventorySlot in allInventorySlots)
+                {
+                    if (inventorySlot.transform.childCount == 0) {
+                        transform.SetParent(inventorySlot.transform);
+                        transform.position = transform.parent.position;
+                        inventorySlot.GetComponent<InventorySlot>().FindSlottedItem(this);
+                        return;
+                    }
+                }
+            } else if (thisInventorySlot && Backpack.Instance.BackPackContainer.activeInHierarchy) {
+                Transform[] allBackPackSlots = Backpack.Instance.BackpackSlots;
+
+                foreach (Transform backPackSlot in allBackPackSlots)
+                {
+                    if (backPackSlot.transform.childCount == 0)
+                    {
+                        transform.SetParent(backPackSlot.transform);
+                        transform.position = transform.parent.position;
+                        return;
+                    }
+                }
             }
         }
     }
@@ -113,22 +143,20 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         EconomyManager.Instance.UpdateCurrentCoinAmount(-_itemSO.ItemCost);
 
-       if (GetComponent<DraggableItem>()) {
-            DraggableItem[] allItems = FindObjectsOfType<DraggableItem>(); 
+        DraggableItem[] allItems = FindObjectsOfType<DraggableItem>(); 
 
-            foreach (DraggableItem item in allItems)
-            {
-                ItemSO potentialItemSO = item.ItemSO;
+        foreach (DraggableItem item in allItems)
+        {
+            ItemSO potentialItemSO = item.ItemSO;
 
-                if (potentialItemSO == _itemSO && item != this) {
-                    item.GetComponent<DraggableItem>().UpdateAmountLeft(1);
-                    UpdateAmountLeft(-1);
-                    return;
-                }
+            if (potentialItemSO == _itemSO && item != this) {
+                item.GetComponent<DraggableItem>().UpdateAmountLeft(1);
+                UpdateAmountLeft(-1);
+                return;
             }
+        }
 
-            InventoryManager.Instance.AddItemToBackpack(this.gameObject);
-       }
+        Backpack.Instance.AddItemToBackpack(_itemSO, true);
 
         UpdateAmountLeft(-1);
     }

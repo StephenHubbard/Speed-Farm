@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Parsnip Seeds
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 964910990228595825, guid: 390519e28fc58c64da0cc69967bdb603, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 1
+  ItemSellAmount: 3
+  thisItemType: 2

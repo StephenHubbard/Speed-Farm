@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Beet Seeds
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 4730952702851111655, guid: 76d21adf7f10abf42a9a8da8d912af66, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 1
+  ItemSellAmount: 3
+  thisItemType: 2

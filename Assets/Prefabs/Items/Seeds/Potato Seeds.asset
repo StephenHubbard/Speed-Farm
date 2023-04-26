@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Potato Seeds
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 7680310516160103066, guid: be9d9f2c74140d447a546b7fc801bbd9, type: 3}
+  resourceSprite: {fileID: 0}
   ItemCost: 1
+  ItemSellAmount: 3
+  thisItemType: 2

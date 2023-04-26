@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Potato
   m_EditorClassIdentifier: 
   Prefab: {fileID: 1670519970673385737, guid: eff45693763b639409d7c92546e9ba9e, type: 3}
-  ItemSO: {fileID: 11400000, guid: e7af1551ef2076f4e8974af43c4bab6f, type: 2}
+  ItemSO: {fileID: 11400000, guid: d9e603a0da7eab54d81781caf409fb0e, type: 2}
   Width: 1
   Height: 1
+  HarvestedSprite: {fileID: 21300000, guid: af02412ddf55e79438a7bab8b573b9aa, type: 3}
   SpriteLifeCycle:
   - {fileID: -886967526, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
   - {fileID: -1631872710, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
   - {fileID: -428480895, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
   - {fileID: 1178243024, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
   - {fileID: 422313536, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}
-  - {fileID: -1485325348, guid: a36a48f893301b74587530c9bdf4e4ef, type: 3}

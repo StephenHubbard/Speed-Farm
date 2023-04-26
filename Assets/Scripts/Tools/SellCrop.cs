@@ -26,7 +26,10 @@ public class SellCrop : MonoBehaviour, IItem
 
             if (placedObject != null && crop && crop.IsFullyGrown)
             {
-                crop.SellCrop();
+                PlacedObjectTypeSO placedObjectTypeSO = crop.PlacedObjectTypeSO;
+                ItemSO itemSO = placedObjectTypeSO.ItemSO;
+
+                Backpack.Instance.AddItemToBackpackDumpList(itemSO);
 
                 placedObject.DestroySelf();
 

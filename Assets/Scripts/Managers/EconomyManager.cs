@@ -38,6 +38,8 @@ public class EconomyManager : Singleton<EconomyManager>
     public void IncreaseBuyLandPlotAmount() {
         _currentAmountToBuyLandPlot += 1;
         UpdateText();
+
+        EventLogManager.Instance.NewEventLog("Each plot of land has increased to total of " + _currentAmountToBuyLandPlot.ToString() + ".");
     }
 
     private void UpdateText() {

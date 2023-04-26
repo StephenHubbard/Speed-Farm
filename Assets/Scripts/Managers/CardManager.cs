@@ -28,10 +28,10 @@ public class CardManager : Singleton<CardManager>
 
     private void Start()
     {
-        FindStartingCards();
         _currentAmountOfCards = _cardContainer.childCount;
         UpdateCardToBuyAmountText();
         _decreaseCardAmountRoutine = StartCoroutine(DecreaseCardCostAmountRoutine());
+        _selectionOutline.gameObject.SetActive(false);
     }
 
     public void SetCurrentCard(Card currentCard)
@@ -107,13 +107,20 @@ public class CardManager : Singleton<CardManager>
         }
     }
 
+    public void SetSelectionOutline() {
+        StartCoroutine(SetSelectionOutlineRoutine());
+    }
+
     private IEnumerator SetSelectionOutlineRoutine()
     {
         yield return null;
-        _selectionOutline.transform.position = CurrentCard.transform.position;
-
+        
+        if (_selectionOutline.gameObject.activeInHierarchy) {
+            _selectionOutline.transform.position = CurrentCard.transform.position;
+        }
     }
 
+    // inactive script
     private void FindStartingCards()
     {
         foreach (Card card in _cardContainer.GetComponentsInChildren<Card>())

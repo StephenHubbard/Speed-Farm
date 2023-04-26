@@ -5,22 +5,24 @@ using UnityEngine.EventSystems;
 
 public class Building : MonoBehaviour
 {
+    public GameObject ShopContainerToOpen => _shopContainerToOpen;
+
     [SerializeField] private GameObject _buildingOutline;
     [SerializeField] private GameObject _shopContainerToOpen;
 
-    private SpriteRenderer _spriteRenderer;
     private IIBuilding _building;
 
     private void Awake() {
         _building = GetComponent<IIBuilding>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    private void OnMouseEnter() {
-        _buildingOutline.SetActive(true);
     }
 
     private void OnMouseOver() {
+        if (!EventSystem.current.IsPointerOverGameObject()) {
+            _buildingOutline.SetActive(true);
+        } else {
+            _buildingOutline.SetActive(false);
+        }
+
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
 
             CloseWindow[] allCloseWindows = FindObjectsOfType<CloseWindow>();
@@ -31,13 +33,14 @@ public class Building : MonoBehaviour
             }
 
             _shopContainerToOpen.SetActive(!_shopContainerToOpen.activeInHierarchy);
-            _building.OpenBuilding();
-            InventoryManager.Instance.OpenBackPack();
+            if (_building != null) {
+                _building.OpenBuilding();
+            }
+            Backpack.Instance.OpenBackPack();
         }
     }
 
     private void OnMouseExit() {
         _buildingOutline.SetActive(false);
     }
-
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ShopSlot : MonoBehaviour
 {
     // Start is called before the first frame update

@@ -1,8 +1,9 @@
-Some kind of rent payment that ticks down gold based on how much land you own
-Could have an npc tax collect roaming around the town and whenever he gets to farm you pay tax
-(water bill, real estate, tax man)
 
 have different types of cards to buy
 veggie card / fruit card / animal card (eggs, milk, sheep hair, etc)
 
 lose condition?  One orbit before collector comes back.  Flash a loss warning or something along those lines when they're getting close. 
+
+npc's talk to each other, have dialogue with player, etc
+
+maybe certain npc's only come on certain days of the week or months?

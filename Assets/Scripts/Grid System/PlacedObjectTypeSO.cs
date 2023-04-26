@@ -9,6 +9,7 @@ public class PlacedObjectTypeSO : ScriptableObject
     public ItemSO ItemSO;
     public int Width;
     public int Height;
+    public Sprite HarvestedSprite;
     public Sprite[] SpriteLifeCycle;
 
     public List<Vector2Int> GetGridPositionList(Vector2Int origin)
