@@ -11,8 +11,10 @@ public class Building : MonoBehaviour
     [SerializeField] private GameObject _shopContainerToOpen;
 
     private IIBuilding _building;
+    private MoveWindowOffScreen _moveWindowOffScreen;
 
     private void Awake() {
+        _moveWindowOffScreen = _shopContainerToOpen.GetComponentInChildren<MoveWindowOffScreen>();
         _building = GetComponent<IIBuilding>();
     }
 
@@ -25,18 +27,12 @@ public class Building : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
 
-            CloseWindow[] allCloseWindows = FindObjectsOfType<CloseWindow>();
-
-            foreach (CloseWindow closeWindow in allCloseWindows)
+            if (!_shopContainerToOpen.gameObject.activeInHierarchy)
             {
-                closeWindow.WindowClose();
+                _shopContainerToOpen.gameObject.SetActive(true);
             }
 
-            _shopContainerToOpen.SetActive(!_shopContainerToOpen.activeInHierarchy);
-            if (_building != null) {
-                _building.OpenBuilding();
-            }
-            Backpack.Instance.OpenBackPack();
+            _moveWindowOffScreen.OpenWindow();
         }
     }
 

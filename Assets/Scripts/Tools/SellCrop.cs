@@ -29,7 +29,7 @@ public class SellCrop : MonoBehaviour, IItem
                 PlacedObjectTypeSO placedObjectTypeSO = crop.PlacedObjectTypeSO;
                 ItemSO itemSO = placedObjectTypeSO.ItemSO;
 
-                Backpack.Instance.AddItemToBackpackDumpList(itemSO);
+                Backpack.Instance.AddItemToBackpack(itemSO, false);
 
                 placedObject.DestroySelf();
 

@@ -25,17 +25,15 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void Awake() {
         _image = GetComponent<Image>();
         _amountLeftText = GetComponentInChildren<TMP_Text>();
-        _currentAmount = _startingAmount;
+        UpdateAmountLeft(_startingAmount);
     }
 
-    private void Start() {
+    private void Update() {
         UpdateAmountLeftText();
     }
     
     public void UpdateAmountLeft(int amount) {
         _currentAmount += amount;
-
-        UpdateAmountLeftText();
 
         if (_currentAmount <= 0) {
             InventoryManager.Instance.CurrentEquippedItemNull();
@@ -60,7 +58,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void UseItem() {
         UpdateAmountLeft(-1);
-        UpdateAmountLeftText();
     }
 
     public void OnDrag(PointerEventData eventData)

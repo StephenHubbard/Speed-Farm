@@ -4,26 +4,45 @@ using UnityEngine;
 
 public class MoveWindowOffScreen : MonoBehaviour
 {   
-    [SerializeField] private Vector3 _moveLocation;
+    public bool IsBackpack => _isBackPack;
 
-    private Transform _backPackContainer;
+    [SerializeField] private bool _isBackPack;
+
+    private Transform _windowContainer;
+    private Vector2 _startingAnchoredPosition;
 
     private void Awake() {
-        _backPackContainer = transform.parent;
+        _windowContainer = transform.parent;
+        _startingAnchoredPosition = _windowContainer.GetComponent<RectTransform>().anchoredPosition;
     }
 
     public void OpenWindow() {
-        _backPackContainer.position = new Vector3(_backPackContainer.position.x - _moveLocation.x, _backPackContainer.position.y, 0);
+        CloseAllWindowsButBackpack();
+
+        if (!_isBackPack) {
+            Backpack.Instance.OpenBackPack();
+        }
+
+        _windowContainer.GetComponent<RectTransform>().anchoredPosition = _startingAnchoredPosition;
     }
 
     public void CloseWindow() {
-        _backPackContainer.position = new Vector3(_backPackContainer.position.x + _moveLocation.x, _backPackContainer.position.y, 0);
+        _windowContainer.GetComponent<RectTransform>().anchoredPosition = new Vector2(_startingAnchoredPosition.x + 3000f, _startingAnchoredPosition.y);
 
-        CloseWindow[] allCloseWindows = FindObjectsOfType<CloseWindow>();
+        if (_isBackPack) {
+            CloseAllWindowsButBackpack();
+        }
+    }
 
-        foreach (CloseWindow closeWindow in allCloseWindows)
+    private void CloseAllWindowsButBackpack() {
+        MoveWindowOffScreen[] allWindows = FindObjectsOfType<MoveWindowOffScreen>();
+
+        foreach (MoveWindowOffScreen window in allWindows)
         {
-            closeWindow.WindowClose();
+            if (!window.IsBackpack)
+            {
+                window.CloseWindow();
+            }
         }
     }
 }

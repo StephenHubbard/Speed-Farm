@@ -88986,82 +88986,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61bf18e23a2d8b54d89978ac6333369d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &216045677
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 216045678}
-  - component: {fileID: 216045680}
-  - component: {fileID: 216045679}
-  m_Layer: 5
-  m_Name: Inside Sprite
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &216045678
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216045677}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 732324275}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 25, y: 25}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &216045679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216045677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.49803925, g: 0.3529412, b: 0.19215688, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c6a05b71db2f53141835a897a6168a41, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &216045680
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 216045677}
-  m_CullTransparentMesh: 1
 --- !u!1 &218176946
 GameObject:
   m_ObjectHideFlags: 0
@@ -89446,7 +89370,7 @@ GameObject:
   - component: {fileID: 245461082}
   - component: {fileID: 245461081}
   - component: {fileID: 245461080}
-  - component: {fileID: 245461079}
+  - component: {fileID: 245461083}
   m_Layer: 5
   m_Name: Close Button
   m_TagString: Untagged
@@ -89475,19 +89399,6 @@ RectTransform:
   m_AnchoredPosition: {x: -15.700012, y: -16}
   m_SizeDelta: {x: 43.75, y: 43.75}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &245461079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 245461077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25c74f81e8ec18844a2ff7661c313bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBackpack: 0
 --- !u!114 &245461080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89532,9 +89443,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 245461079}
-        m_TargetAssemblyTypeName: CloseWindow, Assembly-CSharp
-        m_MethodName: WindowClose
+      - m_Target: {fileID: 245461083}
+        m_TargetAssemblyTypeName: MoveWindowOffScreen, Assembly-CSharp
+        m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -89582,6 +89493,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245461077}
   m_CullTransparentMesh: 1
+--- !u!114 &245461083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245461077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8539ef38706c67418a596f7a3818431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isBackPack: 0
 --- !u!4 &247480529 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4638170694559020750, guid: 8fa400f229b77684aa3b618bc7f9508d, type: 3}
@@ -95410,7 +95334,7 @@ GameObject:
   - component: {fileID: 587013563}
   - component: {fileID: 587013562}
   - component: {fileID: 587013561}
-  - component: {fileID: 587013560}
+  - component: {fileID: 587013564}
   m_Layer: 5
   m_Name: Close Button
   m_TagString: Untagged
@@ -95439,19 +95363,6 @@ RectTransform:
   m_AnchoredPosition: {x: -15.700012, y: -16}
   m_SizeDelta: {x: 43.75, y: 43.75}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &587013560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 587013558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25c74f81e8ec18844a2ff7661c313bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBackpack: 0
 --- !u!114 &587013561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95496,9 +95407,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 587013560}
-        m_TargetAssemblyTypeName: CloseWindow, Assembly-CSharp
-        m_MethodName: WindowClose
+      - m_Target: {fileID: 587013564}
+        m_TargetAssemblyTypeName: MoveWindowOffScreen, Assembly-CSharp
+        m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -95546,6 +95457,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587013558}
   m_CullTransparentMesh: 1
+--- !u!114 &587013564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587013558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8539ef38706c67418a596f7a3818431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isBackPack: 0
 --- !u!1001 &589659122
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98578,154 +98502,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
---- !u!1 &732324274
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 732324275}
-  - component: {fileID: 732324279}
-  - component: {fileID: 732324278}
-  - component: {fileID: 732324277}
-  - component: {fileID: 732324276}
-  m_Layer: 5
-  m_Name: Minimize Button
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &732324275
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732324274}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 216045678}
-  m_Father: {fileID: 1171140856}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.699982, y: -15.700012}
-  m_SizeDelta: {x: 43.75, y: 43.75}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &732324276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732324274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f1562af19f6b3943ac031d35ee88bc1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maximizeButton: {fileID: 1472104798}
---- !u!114 &732324277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732324274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 732324278}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 732324276}
-        m_TargetAssemblyTypeName: MinimizeWindow, Assembly-CSharp
-        m_MethodName: WindowClose
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &732324278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732324274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0a9424491dba98408730e658e72e568, type: 3}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &732324279
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732324274}
-  m_CullTransparentMesh: 1
 --- !u!1 &735732892
 GameObject:
   m_ObjectHideFlags: 0
@@ -106612,9 +106388,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1397665138}
-        m_TargetAssemblyTypeName: Backpack, Assembly-CSharp
-        m_MethodName: ToggleBackpack
+      - m_Target: {fileID: 1019489482}
+        m_TargetAssemblyTypeName: MoveWindowOffScreen, Assembly-CSharp
+        m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -106674,7 +106450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8539ef38706c67418a596f7a3818431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveLocation: {x: 300, y: 0, z: 0}
+  _isBackPack: 1
 --- !u!1001 &1024803327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -109078,7 +108854,6 @@ RectTransform:
   m_Children:
   - {fileID: 2004387379}
   - {fileID: 117179598}
-  - {fileID: 732324275}
   m_Father: {fileID: 1322422805}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -112183,7 +111958,7 @@ GameObject:
   - component: {fileID: 1378625302}
   - component: {fileID: 1378625301}
   - component: {fileID: 1378625300}
-  - component: {fileID: 1378625299}
+  - component: {fileID: 1378625303}
   m_Layer: 5
   m_Name: Close Button
   m_TagString: Untagged
@@ -112212,19 +111987,6 @@ RectTransform:
   m_AnchoredPosition: {x: -15.700012, y: -16}
   m_SizeDelta: {x: 43.75, y: 43.75}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1378625299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378625297}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25c74f81e8ec18844a2ff7661c313bb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBackpack: 0
 --- !u!114 &1378625300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112269,9 +112031,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1378625299}
-        m_TargetAssemblyTypeName: CloseWindow, Assembly-CSharp
-        m_MethodName: WindowClose
+      - m_Target: {fileID: 1378625303}
+        m_TargetAssemblyTypeName: MoveWindowOffScreen, Assembly-CSharp
+        m_MethodName: CloseWindow
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -112319,6 +112081,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378625297}
   m_CullTransparentMesh: 1
+--- !u!114 &1378625303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378625297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8539ef38706c67418a596f7a3818431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isBackPack: 0
 --- !u!1 &1397665133
 GameObject:
   m_ObjectHideFlags: 0
@@ -112333,7 +112108,7 @@ GameObject:
   - component: {fileID: 1397665135}
   - component: {fileID: 1397665138}
   m_Layer: 5
-  m_Name: Backpack UI
+  m_Name: Backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112405,7 +112180,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1397665138}
         m_TargetAssemblyTypeName: Backpack, Assembly-CSharp
-        m_MethodName: OpenBackPack
+        m_MethodName: ToggleBackpack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -112465,6 +112240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 066dbfc634bf461468e985b0db0b3b85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveWindowOffScreen: {fileID: 1019489482}
   _backPackDefault: {fileID: 21300000, guid: f3bee59425e615a49bb53b88ed02cc3b, type: 3}
   _backPackHighlight: {fileID: 21300000, guid: 9e2e33623bf6daf408340063e19363f6, type: 3}
   _backpackSlots:
@@ -118623,7 +118399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.4172058, y: 0.7307129}
+  m_AnchoredPosition: {x: 0.4171753, y: 0.7307129}
   m_SizeDelta: {x: -113.3823, y: -115.4574}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1814418231
@@ -120045,7 +119821,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -300.2556, y: 413.33508}
-  m_SizeDelta: {x: 562.9178, y: 796.3715}
+  m_SizeDelta: {x: 562.9177, y: 796.3716}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1926527267
 GameObject:

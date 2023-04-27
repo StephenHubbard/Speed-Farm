@@ -8,27 +8,26 @@ public class Backpack : Singleton<Backpack>, IPointerEnterHandler, IPointerExitH
 {
     public GameObject BackPackContainer => _backpackContainer;
     public Transform[] BackpackSlots => _backpackSlots;
-    public bool _backPackOpen { get; private set; }
+    public MoveWindowOffScreen MoveWindowOffScreen => _moveWindowOffScreen;
 
+    [SerializeField] private MoveWindowOffScreen _moveWindowOffScreen;
     [SerializeField] private Sprite _backPackDefault;
     [SerializeField] private Sprite _backPackHighlight;
     [SerializeField] private Transform[] _backpackSlots;
     [SerializeField] private GameObject _backpackContainer;
 
-    private List<ItemSO> _itemsToAddToBackpack = new List<ItemSO>();
     private Image _image;
-    private MoveWindowOffScreen _moveWindowOffScreen;
+    private bool _backpackContainerIsOpen;
 
 
     protected override void Awake() {
         base.Awake();
         
         _image = GetComponent<Image>();
-        _moveWindowOffScreen = _backpackContainer.GetComponentInChildren<MoveWindowOffScreen>();
     }
 
     private void Start() {
-        _backPackOpen = _backpackContainer.gameObject.activeInHierarchy;
+        _backpackContainerIsOpen = _backpackContainer.activeInHierarchy;
     }
 
     private void Update() {
@@ -45,77 +44,49 @@ public class Backpack : Singleton<Backpack>, IPointerEnterHandler, IPointerExitH
         _image.sprite = _backPackDefault;
     }
 
+    public void OpenBackPack() {
+        _backpackContainerIsOpen = true;
+        _moveWindowOffScreen.OpenWindow();
+    }
+
     public void ToggleBackpack()
     {
-        if (_backPackOpen)
-        {
-            _backPackOpen = false;
-
+       if (_backpackContainerIsOpen) {
+            _backpackContainerIsOpen = false;
             _moveWindowOffScreen.CloseWindow();
-        }
-        else
-        {
-            OpenBackPack();
-        }
-    }
-
-    public void OpenBackPack()
-    {
-        if (_backPackOpen) { return; }
-
-        _moveWindowOffScreen.OpenWindow();
-        _backPackOpen = true;
-        DumpItemsInBackpack();
-    }
-
-    public void AddItemToBackpackDumpList(ItemSO itemSO) {
-        _itemsToAddToBackpack.Add(itemSO);
-
-        DumpItemsInBackpack();
-    }
-
-    private void DumpItemsInBackpack() {
-        foreach (ItemSO item in _itemsToAddToBackpack)
-        {
-            AddItemToBackpack(item, false);
-        }
-
-        _itemsToAddToBackpack.Clear();
+       } else {
+            _backpackContainerIsOpen = true;
+            _moveWindowOffScreen.OpenWindow();
+       }
     }
 
     public void AddItemToBackpack(ItemSO itemSO, bool boughtItem)
     {
-        if (_backpackContainer.activeInHierarchy) {
+        DraggableItem[] allItems = FindObjectsOfType<DraggableItem>();
 
-            DraggableItem[] allItems = FindObjectsOfType<DraggableItem>();
-
-            if (!boughtItem) {
-                foreach (DraggableItem item in allItems)
-                {
-                    ItemSO potentialItemSO = item.ItemSO;
-
-                    if (potentialItemSO == itemSO)
-                    {
-                        item.GetComponent<DraggableItem>().UpdateAmountLeft(1);
-                        return;
-                    }
-                }
-            }
-
-            foreach (Transform backpackSlot in _backpackSlots)
+        if (!boughtItem) {
+            foreach (DraggableItem item in allItems)
             {
-                if (backpackSlot.childCount == 0)
+                ItemSO potentialItemSO = item.ItemSO;
+
+                if (potentialItemSO == itemSO)
                 {
-                    DraggableItem newItem = Instantiate(itemSO.IventoryPrefab, backpackSlot.transform).GetComponent<DraggableItem>();
-                    newItem.CurrentAmount = 1;
-                    newItem.UpdateAmountLeftText();
+                    item.GetComponent<DraggableItem>().UpdateAmountLeft(1);
                     return;
                 }
             }
-
-            Debug.Log("no available slots");
-        } else {
-            _itemsToAddToBackpack.Add(itemSO);
         }
+
+        foreach (Transform backpackSlot in _backpackSlots)
+        {
+            if (backpackSlot.childCount == 0)
+            {
+                DraggableItem newItem = Instantiate(itemSO.IventoryPrefab, backpackSlot.transform).GetComponent<DraggableItem>();
+                newItem.CurrentAmount = 1;
+                return;
+            }
+        }
+
+        Debug.Log("no available slots");
     }
 }
