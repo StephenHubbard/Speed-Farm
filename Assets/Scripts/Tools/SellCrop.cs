@@ -22,11 +22,11 @@ public class SellCrop : MonoBehaviour, IItem
         foreach (Vector3Int selectedTile in selectedTiles)
         {
             PlacedObject_Done placedObject = _grid.GetGridObject(selectedTile).PlacedObject;
-            Crop crop = placedObject?.GetComponent<Crop>();
+            // Crop crop = placedObject?.GetComponent<Crop>();
 
-            if (placedObject != null && crop && crop.IsFullyGrown)
+            if (placedObject != null && _grid.GetGridObject(selectedTile).OwnsLand && _grid.GetGridObject(selectedTile).y >= 1)
             {
-                PlacedObjectTypeSO placedObjectTypeSO = crop.PlacedObjectTypeSO;
+                PlacedObjectTypeSO placedObjectTypeSO = placedObject.PlacedObjectTypeSO;
                 ItemSO itemSO = placedObjectTypeSO.ItemSO;
 
                 Backpack.Instance.AddItemToBackpack(itemSO, false);

@@ -47,7 +47,7 @@ public class LandManager : Singleton<LandManager>
 
         foreach (Vector3Int selectedTile in selectedTiles)
         {
-            if (_grid.GetGridObject(selectedTile).CanBuyLand)
+            if (_grid.GetGridObject(selectedTile).CanBuyLand && _grid.GetGridObject(selectedTile).y >= 1)
             {
                 anyTileCanBeBought = true;
             }
@@ -90,7 +90,7 @@ public class LandManager : Singleton<LandManager>
 
             PlacedObject_Done fencePlacedObj = _grid.GetGridObject(selectedTile).PlacedObject;
 
-            if (fencePlacedObj && fencePlacedObj.PlacedObjectTypeSO == _fenceSO) {
+            if (fencePlacedObj && fencePlacedObj.PlacedObjectTypeSO == _fenceSO && _grid.GetGridObject(selectedTile).y >= 1) {
 
                 fencePlacedObj.DestroySelf();
 

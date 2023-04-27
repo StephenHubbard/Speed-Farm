@@ -6,16 +6,15 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     public GameObject IventoryPrefab;
-    public Sprite resourceSprite;
     public int ItemCost = 2;
     public int ItemSellAmount = 3;
     public ItemType thisItemType;
 
     public enum ItemType {
-        VegType,
+        Veggie,
         Hardware,
         Seeds,
-        AgriType,
-        GatherType
+        Agriculture,
+        Gather
     }
 }

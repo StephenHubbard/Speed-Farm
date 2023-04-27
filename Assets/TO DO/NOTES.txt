@@ -1,7 +1,3 @@
-
-have different types of cards to buy
-veggie card / fruit card / animal card (eggs, milk, sheep hair, etc)
-
 lose condition?  One orbit before collector comes back.  Flash a loss warning or something along those lines when they're getting close. 
 
 npc's talk to each other, have dialogue with player, etc
