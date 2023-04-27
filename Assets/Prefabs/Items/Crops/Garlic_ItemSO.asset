@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
-  m_Name: Garlic
+  m_Name: Garlic_ItemSO
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 964910990228595825, guid: ae87f5b3257dca04d8a3fc92adc5b70b, type: 3}
   resourceSprite: {fileID: 21300000, guid: 424438c5d4a599d4b9181bf2f52a9393, type: 3}

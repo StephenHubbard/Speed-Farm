@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MoveWindowOffScreen : MonoBehaviour
 {   
+    public bool _windowIsOpen { get; private set; }
     public bool IsBackpack => _isBackPack;
 
     [SerializeField] private bool _isBackPack;
@@ -11,9 +12,14 @@ public class MoveWindowOffScreen : MonoBehaviour
     private Transform _windowContainer;
     private Vector2 _startingAnchoredPosition;
 
+
     private void Awake() {
         _windowContainer = transform.parent;
         _startingAnchoredPosition = _windowContainer.GetComponent<RectTransform>().anchoredPosition;
+    }
+
+    private void Start() {
+        _windowIsOpen = _windowContainer.gameObject.activeInHierarchy;
     }
 
     public void OpenWindow() {
@@ -23,6 +29,7 @@ public class MoveWindowOffScreen : MonoBehaviour
             Backpack.Instance.OpenBackPack();
         }
 
+        _windowIsOpen = true;
         _windowContainer.GetComponent<RectTransform>().anchoredPosition = _startingAnchoredPosition;
     }
 
@@ -31,6 +38,15 @@ public class MoveWindowOffScreen : MonoBehaviour
 
         if (_isBackPack) {
             CloseAllWindowsButBackpack();
+        }
+        _windowIsOpen = false;
+    }
+
+    public void ToggleWindow() {
+        if (_windowIsOpen) {
+            CloseWindow();
+        } else {
+            OpenWindow();
         }
     }
 

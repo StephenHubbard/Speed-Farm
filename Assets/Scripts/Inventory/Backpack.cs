@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 
 public class Backpack : Singleton<Backpack>, IPointerEnterHandler, IPointerExitHandler
 {
+    public bool _backpackContainerIsOpen { get; private set; }
     public GameObject BackPackContainer => _backpackContainer;
     public Transform[] BackpackSlots => _backpackSlots;
     public MoveWindowOffScreen MoveWindowOffScreen => _moveWindowOffScreen;
@@ -17,8 +18,6 @@ public class Backpack : Singleton<Backpack>, IPointerEnterHandler, IPointerExitH
     [SerializeField] private GameObject _backpackContainer;
 
     private Image _image;
-    private bool _backpackContainerIsOpen;
-
 
     protected override void Awake() {
         base.Awake();

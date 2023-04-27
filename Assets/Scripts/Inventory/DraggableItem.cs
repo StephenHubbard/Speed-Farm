@@ -10,6 +10,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Transform ParentAfterDrag { get => _parentAfterDrag; set => _parentAfterDrag = value; }
     public Transform PreviousParent { get => _parentAfterDrag; set => _parentAfterDrag = value; }
     public int CurrentAmount { get => _currentAmount; set => _currentAmount = value; }
+    public int StartingAmount { get => _startingAmount; set => _startingAmount = value; }
     public ItemSO ItemSO => _itemSO;
 
     [SerializeField] private int _startingAmount;
@@ -21,10 +22,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private Image _image;
     private TMP_Text _amountLeftText;
 
-
     private void Awake() {
         _image = GetComponent<Image>();
         _amountLeftText = GetComponentInChildren<TMP_Text>();
+    }
+
+    private void Start() {
         UpdateAmountLeft(_startingAmount);
     }
 
@@ -36,7 +39,12 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _currentAmount += amount;
 
         if (_currentAmount <= 0) {
-            InventoryManager.Instance.CurrentEquippedItemNull();
+            
+            InventorySlot inventorySlot = GetComponentInParent<InventorySlot>();
+            if (inventorySlot) {
+                InventoryManager.Instance.CurrentEquippedItemNull();
+            }
+
             Destroy(this.gameObject);
         }
     }
@@ -48,8 +56,6 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         _previousParent = transform.parent;
         InventorySlot inventorySlot = GetComponentInParent<InventorySlot>();
         inventorySlot?.SlottedItemNull();
-        CrateSlot crateSlot = GetComponentInParent<CrateSlot>();
-        crateSlot?.ItemRemoved(_itemSO, _currentAmount);
         _parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
@@ -100,21 +106,23 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                 return;
             }
 
-            InventorySlot thisInventorySlot = GetComponentInParent<InventorySlot>();
+            DraggableSlot draggableSlot = GetComponentInParent<DraggableSlot>();
+            InventorySlot inventorySlot = GetComponentInParent<InventorySlot>();
+            CrateSlot crateSlot = GetComponentInParent<CrateSlot>();
 
-            if (!thisInventorySlot && !shopSlot) {
+            if (!inventorySlot && !shopSlot && Backpack.Instance._backpackContainerIsOpen && !Crate.Instance.GetComponent<Building>().MoveWindowOffScreen._windowIsOpen) {
                 Transform[] allInventorySlots = InventoryManager.Instance.InventorySlots;
 
-                foreach (Transform inventorySlot in allInventorySlots)
+                foreach (Transform slot in allInventorySlots)
                 {
-                    if (inventorySlot.transform.childCount == 0) {
-                        transform.SetParent(inventorySlot.transform);
+                    if (slot.transform.childCount == 0) {
+                        transform.SetParent(slot.transform);
                         transform.position = transform.parent.position;
-                        inventorySlot.GetComponent<InventorySlot>().FindSlottedItem(this);
+                        slot.GetComponent<InventorySlot>().FindSlottedItem(this);
                         return;
                     }
                 }
-            } else if (thisInventorySlot && Backpack.Instance.BackPackContainer.activeInHierarchy) {
+            } else if (inventorySlot && Backpack.Instance._backpackContainerIsOpen && !Crate.Instance.GetComponent<Building>().MoveWindowOffScreen._windowIsOpen) {
                 Transform[] allBackPackSlots = Backpack.Instance.BackpackSlots;
 
                 foreach (Transform backPackSlot in allBackPackSlots)
@@ -122,6 +130,30 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                     if (backPackSlot.transform.childCount == 0)
                     {
                         transform.SetParent(backPackSlot.transform);
+                        transform.position = transform.parent.position;
+                        return;
+                    }
+                }
+            } else if (crateSlot && Crate.Instance.GetComponent<Building>().MoveWindowOffScreen._windowIsOpen) {
+                Transform[] allBackPackSlots = Backpack.Instance.BackpackSlots;
+
+                foreach (Transform backPackSlot in allBackPackSlots)
+                {
+                    if (backPackSlot.transform.childCount == 0)
+                    {
+                        transform.SetParent(backPackSlot.transform);
+                        transform.position = transform.parent.position;
+                        return;
+                    }
+                }
+            } else if (!shopSlot && !crateSlot && Crate.Instance.GetComponent<Building>().MoveWindowOffScreen._windowIsOpen){
+                List<CrateSlot> allCrateSlots = Crate.Instance.AllCrateSlots;
+
+                foreach (CrateSlot thisCrateSlot in allCrateSlots)
+                {
+                    if (thisCrateSlot.transform.childCount == 0)
+                    {
+                        transform.SetParent(thisCrateSlot.transform);
                         transform.position = transform.parent.position;
                         return;
                     }

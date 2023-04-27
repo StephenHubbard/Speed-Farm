@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Building : MonoBehaviour
 {
+    public MoveWindowOffScreen MoveWindowOffScreen => _moveWindowOffScreen;
     public GameObject ShopContainerToOpen => _shopContainerToOpen;
 
     [SerializeField] private GameObject _buildingOutline;
@@ -12,6 +13,7 @@ public class Building : MonoBehaviour
 
     private IIBuilding _building;
     private MoveWindowOffScreen _moveWindowOffScreen;
+
 
     private void Awake() {
         _moveWindowOffScreen = _shopContainerToOpen.GetComponentInChildren<MoveWindowOffScreen>();
@@ -32,7 +34,7 @@ public class Building : MonoBehaviour
                 _shopContainerToOpen.gameObject.SetActive(true);
             }
 
-            _moveWindowOffScreen.OpenWindow();
+            _moveWindowOffScreen.ToggleWindow();
         }
     }
 

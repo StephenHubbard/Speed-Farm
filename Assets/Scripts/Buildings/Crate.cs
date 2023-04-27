@@ -4,32 +4,23 @@ using UnityEngine;
 
 public class Crate : Singleton<Crate>
 {
+    public List<CrateSlot> AllCrateSlots => _allCrateSlots;
+    private List<CrateSlot> _allCrateSlots = new List<CrateSlot>();
+
     [SerializeField] private Transform _crateContainerGridLayoutGroup;
 
-    [SerializeField] private List<ItemSO> _itemsInCrate = new List<ItemSO>();
+    protected override void Awake() {
+        base.Awake();
 
-    private List<ItemSO> _itemsToRemove = new List<ItemSO>();
-
-    public void PutItemInCrate(ItemSO itemSO) {
-        _itemsInCrate.Add(itemSO);
-    }
-
-    public void RemoveItemFromCrate(ItemSO itemSO) {
-        _itemsInCrate.Remove(itemSO);
+        foreach (Transform crateSlot in _crateContainerGridLayoutGroup)
+        {
+            _allCrateSlots.Add(crateSlot.GetComponent<CrateSlot>());
+        }
     }
 
     public void SellItemsToCollector(ItemSO.ItemType itemType) {
+
         int amountOfGoldCollected = 0;
-
-        foreach (ItemSO item in _itemsInCrate)
-        {
-            if (item.thisItemType == itemType) {
-                amountOfGoldCollected+= item.ItemSellAmount;
-                EconomyManager.Instance.UpdateCurrentCoinAmount(item.ItemSellAmount);
-                _itemsToRemove.Add(item);
-            }
-        }
-
 
         foreach (Transform slot in _crateContainerGridLayoutGroup)
         {
@@ -41,10 +32,10 @@ public class Crate : Singleton<Crate>
                 Transform itemInSlot = slotTranform?.GetChild(0);
                 ItemSO itemSO = itemInSlot.GetComponent<DraggableItem>().ItemSO;
 
-                if (itemInSlot && _itemsToRemove.Contains(itemSO))
+                if (itemSO.thisItemType == itemType)
                 {
-                    _itemsToRemove.Clear();
-                    _itemsInCrate.RemoveAll(item => Object.ReferenceEquals(item, itemSO));
+                    int amountInSlot = itemInSlot.GetComponent<DraggableItem>().CurrentAmount;
+                    amountOfGoldCollected += (itemSO.ItemSellAmount * amountInSlot);
                     Destroy(itemInSlot.gameObject);
                 }
             }

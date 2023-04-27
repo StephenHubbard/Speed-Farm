@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
-  m_Name: Potato
+  m_Name: Potato_ItemSO
   m_EditorClassIdentifier: 
   IventoryPrefab: {fileID: 964910990228595825, guid: b130c50437f41c54d9951169721efd5b, type: 3}
   resourceSprite: {fileID: 21300000, guid: af02412ddf55e79438a7bab8b573b9aa, type: 3}

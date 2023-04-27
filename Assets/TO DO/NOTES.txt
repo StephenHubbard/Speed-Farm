@@ -7,3 +7,7 @@ lose condition?  One orbit before collector comes back.  Flash a loss warning or
 npc's talk to each other, have dialogue with player, etc
 
 maybe certain npc's only come on certain days of the week or months?
+
+certain crops/trees/statues/decorations on farm land give bonuses like less tax, less water bill, crops around it sell for me etc. 
+
+have a decor shop, power up show, tree shop, fish shop, cattle shop, chicken coop, goats, pigs, horses

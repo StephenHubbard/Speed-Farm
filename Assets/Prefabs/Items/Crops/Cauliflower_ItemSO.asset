@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bd2035eadc4c8743a693c723e6d2447, type: 3}
-  m_Name: Corn
+  m_Name: Cauliflower_ItemSO
   m_EditorClassIdentifier: 
-  IventoryPrefab: {fileID: 964910990228595825, guid: bc9d6adb377a73949a250e429721b324, type: 3}
-  resourceSprite: {fileID: 21300000, guid: 5cc61a230a65d8e40a4ece25f60446f6, type: 3}
+  IventoryPrefab: {fileID: 964910990228595825, guid: ec736ccd6f2347b41bc3ec3d6e5bffa0, type: 3}
+  resourceSprite: {fileID: 21300000, guid: 777bd1b8a57ad7a41aa51fc540dd7781, type: 3}
   ItemCost: 2

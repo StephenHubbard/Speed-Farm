@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ItemShop : MonoBehaviour
 {
-    [SerializeField] private int _amountOfStartingItems = 2;
     [SerializeField] private float _shopRefreshTime = 10f;
     [SerializeField] private List<ItemSO> _itemsForSale = new List<ItemSO>();
     [SerializeField] private Transform _shopSlotsContainer;
@@ -21,8 +20,6 @@ public class ItemShop : MonoBehaviour
     }
 
     private void Start() {
-        AddItemsToShop(_amountOfStartingItems);
-
         _refreshItemsCoroutine = StartCoroutine(RefreshItemsRoutine());
     }
 
@@ -40,7 +37,7 @@ public class ItemShop : MonoBehaviour
                     DraggableItem draggableItem = shopSlotChild?.GetComponent<DraggableItem>();
                     
                     if (draggableItem && draggableItem.ItemSO == _itemsForSale[randomIndexNum]) {
-                        draggableItem.UpdateAmountLeft(Random.Range(1, 3));
+                        draggableItem.UpdateAmountLeft(1);
                         itemExists = true;
                         break;
                     }
@@ -53,7 +50,7 @@ public class ItemShop : MonoBehaviour
             {
                 if (shopSlot.childCount == 0) {
                     DraggableItem newItem = Instantiate(_itemsForSale[randomIndexNum].IventoryPrefab, shopSlot.transform).GetComponent<DraggableItem>();
-                    newItem.UpdateAmountLeft(Random.Range(1, 3));
+                    newItem.StartingAmount = 1;
                     break;
                 }
             }
@@ -64,9 +61,8 @@ public class ItemShop : MonoBehaviour
     private IEnumerator RefreshItemsRoutine() {
         while (true)
         {
-            yield return new WaitForSeconds(_shopRefreshTime);
-
             AddItemsToShop(1);
+            yield return new WaitForSeconds(_shopRefreshTime);
         }
     }
 }
